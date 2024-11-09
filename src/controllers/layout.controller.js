@@ -1,5 +1,5 @@
 const getLayout = (req, res) =>{
-    res.render('./index.ejs')
+    res.render('./user.model.js.ejs')
 }
 
 
