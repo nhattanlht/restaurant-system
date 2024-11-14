@@ -1,8 +1,5 @@
-use restaurantDB
-go
-
 CREATE TABLE [User] (
-    user_id INT PRIMARY KEY,
+    user_id INT IDENTITY(1,1) PRIMARY KEY,
     user_name NVARCHAR(50),
     password VARCHAR(255),
     role NVARCHAR(50),
@@ -11,13 +8,12 @@ CREATE TABLE [User] (
 GO
 
 CREATE TABLE [Customer] (
-    customer_id INT PRIMARY KEY,
+    customer_id BIGINT PRIMARY KEY,
     name NVARCHAR(100),
     phone_number NVARCHAR(20),
     email NVARCHAR(100),
     identity_card NVARCHAR(20),
     gender CHAR(1),
-    member_card_number NVARCHAR(20),
     card_type NVARCHAR(50),
     accumulated_spending MONEY,
     created_at DATETIME,
@@ -27,7 +23,7 @@ CREATE TABLE [Customer] (
 GO
 
 CREATE TABLE [Employee] (
-    employee_id INT PRIMARY KEY,
+    employee_id BIGINT PRIMARY KEY,
     name NVARCHAR(100),
     DOB DATE,
     gender CHAR(1),
@@ -68,7 +64,7 @@ CREATE TABLE [Branch] (
 GO
 
 CREATE TABLE [Employee_History] (
-    employee_id INT FOREIGN KEY REFERENCES [Employee](employee_id),
+    employee_id BIGINT FOREIGN KEY REFERENCES [Employee](employee_id),
     start_date DATE,
     branch_id INT FOREIGN KEY REFERENCES [Branch](branch_id),
     end_date DATE
@@ -108,8 +104,8 @@ CREATE TABLE [Order] (
     discount_id INT FOREIGN KEY REFERENCES [Discount](discount_id),
     total_amount MONEY,
     payment_method NVARCHAR(50),
-    customer_id INT FOREIGN KEY REFERENCES [Customer](customer_id),
-    employee_id INT FOREIGN KEY REFERENCES [Employee](employee_id)
+    customer_id BIGINT FOREIGN KEY REFERENCES [Customer](customer_id),
+    employee_id BIGINT FOREIGN KEY REFERENCES [Employee](employee_id)
 );
 GO
 
@@ -204,23 +200,23 @@ ADD CONSTRAINT CK_shipping_status_Delivery_Ordering
 CHECK (shipping_status IN ('Pending', 'Shipped', 'In Transit', 'Delivered', 'Returned'));
 
 ALTER TABLE Service_Review
-ADD CONSTRAINT CK_Service_Review_ServiceRating 
+ADD CONSTRAINT CK_Service_Review_ServiceRating
 CHECK (service_rating BETWEEN 1 AND 5);
 
 ALTER TABLE Service_Review
-ADD CONSTRAINT CK_Service_Review_LocationRating 
+ADD CONSTRAINT CK_Service_Review_LocationRating
 CHECK (location_rating BETWEEN 1 AND 5);
 
 ALTER TABLE Service_Review
-ADD CONSTRAINT CK_Service_Review_FoodQualityRating 
+ADD CONSTRAINT CK_Service_Review_FoodQualityRating
 CHECK (food_quality_rating BETWEEN 1 AND 5);
 
 ALTER TABLE Service_Review
-ADD CONSTRAINT CK_Service_Review_PriceRating 
+ADD CONSTRAINT CK_Service_Review_PriceRating
 CHECK (price_rating BETWEEN 1 AND 5);
 
 ALTER TABLE Service_Review
-ADD CONSTRAINT CK_Service_Review_AmbianceRating 
+ADD CONSTRAINT CK_Service_Review_AmbianceRating
 CHECK (ambiance_rating BETWEEN 1 AND 5);
 
 ALTER TABLE Branch
@@ -231,21 +227,9 @@ ALTER TABLE Branch
 ADD CONSTRAINT CK_HasCarParking_Branch
 CHECK (has_car_parking IN (0, 1));
 
+
 CREATE TABLE [UserKeys] (
-    user_id INT PRIMARY KEY,               -- user_id là khóa chính
-    public_key VARCHAR(MAX),                -- public_key lưu trữ khóa công khai dưới dạng chuỗi văn bản
-    CONSTRAINT FK_User FOREIGN KEY (user_id) REFERENCES [User](user_id)  -- Tạo khóa ngoại liên kết với bảng User
-);
-
-ALTER TABLE UserKeys 
-ALTER COLUMN public_key VARCHAR(MAX);  -- Hoặc NVARCHAR(MAX) nếu bạn sử dụng Unicode
-
-
-drop table [UserKeys]
-
--- Ví dụ kiểm tra cấu trúc bảng UserKeys
-CREATE TABLE UserKeys (
-    user_id INT NOT NULL,  -- Đây là khóa ngoại, đảm bảo không có giá trị NULL
+    user_id INT NOT NULL,
     public_key VARCHAR(MAX),  -- Kiểu VARCHAR(MAX) để lưu khóa công khai
     CONSTRAINT PK_UserKeys PRIMARY KEY (user_id),
     CONSTRAINT FK_UserKeys_User FOREIGN KEY (user_id) REFERENCES [User] (user_id)
