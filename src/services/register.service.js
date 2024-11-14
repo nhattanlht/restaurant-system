@@ -1,20 +1,20 @@
+'use strict';
+
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const config = require('../configs/mssql.config');
 const createTokenPair = require('./createToken.service');
-
 const generateCustomerData = require('../../seeds/customer.seed');
-const customer_data = generateCustomerData(1);
-let customer_id;
-customer_data.forEach(customer => {
-    customer_id = customer.customer_id;
-});
+const UserModel = require('../models/user.model');
+const CustomerModel = require('../models/customer.model');
+const UserKeysModel = require ('../models/UserKeys.model')
+
 
 class AccessService {
     static signUp = async ({ name, email, password }) => {
         const pool = await sql.connect(config);
-        const transaction = new sql.Transaction(pool);  // Khởi tạo transaction
+        const transaction = new sql.Transaction(pool);
         try {
             await transaction.begin();  // Bắt đầu transaction
 
@@ -27,7 +27,7 @@ class AccessService {
                 await transaction.rollback();  // Rollback transaction nếu email đã tồn tại
                 return {
                     code: '20001',
-                    message: 'Email đã tồn tại',
+                    message: 'Email existed',
                     status: 'error'
                 };
             }
@@ -35,31 +35,25 @@ class AccessService {
             // Hash password trước khi lưu
             const passwordHash = await bcrypt.hash(password, 10);
 
-            // Thêm người dùng mới vào bảng User
-            const insertResultUser = await transaction.request()
-                .input('user_name', sql.NVarChar, email)
-                .input('password', sql.VarChar, passwordHash)
-                .query(`
-                    INSERT INTO [User] (user_name, password)
-                    VALUES (@user_name, @password);
-                    SELECT SCOPE_IDENTITY() AS user_id;
-                `);
-            const user_id = insertResultUser.recordset[0].user_id;
+            // Khởi tạo dữ liệu người dùng
+            let userData = {
+                user_id: null,
+                user_name: email,
+                password: passwordHash
+            };
+
+            // Thêm người dùng mới vào bảng User và lấy ID
+            userData.user_id = await UserModel.insertUser(userData, transaction);
+
+            // Khởi tạo dữ liệu khách hàng
+            const customersData = generateCustomerData(1);
+            let customerData = customersData[0];
+            customerData.name = name;
+            customerData.email = email;
+            customerData.user_id = userData.user_id;
 
             // Thêm khách hàng mới vào bảng Customer
-            await transaction.request()
-                .input('customer_id', sql.BigInt, customer_id)
-                .input('name', sql.NVarChar, name)
-                .input('email', sql.NVarChar, email)
-                .input('card_type', sql.NVarChar, 'Membership')
-                .input('accumulated_spending', sql.Money, 0)
-                .input('created_at', sql.DateTime, new Date())
-                .input('user_id', sql.Int, user_id)
-                .input('support_employee_id', sql.Int, null)
-                .query(`
-                    INSERT INTO [Customer] (customer_id, name, email, card_type, accumulated_spending, created_at, user_id, support_employee_id)
-                    VALUES (@customer_id, @name, @email, @card_type, @accumulated_spending, @created_at, @user_id, @support_employee_id);
-                `);
+            await CustomerModel.insertCustomer(customerData, transaction);
 
             // Tạo khóa RSA và lưu vào bảng UserKeys
             const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
@@ -69,23 +63,22 @@ class AccessService {
             });
             const publicKeyString = publicKey.toString('utf8');
 
-            await transaction.request()
-                .input('user_id', sql.Int, user_id)
-                .input('public_key', sql.VarChar, publicKeyString)
-                .query(`
-                    INSERT INTO [UserKeys] (user_id, public_key)
-                    VALUES (@user_id, @public_key);
-                `);
 
+            //  Thêm vào User Keys
+            let userKeysData = {
+                user_id: userData.user_id,
+                publicKeyString: publicKeyString,
+            }
+            await UserKeysModel.insertUserKeys(userKeysData, transaction);
             // Tạo token
-            const tokens = await createTokenPair({ userID: user_id, email }, privateKey);
+            const tokens = await createTokenPair({ userID: userData.user_id, email }, privateKey);
 
             await transaction.commit();  // Commit transaction khi tất cả thành công
 
             return {
                 code: 201,
                 metadata: {
-                    user: { user_id, email, name },
+                    user: { user_id: userData.user_id, email, name },
                     tokens
                 }
             };
