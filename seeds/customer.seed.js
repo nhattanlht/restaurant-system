@@ -20,17 +20,15 @@ function generateCustomerData(rowsCount) {
         const customer_id = parseInt(customer_id_string, 10);
 
         // Convert member_card_number to a string to avoid validation errors
-        const member_card_number = faker.number.int({ min: 100000, max: 999999 }).toString();
 
         const customer = {
-            user_id: customer_id,
+            customer_id: customer_id,
             name: faker.person.fullName(),
             phone_number: faker.phone.number('0#########'),
             date_of_birth,
             email: faker.internet.email(),
             identity_card: faker.number.int({ min: 100000000, max: 999999999 }),
             gender: gender_string,
-            member_card_number, // Ensure member_card_number is a string
             card_type: faker.helpers.arrayElement(['Gold', 'Silver', 'Bronze']),
             accumulated_spending: faker.number.int({ min: 0, max: 100000 }),
             created_at: faker.date.past(2).toISOString(),

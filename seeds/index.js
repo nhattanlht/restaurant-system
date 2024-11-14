@@ -3,21 +3,19 @@ const app = express()
 
 const generateCustomerData = require('./customer.seed');
 const NUMBER_LINE = 100000
-// customer_data = generateCustomerData(1);
+const customer_data = generateCustomerData('1');
+let customer_id;
+customer_data.forEach(customer => {
+    customer_id = customer.customer_id;
+});
+console.log(customer_id)
+// app.get('/', (req, res) => {
+//     res.send(generateCustomerData(NUMBER_LINE));
+// })
 //
-// console.log(customer_data);
-// console.log(customer_data[0]);
-// customer_data.forEach(customer => {
-//     console.log(customer.member_card_number);
-// });
-
-app.get('/', (req, res) => {
-    res.send(generateCustomerData(NUMBER_LINE));
-})
-
-app.listen(3000, () => {
-    console.log('http server listening on port 3000');
-})
+// app.listen(3000, () => {
+//     console.log('http server listening on port 3000');
+// })
 
 // console.log(generateCustomerData(NUMBER_LINE))
 
