@@ -48,7 +48,7 @@ class AccessService {
 
             // Thêm khách hàng mới vào bảng Customer
             await transaction.request()
-                .input('customer_id', sql.Int, customer_id)
+                .input('customer_id', sql.BigInt, customer_id)
                 .input('name', sql.NVarChar, name)
                 .input('email', sql.NVarChar, email)
                 .input('card_type', sql.NVarChar, 'Membership')

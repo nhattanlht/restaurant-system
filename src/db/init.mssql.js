@@ -1,7 +1,8 @@
 const sql = require('mssql');
 const {db: {server, port, name, user, password}} = require('../configs/mssql.config');
 
-const connectString = `Server=tcp:${server}, ${port};Initial Catalog=${name};Persist Security Info=False;User ID=${user};Password=${password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;`
+// const connectString = `Server=tcp:${server}, ${port};Initial Catalog=${name};Persist Security Info=False;User ID=${user};Password=${password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;`
+const connectString = 'Server=tcp:restaurant-db-2024.database.windows.net,1433;Initial Catalog=restaurantDB;Persist Security Info=False;User ID=restaurant;Password=Nghia@1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
 
 // Design pattern: Singleton
 class Database {
