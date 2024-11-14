@@ -3,6 +3,8 @@ const express = require('express');
 const morgan = require("morgan");
 const helmet = require("helmet");
 const compression = require("compression");
+const bodyParser = require('body-parser');
+
 
 const configViewEngine = (app) => {
     const __dirname = path.resolve();
@@ -19,6 +21,8 @@ const configViewEngine = (app) => {
     app.use(helmet());
     app.use(compression());
     app.use(express.json());
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
 };
 
 module.exports = configViewEngine;

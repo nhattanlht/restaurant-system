@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="../public/css/login_register.css" />
 <!--    <link rel="stylesheet" href="./css/bootstrap.min.css" />-->
-<!--    <link rel="stylesheet" href="./css/style.css" />-->
+<!--    <link rel="stylesheet" href="../public/css/style.css" />-->
     <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap"
             rel="stylesheet"
@@ -16,9 +16,10 @@
 </head>
 <body>
 <div class="register-container">
-    <h2>Create Your TicketZen Account</h2>
-    <form action="/register" method="post">
-        <label for="username">Username:</label>
+    <a href="#" class="logo">
+        <img src="../public/images/logo.svg" width="160" height="50" alt="Grilli - Home">
+    </a>    <form action="/register" method="post">
+        <label for="username">Full name: </label>
         <input type="text" id="username" name="username" required />
 
         <label for="email">Email:</label>
@@ -43,7 +44,7 @@
     </form>
     <p>
         Already have an account?
-        <a href="login.html" class="text-accent">Login here</a>
+        <a href="#" class="text-accent">Login here</a>
     </p>
 </div>
 </body>

@@ -1,5 +1,5 @@
 const sql = require('mssql');
-const {db: {server, port, name, user, password}} = require('../configs/config.mssql');
+const {db: {server, port, name, user, password}} = require('../configs/mssql.config');
 
 const connectString = `Server=tcp:${server}, ${port};Initial Catalog=${name};Persist Security Info=False;User ID=${user};Password=${password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;`
 
