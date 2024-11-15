@@ -69,7 +69,10 @@ class AccessService {
                 user_id: userData.user_id,
                 publicKeyString: publicKeyString,
             }
-            await UserKeysModel.insertUserKeys(userKeysData, transaction);
+
+
+            // await UserKeysModel.insertUserKeys(userKeysData, transaction);
+            await UserModel.insertPublicKey(transaction, userData.user_id, userKeysData.publicKeyString);
             // Tạo token
             const tokens = await createTokenPair({ userID: userData.user_id, email }, privateKey);
 

@@ -17,9 +17,13 @@ configViewEngine(app)
 require('./db/init.mssql')
 
 // routes
-app.use('/', layoutRoute)
-app.use('/register', registerRoutes);
-app.use('/login', loginRoutes)
+// app.use('/', layoutRoute)
+// app.use('/register', registerRoutes);
+// app.use('/login', loginRoutes)
+
+const newBranchRoutes = require('./routes/newBranch.route')
+app.use('/', newBranchRoutes)
+
 
 app.get('/protected', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'This is a protected route', user: req.user });

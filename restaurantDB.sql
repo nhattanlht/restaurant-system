@@ -228,10 +228,3 @@ ALTER TABLE Branch
 ADD CONSTRAINT CK_HasCarParking_Branch
 CHECK (has_car_parking IN (0, 1));
 
-
--- CREATE TABLE [UserKeys] (
---     user_id INT NOT NULL,
---     public_key VARCHAR(MAX),  -- Kiểu VARCHAR(MAX) để lưu khóa công khai
---     CONSTRAINT PK_UserKeys PRIMARY KEY (user_id),
---     CONSTRAINT FK_UserKeys_User FOREIGN KEY (user_id) REFERENCES [User] (user_id)
--- );
