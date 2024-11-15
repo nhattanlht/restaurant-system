@@ -39,11 +39,11 @@ class AccessService {
             let userData = {
                 user_id: null,
                 user_name: email,
-                password: passwordHash
+                password: passwordHash,
+                public_key: null
             };
 
-            // Thêm người dùng mới vào bảng User và lấy ID
-            userData.user_id = await UserModel.insertUser(userData, transaction);
+
 
             // Khởi tạo dữ liệu khách hàng
             const customersData = generateCustomerData(1);
@@ -64,15 +64,12 @@ class AccessService {
             const publicKeyString = publicKey.toString('utf8');
 
 
-            //  Thêm vào User Keys
-            let userKeysData = {
-                user_id: userData.user_id,
-                publicKeyString: publicKeyString,
-            }
+            //  Thêm vào User
+            userData.public_key = publicKeyString;
 
+            // Thêm người dùng mới vào bảng User
+            userData.user_id = await UserModel.insertUser(userData, transaction);
 
-            // await UserKeysModel.insertUserKeys(userKeysData, transaction);
-            await UserModel.insertPublicKey(transaction, userData.user_id, userKeysData.publicKeyString);
             // Tạo token
             const tokens = await createTokenPair({ userID: userData.user_id, email }, privateKey);
 
