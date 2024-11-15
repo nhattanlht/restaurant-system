@@ -21,7 +21,6 @@ class UserModel{
                 SELECT SCOPE_IDENTITY() AS user_id;
             )`
 
-
             await request.query(query)
             console.log('User inserted successfully')
         } catch (error){
