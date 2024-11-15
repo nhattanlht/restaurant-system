@@ -15,7 +15,7 @@ class RegisterController {
                     message: 'Account created successfully',
                     metadata: result.metadata, // Include metadata (tokens and user details)
                 });
-            }
+            z}
 
             // Failure response
             return res.status(400).json({

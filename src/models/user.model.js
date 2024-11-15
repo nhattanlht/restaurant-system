@@ -28,9 +28,9 @@ class UserModel{
         }
     }
 
-    static async getUserById(email) {
+    static async getUserById(email, transaction) {
         try {
-            const request = this.pool.request();
+            const request = transaction.request();
             request.input('user_name', sql.NVarChar(250), email);
 
             const query = `SELECT * FROM ${TABLE_NAME} WHERE customer_id = @customer_id`;
