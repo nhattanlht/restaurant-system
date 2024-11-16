@@ -10,34 +10,25 @@ class UserModel{
     }
     static async insertUser(userData, transaction){
         try{
-            // const request = transaction.request();
-            // request.input('user_name', sql.NVarChar(250), userData.user_name)
-            // request.input('password', sql.NVarChar(255), userData.password)
-            // request.input('role', sql.NVarChar(50), userData.role)
-            // request.input('status', sql.Int, userData.status)
-            // request.input('public_key', sql.Varchar(MAX), userData.public_key)
-            //
-            // const query =`INSERT INTO ${TABLE_NAME} VALUES (
-            //     @user_name, @password, @role, @status, @public_key
-            //     SELECT SCOPE_IDENTITY() AS user_id;
-            // )`
-            //
-            // await request.query(query)
             const request = transaction.request();
             request.input('user_name', sql.NVarChar(250), userData.user_name)
             request.input('password', sql.NVarChar(255), userData.password)
             request.input('role', sql.NVarChar(50), userData.role)
             request.input('status', sql.Int, userData.status)
-            request.input('public_key', sql.Varchar(MAX), userData.public_key)
+            request.input('public_key', sql.VarChar(sql.MAX), userData.public_key)
+            request.input('private_key', sql.VarChar(sql.MAX), userData.private_key)
 
             const result = await request.execute('SP_InsertNewUser')
-            console.log('User inserted successfully, user_id:', result.recordset[0].user_id);
-            console.log('User inserted successfully')
+            if (result.recordset && result.recordset.length > 0) {
+                return result.recordset[0].user_id;
+            } else {
+                throw new Error("User insertion failed: No user ID returned.");
+            }
         } catch (error){
             console.error('Error inserting user:', error)
         }
     }
-    static async insertPublicKey(transaction, user_id, public_key) {
+    static async insertKey(transaction, user_id, private_key, public_key) {
         try {
             const userIDResult = await transaction.request()
                 .input('user_id', sql.Int, user_id)
@@ -50,8 +41,9 @@ class UserModel{
             // Chèn khóa công khai
             await transaction.request()
                 .input('user_id', sql.Int, user_id)
-                .input('public_key', sql.VarChar(MAX), public_key)
-                .query('INSERT INTO PublicKeys (user_id, public_key) VALUES (@user_id, @public_key)');
+                .input('public_key', sql.VarChar(sql.MAX), public_key)
+                .input('private_key', sql.VarChar(sql.MAX), private_key)
+                .query('INSERT INTO PublicKeys (user_id, public_key) VALUES (@user_id, @public_key, @private_key)');
 
             console.log('Public key inserted successfully.');
         } catch (error) {

@@ -1,5 +1,7 @@
 const express = require('express')
 const configViewEngine = require('./configs/engine.config')
+require('./db/init.mssql')
+
 const layoutRoute = require('./routes/layout.route')
 const app = express()
 const registerRoutes = require('./routes/register.route')
@@ -12,9 +14,6 @@ configViewEngine(app)
 
 
 // init middleware
-
-//init db
-require('./db/init.mssql')
 
 // routes
 app.use('/', layoutRoute)

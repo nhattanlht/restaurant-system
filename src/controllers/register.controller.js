@@ -2,12 +2,16 @@
 const AccessService = require('../services/register.service'); // Access service for user registration
 
 class RegisterController {
+    static getRegister = (req, res) => {
+        res.render('register');
+    }
+
     static register = async (req, res, next) => {
         try {
-            const { name, email, password } = req.body; // User input
+            const { username, email, password, confirm_password } = req.body; // User input
 
             // Call AccessService to handle sign-up logic
-            const result = await AccessService.signUp({ name, email, password });
+            const result = await AccessService.signUp({ username, email, password, confirm_password });
 
             if (result.code === 201) {
                 // Success response
@@ -28,8 +32,5 @@ class RegisterController {
     };
 }
 
-const getRegister = (req, res) => {
-    res.render('register');
-}
 
-module.exports = {RegisterController, getRegister};
+module.exports = {RegisterController};

@@ -1,9 +1,9 @@
 // register.routes.js
 const express = require('express');
 const router = express.Router();
-const {RegisterController, getRegister} = require('../controllers/register.controller'); // Controller for registration
+const {RegisterController} = require('../controllers/register.controller'); // Controller for registration
 
-router.get('/', getRegister);
+router.get('/', RegisterController.getRegister);
 // SignUp Route
 router.post('/', RegisterController.register);
 

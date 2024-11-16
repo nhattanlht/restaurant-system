@@ -9,26 +9,25 @@ class CustomerModel {
     }
 
     // insert a customer
-    static async insertCustomer(customerData) {
+    static async insertCustomer(customerData, transaction) {
         try {
-            const request = this.pool.request();
+            const request = transaction.request();
             request.input('customer_id', sql.BigInt, customerData.customer_id)
-            request.input('name', sql.NVarChar(250), customerData.name)
-            request.input('date_of_birth', sql.Date, customerData.date_of_birth)
-            request.input('phone_number', sql.NVarChar(15), customerData.phone_number)
+            request.input('name', sql.NVarChar(100), customerData.name)
+            // request.input('date_of_birth', sql.Date, customerData.date_of_birth)
+            request.input('phone_number', sql.NVarChar(15), null)
             request.input('email', sql.NVarChar(50), customerData.email)
             request.input('identity_card', sql.Int, customerData.identity_card)
-            request.input('gender', sql.Int, customerData.gender)
-            request.input('member_card_number', sql.Int, customerData.member_card_number)
-            request.input('card_type', sql.NVarChar(50), customerData.card_type)
+            request.input('gender', sql.VarChar(1), 'F')
+            request.input('card_type', sql.NVarChar(50), 'Membership')
             request.input('accumulated_spending', sql.Int, customerData.accumulated_spending)
             request.input('created_at', sql.DateTime, customerData.created_at)
             request.input('user_id', sql.Int, customerData.user_id)
             request.input('support_employee_id', sql.Int, customerData.support_employee_id)
 
             const query = `INSERT INTO ${TABLE_NAME} VALUES (
-                @customer_id, @name, @date_of_birth, @phone_number, @email,
-                @identity_card, @gender, @member_card_number, @card_type, 
+                @customer_id, @name, @phone_number, @email,
+                @identity_card, @gender, @card_type, 
                 @accumulated_spending, @created_at, @user_id, @support_employee_id
             )`
 

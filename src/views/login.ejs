@@ -17,7 +17,7 @@
     <a href="#" class="logo" aria-label="TicketZen Home">
         <img src="../public/images/logo.svg" width="160" height="50" alt="TicketZen - Home">
     </a>
-    <form action="/register/" method="post" id="registerForm">
+    <form action="/login" method="post" id="registerForm">
         <label for="username">Full name:</label>
         <input type="text" id="username" name="username" required />
 
@@ -39,21 +39,21 @@
     </p>
 </div>
 
-<script>
-    // JavaScript to handle password confirmation
-    document.getElementById("registerForm").addEventListener("submit", function(event) {
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirm-password").value;
-        const confirmPasswordHelp = document.getElementById("confirmPasswordHelp");
+<!--<script>-->
+<!--    // JavaScript to handle password confirmation-->
+<!--    document.getElementById("registerForm").addEventListener("submit", function(event) {-->
+<!--        const password = document.getElementById("password").value;-->
+<!--        const confirmPassword = document.getElementById("confirm-password").value;-->
+<!--        const confirmPasswordHelp = document.getElementById("confirmPasswordHelp");-->
 
-        if (password !== confirmPassword) {
-            confirmPasswordHelp.textContent = "Passwords do not match!";
-            confirmPasswordHelp.style.color = "red";
-            event.preventDefault(); // Prevent form submission
-        } else {
-            confirmPasswordHelp.textContent = ""; // Clear message if passwords match
-        }
-    });
-</script>
+<!--        if (password !== confirmPassword) {-->
+<!--            confirmPasswordHelp.textContent = "Passwords do not match!";-->
+<!--            confirmPasswordHelp.style.color = "red";-->
+<!--            event.preventDefault(); // Prevent form submission-->
+<!--        } else {-->
+<!--            confirmPasswordHelp.textContent = ""; // Clear message if passwords match-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 </body>
 </html>
