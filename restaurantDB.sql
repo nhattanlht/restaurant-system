@@ -3,7 +3,8 @@ CREATE TABLE [User] (
     user_name NVARCHAR(50),
     password VARCHAR(255),
     role NVARCHAR(50),
-    status INT
+    status INT,
+    public_key VARCHAR(MAX),
 );
 GO
 
@@ -17,7 +18,7 @@ CREATE TABLE [Customer] (
     card_type NVARCHAR(50),
     accumulated_spending MONEY,
     created_at DATETIME,
-    user_id INT FOREIGN KEY REFERENCES [User](user_id),
+    user_id INT FOREIGN KEY REFERENCES [User](user_id),D
     support_employee_id INT
 );
 GO
@@ -228,9 +229,9 @@ ADD CONSTRAINT CK_HasCarParking_Branch
 CHECK (has_car_parking IN (0, 1));
 
 
-CREATE TABLE [UserKeys] (
-    user_id INT NOT NULL,
-    public_key VARCHAR(MAX),  -- Kiểu VARCHAR(MAX) để lưu khóa công khai
-    CONSTRAINT PK_UserKeys PRIMARY KEY (user_id),
-    CONSTRAINT FK_UserKeys_User FOREIGN KEY (user_id) REFERENCES [User] (user_id)
-);
+-- CREATE TABLE [UserKeys] (
+--     user_id INT NOT NULL,
+--     public_key VARCHAR(MAX),  -- Kiểu VARCHAR(MAX) để lưu khóa công khai
+--     CONSTRAINT PK_UserKeys PRIMARY KEY (user_id),
+--     CONSTRAINT FK_UserKeys_User FOREIGN KEY (user_id) REFERENCES [User] (user_id)
+-- );

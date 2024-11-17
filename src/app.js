@@ -2,9 +2,10 @@ const express = require('express')
 const configViewEngine = require('./configs/engine.config')
 const layoutRoute = require('./routes/layout.route')
 const app = express()
-const registerRoutes = require('./routes/register.route');
-const authenticateJWT = require('./middleware/auth.middleware'); // Import the authenticateJWT middleware
+const registerRoutes = require('./routes/register.route')
+const loginRoutes = require('./routes/login.route');
 
+const authenticateJWT = require('./middleware/auth.middleware'); // Import the authenticateJWT middleware
 
 configViewEngine(app)
 
@@ -18,6 +19,7 @@ require('./db/init.mssql')
 // routes
 app.use('/', layoutRoute)
 app.use('/register', registerRoutes);
+app.use('/login', loginRoutes)
 
 app.get('/protected', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'This is a protected route', user: req.user });

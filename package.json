@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --inspect --env-file=.env server.js"
+    "start": "nodemon --inspect --env-file=.env server.js"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
     "compression": "^1.7.5",
     "ejs": "^3.1.10",
     "helmet": "^8.0.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.7"
   }
 }

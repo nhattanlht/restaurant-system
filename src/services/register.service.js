@@ -21,7 +21,7 @@ class AccessService {
             // Kiểm tra xem email đã tồn tại chưa
             const userResult = await transaction.request()
                 .input('email', sql.NVarChar, email)
-                .query('SELECT * FROM [User] WHERE user_name = @email');
+                .query('SELECT * FROM [User] WHERE user_name = @ email');
 
             if (userResult.recordset.length > 0) {
                 await transaction.rollback();  // Rollback transaction nếu email đã tồn tại
