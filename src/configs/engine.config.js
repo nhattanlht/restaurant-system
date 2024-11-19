@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const compression = require("compression");
 const bodyParser = require('body-parser');
-
+const session = require('express-session');
 
 const configViewEngine = (app) => {
     const __dirname = path.resolve();
@@ -23,6 +23,13 @@ const configViewEngine = (app) => {
     app.use(express.json());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
+
+    app.use(session({
+        secret: process.env.SESSION_SECRET,  // Lấy khóa bí mật từ biến môi trường
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false }
+    }));
 };
 
 module.exports = configViewEngine;

@@ -1,11 +1,11 @@
 const express = require('express')
 const configViewEngine = require('./configs/engine.config')
-require('./db/init.mssql')
+// require('./db/init.mssql')
 
-const layoutRoute = require('./routes/layout.route')
+const layoutRoute = require('./routes')
 const app = express()
-const registerRoutes = require('./routes/register.route')
-const loginRoutes = require('./routes/login.route');
+const registerRoutes = require('./routes/access/register.route')
+const loginRoutes = require('./routes/access/login.route');
 
 const authenticateJWT = require('./middleware/auth.middleware'); // Import the authenticateJWT middleware
 
@@ -20,6 +20,7 @@ app.use('/', layoutRoute)
 app.use('/register', registerRoutes);
 app.use('/login', loginRoutes)
 
+// template
 // const newBranchRoutes = require('./routes/newBranch.route')
 // app.use('/', newBranchRoutes)
 

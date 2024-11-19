@@ -4,20 +4,18 @@ const TokenService = require("../services/token.service");
 const sql = require('mssql')
 const bcrypt = require('bcrypt');
 
-
 class LoginService {
     static login = async({ username: user_name, password }) => {
-        let transaction
+        let transaction;
         try {
-            // Ensure the pool is initialized
-            transaction = await instanceMSSQL.getTransaction();  // Wait for the pool to be available
+            // Khởi tạo transaction
+            transaction = await instanceMSSQL.getTransaction();
 
-            // Query to fetch the user by username
-            const userResult = await transaction.request()  // Use pool.request() now that it's available
+            // Truy vấn lấy thông tin người dùng
+            const userResult = await transaction.request()
                 .input('user_name', sql.NVarChar, user_name)
                 .query('SELECT * FROM [User] WHERE user_name = @user_name');
 
-            console.log(userResult);
             if (userResult.recordset.length === 0) {
                 return {
                     code: '20004',
@@ -27,8 +25,6 @@ class LoginService {
             }
 
             const user = userResult.recordset[0];
-
-            // Compare the provided password with the stored password hash
             const isMatch = await bcrypt.compare(password, user.password);
 
             if (!isMatch) {
@@ -39,9 +35,11 @@ class LoginService {
                 };
             }
 
-            transaction.commit()
-            // Generate tokens after user is authenticated
-            const privateKey = user.private_key;  // Assuming private_key is stored in the database
+            // Đã đăng nhập thành công
+            transaction.commit();
+
+            // Tạo token
+            const privateKey = user.private_key;
             const tokens = TokenService.createTokenPair({ userID: user.user_id, email: user.username }, privateKey);
 
             return {
@@ -51,7 +49,7 @@ class LoginService {
                 metadata: { tokens }
             };
         } catch (error) {
-            transaction.rollback()
+            transaction.rollback();
             return {
                 code: '20005',
                 message: error.message,

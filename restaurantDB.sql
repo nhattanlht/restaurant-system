@@ -12,6 +12,7 @@ CREATE TABLE [Customer] (
     customer_id BIGINT PRIMARY KEY,
     name NVARCHAR(100),
     phone_number NVARCHAR(20),
+    DOB DATE,
     email NVARCHAR(100),
     identity_card NVARCHAR(20),
     gender CHAR(1),

@@ -85,10 +85,27 @@
 
         <span class="text text-2" aria-hidden="true">Find A Table</span>
     </a>
-    <a href="/register" class="btn btn-secondary">
-        <span class="text text-1">Register</span>
-        <span class="text text-2" aria-hidden="true">Register</span>
-    </a>
+
+        <div class="topbar-container">
+            <% if (user) { %>
+                <div class="user-info">
+<!--                    <img src="<%= user.avatar %>" alt="User Avatar" class="user-avatar">-->
+                    <a href="/profile">Hồ sơ</a>
+                    <a href="/logout">Đăng Xuất</a>
+                </div>
+            <% } else { %>
+                <!-- Nút đăng nhập -->
+                <a href="/login" class="btn btn-primary">
+                    <span class="text text-1">Đăng Nhập</span>
+                    <span class="text text-2" aria-hidden="true">Đăng Nhập</span>
+                </a>
+            <% } %>
+        </div>
+
+<!--    <a href="/register" class="btn btn-secondary">-->
+<!--        <span class="text text-1">Register</span>-->
+<!--        <span class="text text-2" aria-hidden="true">Register</span>-->
+<!--    </a>-->
 
     <!--      <button onclick="window.location.href='/register'" class="btn btn-secondary">-->
     <!--                <span class="text text-1">Register</span>-->

@@ -67,6 +67,32 @@
         <br><br>
         <button type="submit">Create Branch</button>
     </form>
+</div>
+<form action="/search" method="GET">
+    <input type="text" name="name" placeholder="Nhập tên người dùng..." />
+    <input type="email" name="email" placeholder="Nhập email..." />
+    <select name="role">
+        <option value="">Chọn vai trò</option>
+        <option value="employee">Nhân viên</option>
+        <option value="customer">Khách hàng</option>
+    </select>
+    <button type="submit">Tìm kiếm</button>
+</form>
+
+
+
+<!--<form action="/search" method="GET">-->
+<!--    <input type="text" name="query" placeholder="Tìm kiếm..." />-->
+<!--    <select name="category">-->
+<!--        <option value="">Tất cả các loại</option>-->
+<!--        <option value="event">Sự kiện</option>-->
+<!--        <option value="ticket">Vé</option>-->
+<!--        &lt;!&ndash; Các loại khác &ndash;&gt;-->
+<!--    </select>-->
+<!--    <input type="date" name="startDate" placeholder="Ngày bắt đầu" />-->
+<!--    <input type="date" name="endDate" placeholder="Ngày kết thúc" />-->
+<!--    <button type="submit">Tìm kiếm</button>-->
+<!--</form>-->
 
 <!--<script>-->
 <!--    async function submitBranch() {-->

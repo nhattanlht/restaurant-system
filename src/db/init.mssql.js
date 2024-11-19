@@ -51,6 +51,12 @@ class Database {
             throw new Error('Failed to create transaction');
         }
     }
+    async close() {
+        if (this.pool) {
+            await this.pool.close();
+            console.log('Database connection closed');
+        }
+    }
 
 }
 
