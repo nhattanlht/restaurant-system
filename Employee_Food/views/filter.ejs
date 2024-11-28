@@ -1,0 +1,100 @@
+<%- include('page_header', {title:'Menu Food'}) -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Các thư viện và CSS bootrap cần thiết -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/filter.css">
+</head>
+<body>
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-0 gx-3 align-items-center mb-4">
+             <!-- Branch Filter -->
+             <div class="col-md-2">
+                <label for="branch" class="form-label text-white">Branch</label>
+                <select id="branch" class="form-select">
+                    <option value="all" <% if (filters.branch === 'all') { %>selected<% } %>>All</option>
+                    <option value="TPHCM" <% if (filters.branch === 'TPHCM') { %>selected<% } %>>TPHCM</option>
+                    <option value="Tiền Giang" <% if (filters.branch === 'Tiền Giang') { %>selected<% } %>>Cà Mau</option>
+                    <option value="Long An" <% if (filters.branch === 'Long An') { %>selected<% } %>>Long An</option>
+                    <option value="Đồng Tháp" <% if (filters.branch === 'Đồng Tháp') { %>selected<% } %>>Đồng Tháp</option>
+                </select>
+            </div>
+             <!-- Category Filter -->
+             <div class="col-md-2">
+                <label for="category" class="form-label text-white">Category</label>
+                <select id="category" class="form-select">
+                    <option value="all" <% if (filters.category === 'all') { %>selected<% } %>>All</option>
+                    <option value="Sushi Truyền Thống" <% if (filters.category === 'Sushi Truyền Thống') { %>selected<% } %>>Sushi Truyền Thống</option>
+                    <option value="Sushi Đặc Biệt" <% if (filters.category === 'Sushi Đặc Biệt') { %>selected<% } %>>Sushi Đặc Biệt</option>
+                    <option value="Salad và Khai Vị" <% if (filters.category === 'Salad và Khai Vị') { %>selected<% } %>>Salad và Khai Vị</option>
+                    <option value="Món Nướng và Chiên" <% if (filters.category === 'Món Nướng và Chiên') { %>selected<% } %>>Món Nướng và Chiên</option>
+                    <option value="Cơm và Mì" <% if (filters.category === 'Cơm và Mì') { %>selected<% } %>>Cơm và Mì</option>
+                    <option value="Món Ăn Phụ" <% if (filters.category === 'Món Ăn Phụ') { %>selected<% } %>>Món Ăn Phụ</option>
+                    <option value="Đồ Uống" <% if (filters.category === 'Đồ Uống') { %>selected<% } %>>Đồ Uống</option>
+                </select>
+            </div>
+                 <!-- Price Filter -->
+            <div class="col-md-2">
+                <label for="price-max" class="form-label text-white">Price ($)</label>
+                <input type="number" id="price-max" class="form-control" placeholder="Max Price" min="0" value="<%= filters.price || '' %>">
+            </div>
+             <!-- Filter Button -->
+             <div class="col-md-2">
+                <button class="btn btn-primary mt-4" id="filter-btn">Filter</button>
+            </div>
+            <!-- Search Box -->
+            <div class="row g-0 gx-3 align-items-center mb-4">
+                <div class="col-md-8">
+                    <input type="text" id="search-box" class="form-control mt-4" placeholder="Search foods..." value="<%= filters.search || '' %>">
+                </div>
+                <div class="col-md-2 d-flex">
+                    <button class="btn btn-success w-100 mt-4" id="search-btn">Search</button>
+                </div>
+            </div>
+            
+    </div>
+</div>
+<div class="container py-5">
+    <div class="row">
+        <% if (foods.length > 0) { %>
+            <% foods.forEach(food => { %>
+                <!-- Mỗi món ăn là một cột -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <!-- Hình ảnh món ăn -->
+                        <img src="/<%= food.image_url %>" class="card-img-top" alt="<%= food.item_name %>">
+                        <div class="card-body">
+                            <!-- Tên món ăn -->
+                            <h5 class="card-title text-center"><%= food.item_name %></h5>
+                            <!-- Mô tả món ăn -->
+                            <p class="card-text text-muted"><%= food.description || 'Mô tả đang được cập nhật...' %></p>
+                            <!-- Giá món ăn -->
+                            <p class="card-text text-center text-success fw-bold"><%= food.price.toLocaleString() %>₫</p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <!-- Nút thêm vào giỏ hàng -->
+                            <button class="btn btn-primary">Chọn món</button>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <!-- Hiển thị khi không có món ăn nào -->
+            <p class="text-center">Không có món ăn nào phù hợp với tiêu chí tìm kiếm.</p>
+        <% } %>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script src="/js/filter.js"></script>
+</body>
+</html>
+
+
+
+

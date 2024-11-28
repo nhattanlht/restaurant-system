@@ -1,0 +1,239 @@
+{
+  "branches": [
+    {
+      "branch_name": "TPHCM",
+      "menu_items": [
+        {
+          "item_id": 1,
+          "item_name": "Tôm Ebi",
+          "price": 199000,
+          "category": "Sushi Truyền Thống",
+          "description": "Tôm hấp tươi ngon, chấm kèm nước tương Nhật.",
+          "image_url": "images/Ebi.jpg"
+        },
+        {
+          "item_id": 4,
+          "item_name": "Sashimi Cá Hồi",
+          "price": 350000,
+          "category": "Sushi Truyền Thống",
+          "description": "Cá hồi tươi sống, chấm với wasabi và nước tương.",
+          "image_url": "images/Sashimi Cá Hồi.jpg"
+        },
+        {
+          "item_id": 7,
+          "item_name": "Cuộn Cá Hồi Philadelphia",
+          "price": 299000,
+          "category": "Sushi Đặc Biệt",
+          "description": "Cá hồi, phô mai và bơ cuộn với cơm Nhật.",
+          "image_url": "images/Philadelphia Roll.jpg"
+        },
+        {
+          "item_id": 13,
+          "item_name": "Đậu Nành Luộc (Edamame)",
+          "price": 50000,
+          "category": "Salad và Khai Vị",
+          "description": "Đậu nành Nhật luộc, món khai vị đơn giản.",
+          "image_url": "images/Edamame.jpg"
+        },
+        {
+          "item_id": 19,
+          "item_name": "Cá Hồi Nướng Sốt Teriyaki",
+          "price": 349000,
+          "category": "Món Nướng và Chiên",
+          "description": "Cá hồi nướng với sốt teriyaki đậm đà.",
+          "image_url": "images/Cá Hồi Nướng Teriyaki.jpg"
+        },
+        {
+          "item_id": 25,
+          "item_name": "Cơm Chiên Hải Sản",
+          "price": 250000,
+          "category": "Cơm và Mì",
+          "description": "Cơm chiên giòn, kèm hải sản tươi.",
+          "image_url": "images/Cơm Chiên Hải Sản.jpg"
+        },
+        {
+          "item_id": 31,
+          "item_name": "Bánh Gạo Mochi",
+          "price": 49000,
+          "category": "Món Ăn Phụ",
+          "description": "Bánh gạo Nhật mềm dẻo, vị ngọt nhẹ.",
+          "image_url": "images/Bánh Gạo Mochi.jpg"
+        },
+        {
+          "item_id": 37,
+          "item_name": "Coca-Cola",
+          "price": 20000,
+          "category": "Đồ Uống",
+          "description": "Nước ngọt giải khát phổ biến.",
+          "image_url": "images/Coca-Cola.jpg"
+        },
+        {
+          "item_id": 38,
+          "item_name": "Nước Ép Cam Tươi",
+          "price": 45000,
+          "category": "Đồ Uống",
+          "description": "Nước cam tươi mát, bổ sung vitamin C.",
+          "image_url": "images/Nước Ép Cam Tươi.jpg"
+        },
+        {
+          "item_id": 44,
+          "item_name": "Trà Xanh Nhật Bản (Matcha)",
+          "price": 55000,
+          "category": "Đồ Uống",
+          "description": "Trà xanh Nhật đậm vị truyền thống.",
+          "image_url": "images/Trà Xanh Nhật Bản (Matcha).jpg"
+        }
+      ]
+    },
+    {
+      "branch_name": "Long An",
+      "menu_items": [
+        {
+          "item_id": 2,
+          "item_name": "Cá Ngừ Maguro",
+          "price": 299000,
+          "category": "Sushi Truyền Thống",
+          "image_url": "images/Maguro.jpg"
+        },
+        {
+          "item_id": 8,
+          "item_name": "Cuộn Cầu Vồng",
+          "price": 349000,
+          "category": "Sushi Đặc Biệt",
+          "image_url": "images/Rainbow Roll.jpg"
+        },
+        {
+          "item_id": 14,
+          "item_name": "Há Cảo Chiên (Gyoza)",
+          "price": 60000,
+          "category": "Salad và Khai Vị",
+          "image_url": "images/Gyoza.jpg"
+        },
+        {
+          "item_id": 20,
+          "item_name": "Gà Chiên Karaage",
+          "price": 249000,
+          "category": "Món Nướng và Chiên",
+          "image_url": "images/Gà Karaage.jpg"
+        },
+        {
+          "item_id": 26,
+          "item_name": "Mì Ramen Tonkotsu",
+          "price": 299000,
+          "category": "Cơm và Mì",
+          "image_url": "images/Mì Ramen Tonkotsu.jpg"
+        },
+        {
+          "item_id": 32,
+          "item_name": "Dưa Chuột Muối",
+          "price": 35000,
+          "category": "Món Ăn Phụ",
+          "image_url": "images/Dưa Chuột Muối.jpg"
+        },
+        {
+          "item_id": 39,
+          "item_name": "Nước Ép Lựu",
+          "price": 55000,
+          "category": "Đồ Uống",
+          "image_url": "images/Nước Ép Lựu.jpg"
+        },
+        {
+          "item_id": 40,
+          "item_name": "Nước Ép Táo",
+          "price": 50000,
+          "category": "Đồ Uống",
+          "image_url": "images/Nước Ép Táo.jpg"
+        },
+        {
+          "item_id": 41,
+          "item_name": "Nước Suối",
+          "price": 10000,
+          "category": "Đồ Uống",
+          "image_url": "images/Nước Suối.jpg"
+        },
+        {
+          "item_id": 42,
+          "item_name": "Rượu Sake",
+          "price": 150000,
+          "category": "Đồ Uống",
+          "image_url": "images/Rượu Sake.jpg"
+        }
+      ]
+    },
+    {
+      "branch_name": "Tiền Giang",
+      "menu_items": [
+        {
+          "item_id": 5,
+          "item_name": "Sushi Nigiri",
+          "price": 179000,
+          "category": "Sushi Truyền Thống",
+          "image_url": "images/Nigiri.jpg"
+        },
+        {
+          "item_id": 10,
+          "item_name": "Cuộn Nhện (Spider Roll)",
+          "price": 350000,
+          "category": "Sushi Đặc Biệt",
+          "image_url": "images/Spider Roll.jpg"
+        },
+        {
+          "item_id": 16,
+          "item_name": "Cá Hồi Tempura",
+          "price": 120000,
+          "category": "Salad và Khai Vị",
+          "image_url": "images/Salmon Tempura.jpg"
+        },
+        {
+          "item_id": 24,
+          "item_name": "Tôm Chiên Tempura",
+          "price": 279000,
+          "category": "Món Nướng và Chiên",
+          "image_url": "images/Tôm Chiên Tempura.jpg"
+        },
+        {
+          "item_id": 29,
+          "item_name": "Cơm Cá Ngừ Cay",
+          "price": 315000,
+          "category": "Cơm và Mì",
+          "image_url": "images/Spicy Tuna Roll.jpg"
+        },
+        {
+          "item_id": 34,
+          "item_name": "Kimchi Nhật Bản",
+          "price": 45000,
+          "category": "Món Ăn Phụ",
+          "image_url": "images/Kimchi Nhật Bản.jpg"
+        },
+        {
+          "item_id": 18,
+          "item_name": "Salad Rong Biển (Wakame)",
+          "price": 70000,
+          "category": "Salad và Khai Vị",
+          "image_url": "images/Wakame Salad.jpg"
+        },
+        {
+          "item_id": 30,
+          "item_name": "Cơm Lươn Nướng Unagi",
+          "price": 359000,
+          "category": "Cơm và Mì",
+          "image_url": "images/Unagi Don.jpg"
+        },
+        {
+          "item_id": 35,
+          "item_name": "Khoai Tây Nghiền",
+          "price": 49000,
+          "category": "Món Ăn Phụ",
+          "image_url": "images/Khoai Tây Nghiền.jpg"
+        },
+        {
+          "item_id": 36,
+          "item_name": "Cơm Trắng",
+          "price": 25000,
+          "category": "Món Ăn Phụ",
+          "image_url": "images/Steamed Rice.jpg"
+        }
+      ]
+    }
+  ]
+}
