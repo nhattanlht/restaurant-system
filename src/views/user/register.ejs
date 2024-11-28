@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TicketZen - Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="../../public/user/css/login_register.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="register-container">
+    <a href="#" class="logo" aria-label="TicketZen Home">
+        <img src="../../public/user/images/logo.svg" width="160" height="50" alt="TicketZen - Home">
+    </a>
+    <form action="/signup" method="post" id="registerForm">
+        <% if (error) { %>
+            <div class="error"><%= error %></div>
+        <% } %>
+        <label for="username">Full name:</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+
+        <label for="confirm-password">Confirm Password:</label>
+        <input type="password" id="confirm-password" name="confirm_password" required />
+
+        <button type="submit" class="btn btn-divider rounded-pill">Register</button>
+    </form>
+    <p>Already have an account? <a href="/login" class="text-accent">Login here</a></p>
+</div>
+
+<!--<script>-->
+<!--    document.getElementById("registerForm").addEventListener("submit", function(event) {-->
+<!--        const password = document.getElementById("password").value;-->
+<!--        const confirmPassword = document.getElementById("confirm-password").value;-->
+
+<!--        if (password !== confirmPassword) {-->
+<!--            alert("Passwords do not match!");-->
+<!--            event.preventDefault();-->
+<!--        } else {-->
+<!--            fetch('/signup', {-->
+<!--                method: 'post',-->
+<!--                headers: {-->
+<!--                    'Content-Type': 'application/json',-->
+<!--                },-->
+<!--                body: JSON.stringify({-->
+<!--                    username: document.getElementById('username').value,-->
+<!--                    email: document.getElementById('email').value,-->
+<!--        password: password-->
+<!--    }),-->
+<!--    })-->
+<!--    .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            if (data.status === 'success') {-->
+<!--                alert("Account created successfully!");-->
+<!--                window.location.href = '/login';-->
+<!--            } else {-->
+<!--                alert(data.message || 'Registration failed');-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => console.error('Error:', error));-->
+<!--    }-->
+<!--    });-->
+<!--</script>-->
+</body>
+</html>

@@ -1,0 +1,265 @@
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.logo {
+  width: 250px;
+  height: 53px;
+  margin-top: 0;
+  margin-left: 10px;
+}
+
+.button {
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 120px;
+  background-color: #03081F;
+  transition: color 0.3s, background-color 0.3s;
+  z-index: 10;
+  margin-right: 50px;
+}
+
+.button:hover {
+  color: bisque;
+  background-color: #fff;
+}
+
+.banner {
+  position: relative;
+  width: 90%; /* Chiếm 90% chiều rộng màn hình */
+  max-width: 1300px; /* Đặt giới hạn chiều rộng tối đa */
+  height: 40vh; /* Chiều cao theo tỷ lệ màn hình */
+  border-radius: 18px;
+  overflow: hidden;
+  margin: 20px auto;
+}
+
+
+
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search {
+  text-align: right; /* Căn nội dung sang phải */
+  margin: 20px 20px 0; /* Khoảng cách từ các cạnh */
+  width: 100%;
+}
+
+.search .button {
+  display: inline-flex; /* Căn chỉnh biểu tượng và chữ trong nút */
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  width: auto; /* Để vừa với nội dung */
+  height: 40px;
+  background-color: white;
+  color: #03081F; /* Màu văn bản mặc định */
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 45px;
+  text-align: center;
+  border-radius: 120px;
+  border: 1px solid #03081F;
+  opacity: 0.6;
+  transition: opacity 0.3s, background-color 0.3s, color 0.3s, fill 0.3s;
+  gap: 10px; /* Khoảng cách giữa biểu tượng và text */
+}
+
+.search .button:hover {
+  opacity: 1;
+  background-color: #505052;
+  color: #FFFFFF; /* Thay đổi màu chữ khi hover */
+}
+
+.button-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  transition: fill 0.3s; /* Hiệu ứng chuyển đổi màu */
+}
+
+.search .button:hover .button-icon {
+  fill: #FFFFFF; /* Màu biểu tượng chuyển sang trắng khi hover */
+}
+
+.categories {
+  display: flex;
+  justify-content: center; /* Căn giữa các nút theo chiều ngang */
+  margin-top: 40px;
+  gap: 50px; /* Khoảng cách giữa các nút */
+  background-color:#505052;
+  padding: 15px 0;
+  min-height: 50px;
+}
+
+.categories-button {
+  display: flex; /* Chuyển từ inline-block sang flex */
+  justify-content: center; /* Căn giữa chữ theo chiều ngang */
+  align-items: center; /* Căn giữa chữ theo chiều dọc */
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Poppins', sans-serif; /* Font đồng bộ */
+  font-weight: 600; /* Độ đậm */
+  font-size: 12px; /* Kích thước chữ */
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 120px; /* Góc bo tròn */
+  background-color: transparent;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+
+.categories-button:hover {
+  color: white;
+  background-color: #03081F;
+  border-radius: 120px;
+}
+
+.subject {
+  color: #000; /* Màu chữ */
+  font-family: 'Poppins', sans-serif; /* Font chữ */
+  font-size: 30px; /* Kích thước chữ */
+  font-style: normal; /* Kiểu chữ bình thường */
+  font-weight: 700; /* Độ đậm chữ */
+  line-height: normal; /* Độ cao dòng */
+  margin-top: 40px; /* Khoảng cách phía trên */
+  margin-left: 40px;
+}
+
+
+/* Box */
+/* Box Container */
+
+.box-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px; /* Giảm khoảng cách giữa các box */
+  margin: 50px auto; /* Căn giữa theo chiều dọc */
+  max-width: 90%; /* Chiếm 90% chiều rộng màn hình */
+  justify-content: center;
+}
+
+
+.box {
+  width: 300px; /* Increased width for a longer box */
+  height: 150px; /* Keep the height as is */
+  border-radius: 12px; /* Rounded corners */
+  border: 1px solid rgba(0, 0, 0, 0.10); /* Light border */
+  background: #FDFDFD; /* Background color */
+  box-shadow: 5px 5px 34px 0px rgba(192, 149, 149, 0.25); /* Shadow effect */
+  display: flex; /* Flexbox to align the content */
+  flex-direction:column;/* Stack elements vertically */
+  justify-content: center; /* Vertically center the content */
+  align-items: flex-start; /* Align items to the left */
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px; /* Font size */
+  font-weight: 600; /* Font weight */
+  color: #000; /* Text color */
+  position: relative;
+  padding: 10px; /* Padding */
+  transition: box-shadow 0.3s ease;
+
+}
+.box:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* Food Name */
+.food-name {
+  position: relative;
+  font-size: 14px;
+  font-weight: 700;
+  color: #03081F;
+  width: 45%; /* Adjust to cover the left part of the box */
+  margin-bottom: 5px; /* Space between elements */
+}
+
+/* Food Description */
+.food-description {
+  position: relative;
+  font-size: 11px; /* Smaller font size */
+  color: #03081F;
+  width: 45%; /* Adjust to cover the left part of the box */
+  font-weight: 400;
+  margin-bottom: 5px; /* Space between elements */
+}
+
+/* Food Price */
+.food-price {
+  position: relative;
+  font-size: 14px;
+  font-weight: 700;
+  color: #03081F;
+  width: 45%; /* Adjust to cover the left part of the box */
+  margin-top: auto; /* Push the price to the bottom */
+}
+
+
+/* Image styling - Reduced size */
+.box .Food {
+  border-radius: 12px; /* Bo góc ảnh */
+  flex-shrink: 0; /* Không thay đổi kích thước ảnh */
+  height: 120px; /* Reduced height for the image */
+  width: auto; /* Tự động điều chỉnh chiều rộng theo tỷ lệ */
+  position: absolute;
+  right: 15px; /* Đặt ảnh về phía bên phải */
+  bottom: 15px; /* Raised the image position to make space for the price */
+}
+
+/* Shape styling - Reduced size */
+.box .shape {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50px; /* Reduced width */
+  height: 50px; /* Reduced height */
+  background: #FFF;
+  border-radius: 45px 0px 12px 0px;
+  opacity: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.box .shape:hover {
+  background-color:#505052;
+
+}
+
+
+/* Plus icon styling - Reduced size */
+.box .plus-icon {
+  width: 25px; /* Reduced width */
+  height: 25px; /* Reduced height */
+  object-fit: contain;
+}
+
+
+
+/* Adjust box margins */
+/* .box:nth-child(1) {
+  margin-left: 70px;
+}
+
+.box:nth-child(3) {
+  margin-right: 70px;
+} */
+
+
+
+

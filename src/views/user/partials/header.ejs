@@ -1,0 +1,145 @@
+<div class="container">
+    <a href="#" class="logo">
+    <link rel="preload" as="image" href="../public/user/images/hero-slider-1.jpg">
+        <img src="../public/user/images/logo.svg" width="160" height="50" alt="Grilli - Home">
+    </a>
+
+    <nav class="navbar" data-navbar>
+
+        <button class="close-btn" aria-label="close menu" data-nav-toggler>
+            <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        </button>
+
+        <a href="#" class="logo">
+    <link rel="preload" as="image" href="../public/user/images/hero-slider-2.jpg">
+            <img src="../public/user/images/logo.svg" width="160" height="50" alt="Grilli - Home">
+        </a>
+
+        <ul class="navbar-list">
+
+            <li class="navbar-item">
+                <a href="#home" class="navbar-link hover-underline active">
+                    <div class="separator"></div>
+
+                    <span class="span">Home</span>
+                </a>
+            </li>
+
+            <li class="navbar-item">
+                <a href="#menu" class="navbar-link hover-underline">
+                    <div class="separator"></div>
+
+                    <span class="span">Menus</span>
+                </a>
+            </li>
+
+            <li class="navbar-item">
+                <a href="#about" class="navbar-link hover-underline">
+                    <div class="separator"></div>
+
+                    <span class="span">About Us</span>
+                </a>
+            </li>
+
+            <li class="navbar-item">
+                <a href="#" class="navbar-link hover-underline">
+                    <div class="separator"></div>
+
+                    <span class="span">Our Chefs</span>
+                </a>
+            </li>
+
+            <li class="navbar-item">
+                <a href="#" class="navbar-link hover-underline">
+                    <div class="separator"></div>
+
+                    <span class="span">Contact</span>
+                </a>
+            </li>
+
+        </ul>
+
+        <div class="text-center">
+            <p class="headline-1 navbar-title">Visit Us</p>
+
+            <address class="body-4">
+                227 Nguyen Van Cu Street, Ward 4,  <br>
+                District 5, Ho Chi Minh City
+            </address>
+
+            <p class="body-4 navbar-text">Open: 9.30 am - 2.30pm</p>
+
+            <a href="mailto:22120230@student.hcmus.edu.vn" class="body-4 sidebar-link">22120230@student.hcmus.edu.vn</a>
+
+            <div class="separator"></div>
+
+            <p class="contact-label">Booking Request</p>
+
+            <a href="tel:+84392881328" class="body-1 contact-number hover-underline">
+                +84 392 881328
+            </a>
+        </div>
+
+    </nav>
+
+    <a href="#" class="btn btn-secondary">
+        <span class="text text-1">Find A Table</span>
+
+        <span class="text text-2" aria-hidden="true">Find A Table</span>
+    </a>
+
+    <div class="topbar-container" >
+        <% if (user) { %>
+            <div class="user-info">
+                <!-- <img src="<%= user.avatar %>" alt="user Avatar" class="user-avatar"> -->
+                <a href="/profile">Hồ sơ</a>
+                <!-- Thay đổi thành button với sự kiện onclick để logout -->
+                <a href="/logout" >Đăng xuất</a>
+                <div>
+
+                </div>
+            </div>
+        <% } else { %>
+            <a href="/signup" class="btn btn-secondary">
+                <span class="text text-1">Register</span>
+                <span class="text text-2" aria-hidden="true">Register</span>
+            </a>
+        <% } %>
+    </div>
+
+
+    <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
+        <span class="line line-1"></span>
+        <span class="line line-2"></span>
+        <span class="line line-3"></span>
+    </button>
+
+    <div class="overlay" data-nav-toggler data-overlay></div>
+<!--    <script>-->
+<!--        const accessToken = localStorage.getItem('accessToken');-->
+<!--        const refreshToken = localStorage.getItem('refreshToken');-->
+<!--        const user_id = localStorage.getItem('user_id');-->
+
+<!--        async function handleLogout() {-->
+<!--            const response = await fetch('/logout', {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                    'Content-Type': 'application/json',-->
+<!--                    'x-client-id': user_id, // Khớp với HEADERS.CLIENT_ID-->
+<!--                    'authorization': `${accessToken}`, // Khớp với HEADERS.AUTHORIZATION-->
+<!--                    'x-rf-token-id': refreshToken // Khớp với HEADERS.REFRESH_TOKEN-->
+<!--                }-->
+<!--            });-->
+
+<!--            if (response.ok) {-->
+<!--                alert("Đăng xuất thành công!");-->
+<!--                localStorage.removeItem('user_id');-->
+<!--                localStorage.removeItem('accessToken');-->
+<!--                localStorage.removeItem('refreshToken');-->
+<!--                window.location.href = '/login'; // Quay lại trang login-->
+<!--            } else {-->
+<!--                alert("Đăng xuất thất bại!");-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
+</div>
