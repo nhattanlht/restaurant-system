@@ -1,0 +1,69 @@
+{
+  "branches": [
+    {
+      "branch_name": "TPHCM",
+      "menu_items": [
+        { "item_id": 1, "category": "Sushi Truyền Thống", "item_name": "Tôm Ebi", "price": 199000 },
+        { "item_id": 7, "category": "Sushi Đặc Biệt", "item_name": "Cuộn Cá Hồi Philadelphia", "price": 299000 },
+        { "item_id": 14, "category": "Salad và Khai Vị", "item_name": "Há Cảo Chiên (Gyoza)", "price": 60000 },
+        { "item_id": 19, "category": "Món Nướng và Chiên", "item_name": "Cá Hồi Nướng Sốt Teriyaki", "price": 349000 },
+        { "item_id": 25, "category": "Cơm và Mì", "item_name": "Cơm Chiên Hải Sản", "price": 250000 },
+        { "item_id": 31, "category": "Món Ăn Phụ", "item_name": "Bánh Gạo Mochi", "price": 49000 },
+        { "item_id": 39, "category": "Đồ Uống", "item_name": "Nước Ép Lựu", "price": 55000 },
+        { "item_id": 5, "category": "Sushi Truyền Thống", "item_name": "Sushi Nigiri", "price": 179000 }
+      ]
+    },
+    {
+      "branch_name": "Long An",
+      "menu_items": [
+        { "item_id": 2, "category": "Sushi Truyền Thống", "item_name": "Cá Ngừ Maguro", "price": 299000 },
+        { "item_id": 9, "category": "Sushi Đặc Biệt", "item_name": "Cuộn Cá Ngừ Cay", "price": 315000 },
+        { "item_id": 17, "category": "Salad và Khai Vị", "item_name": "Súp Miso", "price": 35000 },
+        { "item_id": 21, "category": "Món Nướng và Chiên", "item_name": "Gà Xiên Nướng Yakitori", "price": 299000 },
+        { "item_id": 26, "category": "Cơm và Mì", "item_name": "Mì Ramen Tonkotsu", "price": 299000 },
+        { "item_id": 32, "category": "Món Ăn Phụ", "item_name": "Dưa Chuột Muối", "price": 35000 },
+        { "item_id": 42, "category": "Đồ Uống", "item_name": "Rượu Sake", "price": 150000 },
+        { "item_id": 8, "category": "Sushi Đặc Biệt", "item_name": "Cuộn Cầu Vồng", "price": 349000 }
+      ]
+    },
+    {
+      "branch_name": "Tiền Giang",
+      "menu_items": [
+        { "item_id": 3, "category": "Sushi Truyền Thống", "item_name": "Cá Thu Saba", "price": 250000 },
+        { "item_id": 10, "category": "Sushi Đặc Biệt", "item_name": "Cuộn Nhện (Spider Roll)", "price": 350000 },
+        { "item_id": 13, "category": "Salad và Khai Vị", "item_name": "Đậu Nành Luộc (Edamame)", "price": 50000 },
+        { "item_id": 22, "category": "Món Nướng và Chiên", "item_name": "Mực Nướng Muối", "price": 289000 },
+        { "item_id": 27, "category": "Cơm và Mì", "item_name": "Mì Soba Lạnh", "price": 199000 },
+        { "item_id": 34, "category": "Món Ăn Phụ", "item_name": "Kimchi Nhật Bản", "price": 45000 },
+        { "item_id": 41, "category": "Đồ Uống", "item_name": "Nước Suối", "price": 10000 },
+        { "item_id": 11, "category": "Sushi Đặc Biệt", "item_name": "Cuộn Tôm Tempura", "price": 319000 }
+      ]
+    },
+    {
+      "branch_name": "Đồng Nai",
+      "menu_items": [
+        { "item_id": 4, "category": "Sushi Truyền Thống", "item_name": "Sashimi Cá Hồi", "price": 350000 },
+        { "item_id": 12, "category": "Sushi Đặc Biệt", "item_name": "Cuộn Núi Lửa (Volcano Roll)", "price": 375000 },
+        { "item_id": 15, "category": "Salad và Khai Vị", "item_name": "Kimchi Nhật Bản", "price": 45000 },
+        { "item_id": 23, "category": "Món Nướng và Chiên", "item_name": "Cá Thu Nướng Muối Saba Shioyaki", "price": 230000 },
+        { "item_id": 28, "category": "Cơm và Mì", "item_name": "Mì Udon Hải Sản", "price": 229000 },
+        { "item_id": 33, "category": "Món Ăn Phụ", "item_name": "Đậu Nành Luộc (Edamame)", "price": 50000 },
+        { "item_id": 40, "category": "Đồ Uống", "item_name": "Nước Ép Táo", "price": 50000 },
+        { "item_id": 6, "category": "Sushi Truyền Thống", "item_name": "Trứng Tamago", "price": 130000 }
+      ]
+    },
+    {
+      "branch_name": "Cần Thơ",
+      "menu_items": [
+        { "item_id": 5, "category": "Sushi Truyền Thống", "item_name": "Sushi Nigiri", "price": 179000 },
+        { "item_id": 16, "category": "Salad và Khai Vị", "item_name": "Cá Hồi Tempura", "price": 120000 },
+        { "item_id": 18, "category": "Salad và Khai Vị", "item_name": "Salad Rong Biển (Wakame)", "price": 70000 },
+        { "item_id": 20, "category": "Món Nướng và Chiên", "item_name": "Gà Chiên Karaage", "price": 249000 },
+        { "item_id": 24, "category": "Món Nướng và Chiên", "item_name": "Tôm Chiên Tempura", "price": 279000 },
+        { "item_id": 29, "category": "Cơm và Mì", "item_name": "Cơm Cá Ngừ Cay", "price": 315000 },
+        { "item_id": 35, "category": "Món Ăn Phụ", "item_name": "Khoai Tây Nghiền", "price": 49000 },
+        { "item_id": 43, "category": "Đồ Uống", "item_name": "Trà Sữa Trân Châu", "price": 40000 }
+      ]
+    }
+  ]
+}
