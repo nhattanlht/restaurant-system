@@ -14,7 +14,7 @@ class FilterController{
 
         };
         let foods=await FilterModel.searchFoods(filters);
-        res.render('filter',{foods,filters});
+        res.json({foods,filters});
     }catch(error){
         res.status(500).json({message:'Error fetching food data',error});
     }
