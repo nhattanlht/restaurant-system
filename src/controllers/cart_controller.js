@@ -43,16 +43,6 @@ class CartController {
             res.status(500).json({ message: 'Error fetching cart quantity', error });
         }
     }
-
-    // Render trang chính với số lượng giỏ hàng
-    static async renderPage(req, res) {
-        try {
-            const quantity = CartModel.getCartQuantity(req.session); // Lấy số lượng từ model
-            res.render('page_header', { quantity }); // Truyền `quantity` vào template EJS
-        } catch (error) {
-            res.status(500).json({ message: 'Error rendering page', error });
-        }
-    }
 }
 
 module.exports = CartController;

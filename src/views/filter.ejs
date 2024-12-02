@@ -39,7 +39,8 @@
                             <option value="Sushi Đặc Biệt" <% if (filters.category==='Sushi Đặc Biệt' ) { %>selected<% }
                                     %>>Sushi Đặc Biệt</option>
                             <option value="Salad và Khai Vị" <% if (filters.category==='Salad và Khai Vị' ) { %>selected
-                                <% } %>>Salad và Khai Vị</option>
+                                <% } %>>Salad và Khai Vị
+                            </option>
                             <option value="Món Nướng và Chiên" <% if (filters.category==='Món Nướng và Chiên' ) { %>
                                 selected<% } %>>Món Nướng và Chiên</option>
                             <option value="Cơm và Mì" <% if (filters.category==='Cơm và Mì' ) { %>selected<% } %>>Cơm và
@@ -97,7 +98,13 @@
                                     </div>
                                     <div class="card-footer text-center">
                                         <!-- Nút thêm vào giỏ hàng -->
-                                        <button class="btn btn-primary">Chọn món</button>
+                                        <button class="btn btn-primary add-to-cart" 
+                                            data-id="<%= food.item_id %>"
+                                            data-name="<%= food.item_name %>" 
+                                            data-price="<%= food.price %>"
+                                            data-image="<%= food.image_url %>">
+                                            Chọn món
+                                        </button>
                                     </div>
                                 </div>
                             </div>
