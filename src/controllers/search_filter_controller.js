@@ -24,8 +24,7 @@ class FilterController{
     try {
         // Lấy tất cả món ăn từ model
         let foods = await FilterModel.getAllFoods(); // Gọi hàm getAllFoods trong model
-        //In ra kết quả thử:
-        console.log('All Products:',foods);
+        
         // Render trang với tất cả món ăn và các bộ lọc (filters)
         res.render('filter', { foods, filters: {} });
     } catch (error) {

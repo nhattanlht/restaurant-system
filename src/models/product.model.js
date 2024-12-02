@@ -51,8 +51,6 @@ class FoodModel {
                 });
             });
 
-            // Log kết quả sau khi lọc
-            console.log("Filtered foods in searchFoods:", filteredFoods);
 
             return filteredFoods;
         } catch (error) {
