@@ -2207,3 +2207,38 @@ textarea.input-field {
   }
 
 }
+
+.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1; /* This allows the content to grow and fill the remaining space */
+  padding: 10rem;
+  max-width: 800px;
+  width: 100%;
+  margin: auto; /* Centering content horizontally */
+}
+.error h1 {
+  font-size: 6rem;
+  color: #dc3545;
+  margin-bottom: 20px;
+}
+
+.error p {
+  font-size: 1.5rem;
+  margin-top: 20px;
+  color: #6c757d;
+}
+
+.error a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.error a:hover {
+  color: #0056b3;
+}

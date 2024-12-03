@@ -10,7 +10,7 @@ configViewEngine(app)
 const registerAdminRoutes = require('./admin/routes/access.route');
 const adminRoutes = require("./admin/routes/admin.route");
 const {authenticate} = require('./shared/middleware/auth.middleware');
-const AccessController = require('./user/controllers/access.controller');
+const {AccessController} = require('./user/controllers/access.controller');
 // init middlewareDatabase
 // routes
 app.use('/', layoutRoute)
@@ -39,6 +39,21 @@ app.use((err, req, res, next) => {
     console.error(err); // Log the error
     res.status(500).json({ message: 'Internal Server Error' }); // Send a generic error message
 });
+
+// Nếu không tìm thấy route nào phù hợp
+app.use((req, res, next) => {
+    const error = new Error('Page Not Found');
+    error.status = 404;
+    next(error);
+});
+
+// Middleware xử lý lỗi
+app.use((error, req, res, next) => {
+    const status = error.status || 500;
+    res.status(status);
+    res.render('user/error', { error: error, user: null });
+});
+
 //handle error
 
 
