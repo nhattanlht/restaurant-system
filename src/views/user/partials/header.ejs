@@ -88,58 +88,31 @@
         <span class="text text-2" aria-hidden="true">Find A Table</span>
     </a>
 
-    <div class="topbar-container" >
+    <div class="topbar-container">
         <% if (user) { %>
-            <div class="user-info">
-                <!-- <img src="<%= user.avatar %>" alt="user Avatar" class="user-avatar"> -->
-                <a href="/profile">Hồ sơ</a>
-                <!-- Thay đổi thành button với sự kiện onclick để logout -->
-                <a href="/logout" >Đăng xuất</a>
-                <div>
-
+            <img src="jake.JPG" alt="User Avatar" class="user-avatar" tabindex="0" aria-label="User profile menu">
+            <div class="profile-container">
+                <div class="user-info" style="display: none;">
+                    <a href="/profile">Profile</a>
+                    <a href="/logout">Logout</a>
                 </div>
             </div>
+
         <% } else { %>
-            <a href="/signup" class="btn btn-secondary">
+            <a href="/signup" class="btn btn-secondary" aria-label="Register">
                 <span class="text text-1">Register</span>
                 <span class="text text-2" aria-hidden="true">Register</span>
             </a>
         <% } %>
     </div>
 
-
-    <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
+    <button class="nav-open-btn" aria-label="Open navigation menu" data-nav-toggler>
         <span class="line line-1"></span>
         <span class="line line-2"></span>
         <span class="line line-3"></span>
     </button>
 
-    <div class="overlay" data-nav-toggler data-overlay></div>
-<!--    <script>-->
-<!--        const accessToken = localStorage.getItem('accessToken');-->
-<!--        const refreshToken = localStorage.getItem('refreshToken');-->
-<!--        const user_id = localStorage.getItem('user_id');-->
+<div class="overlay" data-nav-toggler data-overlay></div>
 
-<!--        async function handleLogout() {-->
-<!--            const response = await fetch('/logout', {-->
-<!--                method: 'POST',-->
-<!--                headers: {-->
-<!--                    'Content-Type': 'application/json',-->
-<!--                    'x-client-id': user_id, // Khớp với HEADERS.CLIENT_ID-->
-<!--                    'authorization': `${accessToken}`, // Khớp với HEADERS.AUTHORIZATION-->
-<!--                    'x-rf-token-id': refreshToken // Khớp với HEADERS.REFRESH_TOKEN-->
-<!--                }-->
-<!--            });-->
 
-<!--            if (response.ok) {-->
-<!--                alert("Đăng xuất thành công!");-->
-<!--                localStorage.removeItem('user_id');-->
-<!--                localStorage.removeItem('accessToken');-->
-<!--                localStorage.removeItem('refreshToken');-->
-<!--                window.location.href = '/login'; // Quay lại trang login-->
-<!--            } else {-->
-<!--                alert("Đăng xuất thất bại!");-->
-<!--            }-->
-<!--        }-->
-<!--    </script>-->
 </div>

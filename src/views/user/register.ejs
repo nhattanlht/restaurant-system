@@ -36,37 +36,54 @@
 </div>
 
 <!--<script>-->
-<!--    document.getElementById("registerForm").addEventListener("submit", function(event) {-->
+<!--    document.getElementById("registerForm").addEventListener("submit", function (event) {-->
+<!--        event.preventDefault(); // Ngăn form gửi dữ liệu mặc định-->
+
 <!--        const password = document.getElementById("password").value;-->
 <!--        const confirmPassword = document.getElementById("confirm-password").value;-->
 
 <!--        if (password !== confirmPassword) {-->
 <!--            alert("Passwords do not match!");-->
-<!--            event.preventDefault();-->
-<!--        } else {-->
-<!--            fetch('/signup', {-->
-<!--                method: 'post',-->
-<!--                headers: {-->
-<!--                    'Content-Type': 'application/json',-->
-<!--                },-->
-<!--                body: JSON.stringify({-->
-<!--                    username: document.getElementById('username').value,-->
-<!--                    email: document.getElementById('email').value,-->
-<!--        password: password-->
-<!--    }),-->
-<!--    })-->
-<!--    .then(response => response.json())-->
-<!--        .then(data => {-->
-<!--            if (data.status === 'success') {-->
-<!--                alert("Account created successfully!");-->
-<!--                window.location.href = '/login';-->
-<!--            } else {-->
-<!--                alert(data.message || 'Registration failed');-->
-<!--            }-->
+<!--            return; // Kết thúc xử lý nếu mật khẩu không khớp-->
+<!--        }-->
+
+<!--        // Thu thập dữ liệu-->
+<!--        const username = document.getElementById('username').value;-->
+<!--        const email = document.getElementById('email').value;-->
+
+<!--        // Gửi yêu cầu đăng ký qua Fetch API-->
+<!--        fetch('/signup', {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json',-->
+<!--            },-->
+<!--            body: JSON.stringify({-->
+<!--                username: username,-->
+<!--                email: email,-->
+<!--                password: password,-->
+<!--            }),-->
 <!--        })-->
-<!--        .catch(error => console.error('Error:', error));-->
-<!--    }-->
+<!--            .then(response => {-->
+<!--                if (!response.ok) {-->
+<!--                    throw new Error('Network response was not ok');-->
+<!--                }-->
+<!--                return response.json();-->
+<!--            })-->
+<!--            .then(data => {-->
+<!--                console.log(data);-->
+<!--                if (data.metadata && data.metadata.status === 'OK') {-->
+<!--                    alert("Account created successfully!");-->
+<!--                    window.location.href = '/login';-->
+<!--                } else {-->
+<!--                    alert(data.message || 'Registration failed');-->
+<!--                }-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error:', error);-->
+<!--                alert('An error occurred while processing your request.');-->
+<!--            });-->
 <!--    });-->
 <!--</script>-->
+
 </body>
 </html>

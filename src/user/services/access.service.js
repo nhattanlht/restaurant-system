@@ -57,17 +57,10 @@ class AccessService {
         // Step 4: Update key token for the user
 
         await UserModel.updateKeyToken(foundUser.user_id, privateKey, publicKey, refreshToken, transaction)
-
-        // if(!resultUpdate){
-        //     throw new BadRequest('Update key token failed');
-        // }
-        // console.log(foundUser)
-        // console.log(tokens)
-
       });
 
       return {
-        user: { user_id: foundUser.user_id, user_name: foundUser.user_name },
+        user: { user_id: foundUser.user_id, user_name: foundUser.user_name , role: foundUser.role },
         tokens,
       };
     } catch (error) {

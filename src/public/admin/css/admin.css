@@ -1,0 +1,241 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar {
+  background-color: #2b2b2b;
+  color: #ffffff;
+  width: 250px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.sidebar nav a {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background-color: #d9d9d9;
+  color: #2b2b2b;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.sidebar  a {
+  text-decoration: none;
+}
+
+.sidebar nav a:hover {
+  background-color: #bcbcbc;
+}
+
+.sidebar nav a.active {
+  background-color: #f4b400;
+  color: #ffffff;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+section {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/*.hidden {*/
+/*  display: none;*/
+/*}*/
+
+.search-bar {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+  font-size: 1rem;
+}
+
+.search-bar:focus {
+  border-color: #f4b400;
+  background-color: #ffffff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+table th {
+  background-color: #525252;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+table tr:hover {
+  background-color: #f2f2f2;
+}
+
+table td:last-child {
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btn-pagination {
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border: none;
+  background-color: #d9d9d9;
+}
+
+.btn-pagination.active {
+  background-color: #f4b400;
+  color: white;
+}
+
+button.btn-primary,
+button.btn-cancel {
+  display: inline-block;
+  padding: 10px 15px; /* Tăng kích thước padding để nút nhìn đầy đặn hơn */
+  margin: 5px;       /* Tạo khoảng cách giữa các nút */
+  font-size: 14px;   /* Cỡ chữ phù hợp */
+  text-align: center;
+  border-radius: 5px; /* Bo góc mềm mại */
+  cursor: pointer;
+}
+
+button.btn-primary {
+  background-color: #007bff; /* Màu xanh tiêu chuẩn */
+  color: white;
+  border: none;
+}
+
+button.btn-primary:hover {
+  background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+}
+
+button.btn-cancel {
+  background-color: #dc3545; /* Màu đỏ tiêu chuẩn */
+  color: white;
+  border: none;
+}
+
+button.btn-cancel:hover {
+  background-color: #a71d2a; /* Màu đỏ đậm hơn khi hover */
+}
+section {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px; /* Tăng khoảng cách giữa các section */
+}
+
+input[type="text"], input[type="time"], input[type="date"], select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Adjust the width of Motorbike Parking and Car Parking columns */
+table th.motorbike-parking, table td.motorbike-parking {
+  width: 7%; /* 10% smaller than a typical 10% column */
+}
+
+table th.car-parking, table td.car-parking {
+  width: 7%; /* 10% smaller than a typical 10% column */
+}
+
+#reports {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/*.hidden {*/
+/*  display: none;*/
+/*}*/
+
+.filters {
+  margin-bottom: 20px;
+}
+
+.filters label {
+  margin-right: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+input.search-bar {
+  margin-bottom: 20px;
+  padding: 8px;
+  width: 200px;
+}
+.active {
+  font-weight: bold; /* Hoặc bạn có thể chọn màu sắc khác để làm nổi bật nút đang chọn */
+}

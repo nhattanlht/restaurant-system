@@ -1,0 +1,80 @@
+<h2>Reports & Analytics</h2>
+<input type="text" class="search-bar" placeholder="Search reports...">
+
+<div class="filters">
+    <!-- Slicers for filtering reports -->
+    <label for="date-filter">Date:</label>
+    <select id="date-filter">
+        <option value="day">Day</option>
+        <option value="month">Month</option>
+        <option value="quarter">Quarter</option>
+        <option value="year">Year</option>
+    </select>
+
+    <label for="branch-filter">Branch/Company:</label>
+    <select id="branch-filter">
+        <option value="all">All</option>
+        <option value="branch1">Branch 1</option>
+        <option value="branch2">Branch 2</option>
+    </select>
+
+    <label for="dish-filter">Dish:</label>
+    <select id="dish-filter">
+        <option value="all">All</option>
+        <option value="dish1">Dish 1</option>
+        <option value="dish2">Dish 2</option>
+    </select>
+
+    <label for="area-filter">Area:</label>
+    <select id="area-filter">
+        <option value="all">All</option>
+        <option value="area1">Area 1</option>
+        <option value="area2">Area 2</option>
+    </select>
+</div>
+
+<!-- Revenue statistics table -->
+<h3>Revenue Statistics</h3>
+<table id="revenue-table">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Branch</th>
+        <th>Dish</th>
+        <th>Area</th>
+        <th>Revenue</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Rows will be populated dynamically from JS -->
+    </tbody>
+</table>
+
+<!-- Best and Worst Selling Dishes Table -->
+<h3>Best and Worst Selling Dishes</h3>
+<table id="sales-table">
+    <thead>
+    <tr>
+        <th>Dish</th>
+        <th>Quantity Sold</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Rows will be populated dynamically from JS -->
+    </tbody>
+</table>
+
+<!-- Employee Service Report Table -->
+<h3>Employee Service Rating Report</h3>
+<table id="service-report-table">
+    <thead>
+    <tr>
+        <th>Employee</th>
+        <th>Date</th>
+        <th>Service Rating</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Rows will be populated dynamically from JS -->
+    </tbody>
+</table>

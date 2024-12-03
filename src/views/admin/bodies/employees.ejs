@@ -1,0 +1,93 @@
+<h2>Employee Management</h2>
+<input type="text" class="search-bar" placeholder="Search employees..." oninput="searchEmployee(this.value)">
+
+<!-- Employee List -->
+<div id="employee-list">
+    <h3>Employee List</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <select id="filterBranch" onchange="filterEmployees()">
+            <option value="">All Branches </option>
+        </select>
+        <select id="filterDepartment" onchange="filterEmployees()">
+            <option value="">All Departments</option>
+        </select>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th style="text-align: center;">ID</th>
+            <th style="text-align: center;">Full Name</th>
+            <th style="text-align: center;">DOB</th>
+            <th style="text-align: center;">Gender</th>
+            <th style="text-align: center;">Dept ID</th>
+            <th style="text-align: center;">Phone Number</th>
+            <th style="text-align: center;">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="employeeTableBody">
+        <tbody>
+            <% employees.forEach(employee => { %>
+                <tr>
+                    <td style="text-align: center;"><%= employee.employee_id %></td>
+                    <td style="text-align: center;"><%= employee.name %></td>
+                    <td style="text-align: center;"><%= employee.DOB %></td>
+                    <td style="text-align: center;"><%= employee.gender %></td>
+                    <td style="text-align: center;"><%= employee.dept_id %></td>
+                    <td style="text-align: center;"><%= employee.phone_number %></td>
+                    <td style="text-align: center;"<%= employee.user_id %>>
+                        <!--                  -->
+                        <form action="" method="post"></form>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+
+        </tbody>
+    </table>
+    <div id="employeePagination" class="pagination"></div>
+    <button class="btn-primary" onclick="showEmployeeForm()">Add Employee</button>
+</div>
+
+<!-- Employee Form -->
+<div id="employee-form">
+
+    <h3>Employee Details</h3>
+    <form id="employeeForm">
+        <input type="text" id="employeeId" placeholder="ID" required>
+        <input type="text" id="employeeName" placeholder="Full Name" required>
+        <input type="date" id="employeeDob" required>
+        <select id="employeeGender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+        <input type="text" id="employeeDeptId" placeholder="Dept ID" required>
+        <input type="text" id="employeePhoneNumber" placeholder="Phone Number" required>
+    </form>
+</div>
+
+<!-- Salary Management Section Inside Employee Management -->
+<div id="salaryManagement">
+    <h3>Salary Management</h3>
+    <form id="salaryForm">
+        <div>
+            <label for="branchSelect">Branch:</label>
+            <select id="branchSelect" required></select>
+        </div>
+        <div>
+            <label for="departmentSelect">Department:</label>
+            <select id="departmentSelect" required></select>
+        </div>
+        <div>
+            <label for="currentSalary">Current Salary:</label>
+            <input type="text" id="currentSalary" disabled>
+        </div>
+        <div>
+            <label for="newSalary">New Salary:</label>
+            <input type="number" id="newSalary" min="0" required>
+        </div>
+        <button type="submit" class="btn-primary">Update Salary</button>
+    </form>
+</div>

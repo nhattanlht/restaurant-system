@@ -23,10 +23,10 @@ router.post('/login',  forwardError(accessController.login))
 // TODO: route logout
 // TODO: middleware authentication
 // router.use(authenticationV2)
-router.post('/logout', forwardError(accessController.logout));
+router.post('/logout', authenticationV2, forwardError(accessController.logout));
 
 // TODO: route refresh token
-router.post('/refreshToken', forwardError(accessController.refreshToken));
+router.post('/refreshToken', authenticationV2, forwardError(accessController.refreshToken));
 
 
 module.exports = router;

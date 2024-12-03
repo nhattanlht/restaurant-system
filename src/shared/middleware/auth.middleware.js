@@ -143,7 +143,7 @@ const authentication = forwardError(async (req, res, next) => {
 
         try {
             // Decode the JWT token
-            const decodeUser = JWT.verify(accessToken, keyStore.public_key);
+            const decodeUser = JWT.verify(accessToken, keyStore.private_key);
 
             // Check user ID in the token matches the one in the request
             if (decodeUser.user_id !== user_id) {
@@ -153,8 +153,8 @@ const authentication = forwardError(async (req, res, next) => {
             // Assign keyStore and decoded user to request object
             req.keyStore = keyStore;
             req.user = decodeUser;
-
             return next();
+
         } catch (error) {
             console.log('error', error);
             throw new UnauthorizedRequest('Invalid Token');
@@ -164,9 +164,10 @@ const authentication = forwardError(async (req, res, next) => {
 
 // Alternative for handling Access Token and Refresh Token separately
 const authenticationV2 = forwardError(async (req, res, next) => {
-    const user_id = req.headers[HEADERS.CLIENT_ID];
-    const accessToken = req.headers[HEADERS.AUTHORIZATION];
-    const refreshToken = req.headers[HEADERS.REFRESH_TOKEN];
+    const { tokens, user } = req.session || {};
+    const refreshToken = tokens?.refreshToken;
+    const user_id = user?.user_id;
+    const accessToken = tokens.accessToken;
 
     // Step 1: Check for required headers
     if (!user_id || (!accessToken && !refreshToken)) {
@@ -188,7 +189,6 @@ const authenticationV2 = forwardError(async (req, res, next) => {
                 if (decodeUser.user_id !== user_id) {
                     throw new UnauthorizedRequest('Invalid Request decoded user');
                 }
-
                 req.keyStore = keyStoreUser;
                 req.user = decodeUser;
                 req.refreshToken = refreshToken;
@@ -214,12 +214,11 @@ const authenticationV2 = forwardError(async (req, res, next) => {
     });
 });
 
-const authenticate = forwardError(async (req, res, next) => {
+const authenticate = async (req, res, next) => {
     try {
         const { tokens, user } = req.session || {};
         const refreshToken = tokens?.refreshToken;
         const user_id = user?.user_id;
-
         // Kiểm tra session hợp lệ
         if (!user_id || !refreshToken) {
             throw new UnauthorizedRequest('Invalid request: Missing user ID or refresh token.');
@@ -227,26 +226,32 @@ const authenticate = forwardError(async (req, res, next) => {
 
         // Thực hiện transaction
         await db.runTransaction(async (transaction) => {
+            // user, tokens -> user_id ... -> tokens accessToken 2h refreshToken 7 days
             const keyStore = await UserModel.findUserByUserId(user_id, transaction);
             if (!keyStore) {
                 throw new NotFoundRequest('Key token not found.');
             }
-
             try {
                 // Giải mã token
-                const decodedUser = JWT.verify(refreshToken, keyStore.public_key);
+                const decodedUser = JWT.verify(refreshToken, keyStore.private_key);
+                if(decodedUser.user_id !== user_id) {
+                    throw new UnauthorizedRequest('Invalid Request headers');
+                }
+                const foundUser = await UserModel.findUserByUserId(decodedUser.user_id,transaction);
 
                 // Kiểm tra role
-                if (decodedUser.role !== 'employee') {
+                if (!['employee', 'manager'].includes(foundUser.role)) {
                     throw new UnauthorizedRequest('Access denied: Insufficient permissions.');
                 }
+                    // Gắn keyStore và thông tin người dùng vào req
+                    req.keyStore = keyStore;
+                    req.user = decodedUser;
 
-                // Gắn keyStore và thông tin người dùng vào req
-                req.keyStore = keyStore;
-                req.user = decodedUser;
+                    // Tiếp tục xử lý middleware tiếp theo
+                    return next();
 
-                // Tiếp tục xử lý middleware tiếp theo
-                return next();
+
+
             } catch (jwtError) {
                 console.error('JWT Verification Error:', jwtError.message);
                 throw new UnauthorizedRequest('Invalid or expired token.');
@@ -256,7 +261,7 @@ const authenticate = forwardError(async (req, res, next) => {
         // Gọi next để xử lý lỗi
         return next(error);
     }
-});
+};
 // Helper function to verify JWT
 const verifyJWT = (token, keySecret) => {
     return JWT.verify(token, keySecret);

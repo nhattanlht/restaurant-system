@@ -5,10 +5,6 @@ const TABLE_NAME = 'user'
 const { NotFoundRequest, BadRequest, UnauthorizedRequest, ForbiddenRequest } = require('../../response/error.response');
 
 class UserModel{
-    // connect dbs
-    constructor(pool){
-        this.pool = pool
-    }
     // tạo account mới
     static async insertUser(userData, transaction){
         try{

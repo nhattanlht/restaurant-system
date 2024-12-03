@@ -1,0 +1,68 @@
+<h2>Branch Management</h2>
+<input type="text" class="search-bar" placeholder="Search branches...">
+<div id="branch-list">
+    <h3>Branch List</h3>
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 5%; text-align: center;">ID</th>
+            <th style="width: 15%; text-align: center;">Branch Name</th>
+            <th style="width: 20%; text-align: center;">Address</th>
+            <th style="width: 5%; text-align: center;">Area ID</th>
+            <th style="width: 5%; text-align: center;">Manager ID</th>
+            <th style="width: 5%; text-align: center;">Opening Time</th>
+            <th style="width: 5%; text-align: center;">Closing Time</th>
+            <th style="width: 5%; text-align: center;">Status</th>
+            <th class="motorbike-parking" style="width: 5%; text-align: center;">Motorbike Parking</th>
+            <th class="car-parking" style="width: 5%; text-align: center;">Car Parking</th>
+            <th style="width: 30%; text-align: center;">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="branchTableBody">
+            <% branches.forEach(branch => { %>
+                <tr>
+                    <td><%= branch.id %></td>
+                    <td><%= branch.branch_name %></td>
+                    <td><%= branch.address %></td>
+                    <td><%= branch.area_id %></td>
+                    <td><%= branch.manager_id %></td>
+                    <td><%= branch.opening_time %></td>
+                    <td><%= branch.closing_time %></td>
+                    <td><%= branch.status %></td>
+                    <td><%= branch.has_motorbike_parking ? 'Yes' : 'No' %></td>
+                    <td><%= branch.has_car_parking ? 'Yes' : 'No' %></td>
+                    <td>
+                        <button class="btn-primary">Edit</button>
+                        <button class="btn-danger">Delete</button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    <div id="branchPagination" class="pagination"></div>
+    <button class="btn-primary" onclick="showBranchForm()">Add Branch</button>
+</div>
+<div id="branch-form" >
+    <h3>Branch Details</h3>
+    <form id="branchForm" action="/admin" method="POST">
+        <input type="text" id="branchId" placeholder="ID" required>
+        <input type="text" id="branchName" placeholder="Branch Name" required>
+        <input type="text" id="branchAddress" placeholder="Address" required>
+        <input type="text" id="branchAreaId" placeholder="Area ID" required>
+        <input type="text" id="branchManagerId" placeholder="Manager ID" required>
+        <input type="time" id="branchOpeningTime" required>
+        <input type="time" id="branchClosingTime" required>
+        <select id="branchStatus">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+        </select>
+        <label>
+            <input type="checkbox" id="branchMotorbikeParking"> Motorbike Parking
+        </label>
+        <label>
+            <input type="checkbox" id="branchCarParking"> Car Parking
+        </label>
+        <button type="submit" class="btn-save">Save</button>
+        <button type="button" class="btn-cancel" onclick="hideBranchForm()">Cancel</button>
+    </form>
+</div>

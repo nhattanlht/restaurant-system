@@ -7,6 +7,72 @@
  */
 
 
+/* Avatar Styles */
+
+
+.profile-container {
+  margin: 0 2rem;
+  display: flex;
+}
+
+/* Avatar */
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.user-info {
+  position: absolute;
+  top: 100%;
+  right: 10px;
+  background-color: #fdf5e6; /* Màu be nhạt */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: none;
+  flex-direction: column;
+  padding: 10px;
+  z-index: 1000;
+  border: 1px solid #e4cfa1; /* Đường viền vàng nâu nhạt */
+}
+
+.user-info a {
+  text-decoration: none;
+  color: #444; /* Màu chữ xám đậm */
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-info a:hover {
+  background-color: #e4cfa1; /* Màu vàng nâu nhạt */
+  color: #fff; /* Chữ màu trắng */
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 10px;
+  border: 2px solid #f4e3c3; /* Viền màu vàng nhạt */
+  transition: border-color 0.3s ease;
+}
+
+.user-avatar:hover {
+  border-color: #e4cfa1; /* Đổi màu viền khi hover */
+}
+
+
+
+.user-avatar:active + .user-info {
+  display: flex;
+}
+
+
 
 
 

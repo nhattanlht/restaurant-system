@@ -16,7 +16,7 @@
     </a>
     <form action="/login" method="post" id="registerForm">
         <% if (error) { %>
-            <div class="error"><%= error %></div>
+            <div class="alert alert-danger"><%= error %></div>
         <% } %>
         <label for="user_name">Username:</label>
         <input type="text" id="user_name" name="user_name" required />

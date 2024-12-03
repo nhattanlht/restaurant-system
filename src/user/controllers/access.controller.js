@@ -13,22 +13,20 @@ class AccessController {
     async login  (req, res, next){
         try {
             const metadata = await accessService.login(req.body);
-            req.session.user = metadata.user; // Store user in session
-            req.session.tokens = metadata.tokens;
-            // new OkResponse({
-            //     message: 'Login successfully',
-            //     metadata
-            // }).send(res);
-            return res.redirect('/');
+            console.log(metadata);
+            if(metadata && metadata.user && metadata.tokens){
+                req.session.user = metadata.user; // Store user in session
+                req.session.tokens = metadata.tokens;
+                if(metadata.user.role == 'employee' || metadata.user.role == 'manager'){
+                    return res.redirect('/admin');
+                }
+                else return res.redirect('/');
+            }
+            res.render('user/login', { error: 'Invalid login credentials. Please try again.' });
+
         } catch (error) {
             res.render('user/login', { error: error.message });
         }
-        // const metadata = await accessService.login(req.body);
-        // // Send JSON response
-        // new OkResponse({
-        //     message: 'Login successfully',
-        //     metadata
-        // }).send(res);
 };
 
 
@@ -36,23 +34,24 @@ class AccessController {
 
 
     // TODO: API signup
-  async signUp(req, res, next) {
-    // new CreatedResponse({
-    //   message: 'Registered successfully',
-    //   metadata: await accessService.signUp(req.body)
-    // }).send(res)
-      try {
-          const metadata = await accessService.signUp(req.body);
-          new CreatedResponse({
-              message: 'Registered successfully',
-              metadata
-          }).send(res);
-      } catch (error) {
-          res.render('user/register', { error: error.message });
-      }
-  }
+    // TODO: API signup
+    async signUp(req, res, next) {
+        try {
+            const metadata = await accessService.signUp(req.body);
 
-  // TODO: API logout
+            if (metadata && metadata.user && metadata.tokens) {
+                req.session.error = 'Sign up successfully! Please log in.';
+                return res.redirect('/login');
+            }
+
+            res.render('user/register', { error: 'Registration failed. Please try again.' });
+        } catch (error) {
+            res.render('user/register', { error: error.message });
+        }
+    }
+
+
+    // TODO: API logout
   async logout(req, res, next) {
     // new OkResponse({
     //   message: 'Logout successfully',
@@ -91,7 +90,8 @@ const getSignUp = (req, res) => {
 }
 
 const getLogin = (req, res) =>{
-  return res.render('user/login', {error: null})
+    const error = req.session.error;
+  return res.render('user/login', {error: error})
 }
 
 

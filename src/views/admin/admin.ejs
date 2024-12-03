@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('partials/head')%>
+</head>
+
+<body>
+<div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <%-include('bodies/sidebar')%>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+        <!-- Branch Management Section -->
+        <%if(branches) {%>
+            <section id="branches">
+                <%-include('bodies/branches')%>
+            </section>
+        <%}%>
+
+        <%if(employees) {%>
+            <section id="employees" class="hidden">
+                <%-include('bodies/employees')%>
+            </section>
+        <%}%>
+        <!-- Reports Section -->
+        <section id="reports" class="hidden">
+            <%-include('bodies/reports')%>
+        </section>
+
+    </main>
+</div>
+
+
+<script src="../../public/js/admin.js"></script>
+</body>
+
+</html>
