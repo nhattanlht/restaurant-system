@@ -2,14 +2,64 @@
 <html lang="en">
 <head>
     <%- include('partials/head') %>
+    <link rel="stylesheet" href="../../public/user/css/profile.css">
 </head>
 <body id="top">
-<div class="topbar"><%- include('partials/topbar') %></div>
+<div class="topbar">
+    <%- include('partials/topbar') %>
+</div>
+<nav class="navbar" data-navbar>
 
+    <button class="close-btn" aria-label="close menu" data-nav-toggler>
+        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+    </button>
+
+    <a href="/" class="logo">
+        <link rel="preload" as="image" href="../public/user/images/hero-slider-2.jpg">
+        <img src="../public/user/images/logo.svg" width="160" height="50" alt="Grilli - Home">
+    </a>
+</nav>
 <main>
-    <section class="section profile text-center">
-        <h1>Chào, <%= user.username %></h1>
-        <a href="/logout">Đăng Xuất</a>
+    <section class="section profile">
+        <div class="profile-container">
+            <h1 class="title">Profile</h1>
+            <form action="/profile/<%= user.user_id %>" method="POST" class="profile-form">                <div class="form-item">
+                    <label for="username" class="label">Name:</label>
+
+                    <input type="text" id="name" name="name"
+                           value="<%= user.name ? user.name : '' %>"
+                           placeholder="<%= user.name ? '' : 'Update your name' %>"
+                           class="input">
+                </div>
+                <div class="form-item">
+                    <label for="email" class="label">Email:</label>
+                    <span><%= user.email%></span>
+                </div>
+                <div class="form-item">
+                    <label for="phone" class="label">Phone number:</label>
+                    <input type="text" id="phone" name="phone" value="<%= user.phone_number %>" class="input">
+                </div>
+                <div class="form-item">
+                    <label for="gender" class="label">Gender:</label>
+                    <input type="text" id="gender" name="gender" value="<%= user.gender %>" class="input">
+                </div>
+                <div class="form-item">
+                    <label for="cardType" class="label">Card type:</label>
+                    <span><%= user.card_type%></span>
+                </div>
+                <div class="form-item">
+                    <label for="points" class="label">Points:</label>
+                    <span><%= user.accumulated_spending%></span>
+                </div>
+<!--                <div class="form-item">-->
+<!--                    <label for="password" class="label">Password:</label>-->
+<!--                    <input type="password" id="password" name="password" placeholder="******" class="input">-->
+<!--                </div>-->
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Update profile</button>
+                </div>
+            </form>
+        </div>
     </section>
 </main>
 

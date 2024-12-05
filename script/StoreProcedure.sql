@@ -256,3 +256,27 @@ CREATE PROCEDURE SP_FindEmployeeId
 as BEGIN
 SELECT * FROM [Employee] where employee_id = @employee_id
 end
+
+CREATE PROCEDURE SP_UpdateCustomer
+    @user_id INT,
+    @name NVARCHAR(250),
+    @phone NVARCHAR(15),
+    @gender CHAR(1)
+AS
+BEGIN
+UPDATE [Customer]
+SET
+    name = @name,
+    phone_number = @phone,
+    gender = @gender
+WHERE user_id = @user_id;
+
+IF @@ROWCOUNT = 0
+BEGIN
+RETURN 1;
+END
+ELSE
+BEGIN
+RETURN 0; -- thành công
+END
+END

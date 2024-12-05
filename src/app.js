@@ -11,7 +11,12 @@ const registerAdminRoutes = require('./admin/routes/access.route');
 const adminRoutes = require("./admin/routes/admin.route");
 const {authenticate} = require('./shared/middleware/auth.middleware');
 const {AccessController} = require('./user/controllers/access.controller');
+const methodOverride = require("method-override");
+
+
 // init middlewareDatabase
+app.use(methodOverride('_method'));  // Giả lập phương thức PUT thông qua trường _method
+
 // routes
 app.use('/', layoutRoute)
 app.use('/', accessRoutes)

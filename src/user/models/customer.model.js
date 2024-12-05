@@ -85,43 +85,26 @@ class CustomerModel {
             console.error('Error retrieving customer:', error);
         }
     }
+    static async findCustomerByUserId(user_id, transaction){
+        const request = transaction.request();
+        request.input('user_id', sql.Int, user_id)
 
-    //  Bulk Insert
-    static async bulkInsert(customers) {
-        try {
-            const customerSchema = new sql.Table(TABLE_NAME);
-            customerSchema.create = true; // Tạo mới bảng nếu chưa tồn tại
-            customerSchema.columns.add('customer_id', sql.Int, { nullable: false });
-            customerSchema.columns.add('name', sql.NVarChar(250), { nullable: false });
-            customerSchema.columns.add('date_of_birth', sql.Date, { nullable: true });
-            customerSchema.columns.add('phone_number', sql.NVarChar(15), { nullable: true });
-            customerSchema.columns.add('email', sql.NVarChar(50), { nullable: false });
-            customerSchema.columns.add('identity_card', sql.Int, { nullable: true });
-            customerSchema.columns.add('gender', sql.Int, { nullable: true });
-            customerSchema.columns.add('member_card_number', sql.Int, { nullable: false });
-            customerSchema.columns.add('card_type', sql.NVarChar(50), { nullable: false });
-            customerSchema.columns.add('accumulated_spending', sql.Int, { nullable: false });
-            customerSchema.columns.add('created_at', sql.DateTime, { nullable: false });
-            customerSchema.columns.add('user_id', sql.Int);
-            customerSchema.columns.add('support_employee_id', sql.Int);
+        const query = `Select * from ${TABLE_NAME} WHERE user_id = @user_id`;
+        const result = await request.query(query);
+        return result.recordset[0];
+    }
 
-            // insert data into table template
-            customers.forEach(customer => {
-                customerSchema.rows.add(
-                    customer.customer_id, customer.name, customer.date_of_birth,
-                    customer.phone_number, customer.email, customer.identity_card,
-                    customer.gender, customer.member_card_number, customer.card_type,
-                    customer.accumulated_spending, customer.created_at,
-                    customer.user_id, customer.support_employee_id
-                );
-            });
+    static async updateProfileCustomer(customerData, transaction){
+        const request = transaction.request();
+        request.input('user_id', sql.Int, customerData.user_id)
+        request.input('name', sql.NVarChar, customerData.name)
+        request.input('phone', sql.NVarChar, customerData.phone_number)
+        request.input('gender', sql.Char, customerData.gender)
 
-            // Implement Bulk Insert
-            await this.pool.request().bulk(customerSchema);
-            console.log('Bulk insert successful');
-        } catch (error) {
-            console.error('Error performing bulk insert:', error);
-        }
+        const result = await request.execute('SP_UpdateCustomer')
+        if(result.returnValue === 0){
+            return true
+        } return false
     }
     static async addPoints(customerData, transaction){
         const request = this.pool.request();

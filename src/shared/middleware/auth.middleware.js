@@ -170,7 +170,7 @@ const authenticationV2 = forwardError(async (req, res, next) => {
     const accessToken = tokens.accessToken;
 
     // Step 1: Check for required headers
-    if (!user_id || (!accessToken && !refreshToken)) {
+    if (!user_id || (!refreshToken)) {
         throw new UnauthorizedRequest('Invalid Request headers');
     }
 
