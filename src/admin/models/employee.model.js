@@ -1,5 +1,5 @@
 'use strict';
-const connect = 'I:\\Source code\\Restaurant\\src\\configs\\mssql.config.js'
+const connect = '../../configs/mssql.config'
 
 'use strict'
 

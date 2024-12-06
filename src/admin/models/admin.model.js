@@ -1,5 +1,5 @@
 const sql = require("mssql");
-const dev_config = require('I:\\Source code\\Restaurant\\src\\configs\\mssql.config.js');
+const dev_config = require('../../configs/mssql.config');
 
 // ====================================Branch=============================
 //Xem chi nhánh

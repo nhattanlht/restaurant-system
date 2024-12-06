@@ -2,7 +2,7 @@
 
 const sql = require('mssql');
 const TABLE_NAME = 'Branch';
-const connect = 'I:\\Source code\\Restaurant\\src\\configs\\mssql.config.js'
+const connect = '../../configs/mssql.config'
 class BranchModel {
     static async getAllBranches() {
         try {
