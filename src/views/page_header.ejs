@@ -1,31 +1,53 @@
 <!-- Page header start -->
+
 <head>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
-    
+
     <!-- Custom CSS -->
     <link href="/css/main.css" rel="stylesheet" />
     <link href="/css/cart.css" rel="stylesheet" />
-    
+
     <!-- Title can be dynamically set -->
-    <title><%= title || 'Default Title' %></title>
+    <title>
+        <%= title || 'Default Title' %>
+    </title>
 </head>
+
 <body>
-  
+
     <div class="header">
         <img class="logo" src="../public/images/logo.svg" alt="logo">
         <div class="header-right">
             <div class="action-cart">
-                <a onclick="showcart()" class="shopping-bag-button">
-                <img class="shopping-bag" src="/images/shopping-bag.png" alt="shopping-bag">
-                <span class="count-holder">0</span>
+                <a class="shopping-bag-button" onclick="toggleCart()">
+                    <img class="shopping-bag" src="/images/shopping-bag.png" alt="shopping-bag">
+                    <span class="count-holder">0</span>
                 </a>
             </div>
             <a class="button" href="#">Login/Signup</a>
         </div>
     </div>
 
+    <div class="showcart" id="showcart">
+        <span class="showcart-title"><h4>Giỏ hàng</h4></span>
+        <div class="showcart-item-container">
+            <!-- Các mục giỏ hàng sẽ được render vào đây -->
+        </div>
+        <div class="showcart-total">
+            <strong>Tổng tiền: </strong>
+            <span>0 VNĐ</span>
+        </div>
+        <div class="showcart-footer">
+            <a href="#" class="button shopping-cart-button">Xem giỏ hàng</a>
+            <a href="#" class="button">Thanh toán</a>
+        </div>
+    </div>
+    </div>
+
     <!-- Banner with overlay and small banner -->
     <div class="banner">
         <img src="../public/images/banner.png" alt="banner">
-    </div>   
+    </div>
+    <script src="../public/js/cart.js"></script>
+</body>

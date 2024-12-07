@@ -1,0 +1,30 @@
+<%- include('page_header', {title:'Shopping Cart'}) -%>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- Các thư viện và CSS bootrap cần thiết -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="../public/css/cart.css">
+    </head>
+
+    <body>
+        <h1>Giỏ hàng của bạn</h1>
+        <% if (cart.length === 0) { %>
+            <p>Giỏ hàng trống.</p>
+        <% } else { %>
+            <ul>
+                <% cart.forEach(item => { %>
+                    <li>
+                        <img src="<%= item.image %>" alt="<%= item.name %>">
+                        <h3><%= item.name %></h3>
+                        <p>Giá: <%= item.price %> VNĐ</p>
+                        <p>Số lượng: <%= item.quantity %></p>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } %>
+        <script src="..\public\js\cart.js"></script>
+    </body>
+    </html>

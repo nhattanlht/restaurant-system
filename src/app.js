@@ -4,6 +4,7 @@ const layoutRoute = require('./routes/layout.route')
 const app = express()
 const registerRoutes = require('./routes/register.route')
 const loginRoutes = require('./routes/login.route');
+const cartRoutes = require('./routes/cart.route.js');
 
 
 const authenticateJWT = require('./middleware/auth.middleware'); // Import the authenticateJWT middleware
@@ -34,6 +35,9 @@ app.use('/register', registerRoutes);
 app.use('/login', loginRoutes)
 
 app.use('', foodFilterRoutes);
+
+app.use('/cart', cartRoutes);
+
 app.get('/protected', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'This is a protected route', user: req.user });
 });

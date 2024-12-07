@@ -1,24 +1,31 @@
-const CartModel = require('../models/cart.model.js');
+const CartModel = require('../models/cart.model');
 
 class CartController {
     // Hiển thị giỏ hàng
     static async renderCart(req, res) {
         try {
-            const cart = CartModel.getCart(req.session); // Lấy giỏ hàng từ model
-            res.render('cart', { cart }); // Render giao diện giỏ hàng
+            console.log("Body Request: ", req.body); // Kiểm tra toàn bộ dữ liệu trong body
+            const cart = req.body.cart; // Nhận giỏ hàng từ request body
+            if (!cart) {
+                return res.status(400).json({ message: "Giỏ hàng không có giá trị" });
+            }
+            res.json({ cart }); // Trả về giỏ hàng dưới dạng JSON
         } catch (error) {
+            console.error('Error fetching cart data:', error);
             res.status(500).json({ message: 'Error fetching cart data', error });
         }
     }
+    
+    
 
     // Thêm món vào giỏ hàng
     static async addToCart(req, res) {
         try {
-            const { id, name, price, image } = req.body; // Nhận dữ liệu món ăn từ client
-            const food = { id, name, price, image }; // Tạo đối tượng món ăn
-            const cart = CartModel.addToCart(req.session, food); // Sử dụng hàm model để thêm món
-            res.json({ success: true, cart }); // Phản hồi client
+            const { cart, food } = req.body; // Nhận dữ liệu từ request body
+            const updatedCart = CartModel.addToCart(cart, food);
+            res.json({ success: true, cart: updatedCart });
         } catch (error) {
+            console.error('Error adding item to cart:', error);
             res.status(500).json({ message: 'Error adding item to cart', error });
         }
     }
@@ -26,20 +33,35 @@ class CartController {
     // Cập nhật số lượng món trong giỏ hàng
     static async updateCart(req, res) {
         try {
-            const { id, quantity } = req.body; // Nhận id và số lượng từ client
-            const cart = CartModel.updateCart(req.session, id, quantity); // Sử dụng model để cập nhật
-            res.json({ success: true, cart });
+            const { cart, id, quantity } = req.body; // Nhận dữ liệu từ request body
+            const updatedCart = CartModel.updateCart(cart, id, quantity);
+            res.json({ success: true, cart: updatedCart });
         } catch (error) {
+            console.error('Error updating cart:', error);
             res.status(500).json({ message: 'Error updating cart', error });
         }
     }
 
-    // Lấy tổng số lượng sản phẩm trong giỏ hàng
-    static getCartQuantity(req, res) {
+    // Xóa món ăn khỏi giỏ hàng
+    static async removeFromCart(req, res) {
         try {
-            const quantity = CartModel.getCartQuantity(req.session); // Lấy số lượng từ model
-            res.json({ quantity }); // Phản hồi tổng số lượng
+            const { cart, id } = req.body; // Nhận dữ liệu từ request body
+            const updatedCart = CartModel.removeFromCart(cart, id);
+            res.json({ success: true, cart: updatedCart });
         } catch (error) {
+            console.error('Error removing item from cart:', error);
+            res.status(500).json({ message: 'Error removing item from cart', error });
+        }
+    }
+
+    // Lấy tổng số lượng sản phẩm trong giỏ hàng
+    static async getCartQuantity(req, res) {
+        try {
+            const cart = CartModel.getCart(req); // Nhận giỏ hàng từ body request
+            const quantity = CartModel.getCartQuantity(cart);
+            res.json({ quantity });
+        } catch (error) {
+            console.error('Error fetching cart quantity:', error);
             res.status(500).json({ message: 'Error fetching cart quantity', error });
         }
     }
