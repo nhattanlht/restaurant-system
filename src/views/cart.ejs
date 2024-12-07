@@ -1,0 +1,61 @@
+<!-- Giỏ hàng -->
+<div id="cart-modal">
+    <div class="cart-container">
+        <h3>Giỏ hàng</h3>
+        <div id="cart-items">
+            <% if (cart.length > 0) { %>
+                <% cart.forEach(item => { %>
+                    <div class="cart-item">
+                       <!-- Ảnh ở đây -->
+                        <div class="cart-item-details">
+                            <p><%= item.name %></p>
+                            <p>Số lượng: <input type="number" value="<%= item.quantity %>" min="1" class="cart-item-quantity" data-id="<%= item.id %>" /></p>
+                            <p>Giá: <%= item.price %> VND</p>
+                            <button class="remove-item" data-id="<%= item.id %>">Xóa</button>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>Giỏ hàng của bạn trống.</p>
+            <% } %>
+        </div>
+
+       <div id="cart-total">
+        <p>Tổng tiền: <span id="cart-total-price"><%=totalAmount %></span>VND</p>
+       </div>
+       <a href="/checkout" class="btn btn-primary">Thanh toán</a>
+    </div>
+</div>
+
+ <!-- <script>
+   // JavaScript để xử lý các hành động như xóa món và cập nhật số lượng
+   document.querySelectorAll('.remove-item').forEach(button=>{
+    button.addEventListener('click',function(){
+        const itemID=this.dataset.id;
+        fetch('/cart/remove',{
+            method:'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: itemId })
+        })
+        .then(respond=>respond.json())
+        .then(data=>{
+            location.reload();// Reload lại trang sau khi xóa món
+        })
+    });
+   });
+   document.querySelectorAll('.cart-item-quantity').forEach(input => {
+    input.addEventListener('change', function() {
+        const itemId= this.dataset.id;
+        const quantity = this.value;
+        fetch('/cart/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: itemId, quantity: quantity })
+        })
+        .then(response => response.json())
+        .then(data => {
+            location.reload(); // Reload lại trang sau khi cập nhật số lượng
+        });
+    });
+});
+ </script> -->
