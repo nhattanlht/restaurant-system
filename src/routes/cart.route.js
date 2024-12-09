@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router(); 
-const CartController=require('../controllers/cardController');
+const CartController=require('../controllers/cart_controller');
 
 // Hiển thị giỏ hàng
 router.get('/cart', CartController.renderCart);

@@ -1,4 +1,3 @@
-
 class CartModel {
     // Hàm này sẽ lấy giỏ hàng từ session (hoặc cơ sở dữ liệu)
     static getCart(session) {

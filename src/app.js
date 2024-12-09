@@ -10,7 +10,7 @@ const loginRoutes = require('./routes/login.route');
 const authenticateJWT = require('./middleware/auth.middleware'); // Import the authenticateJWT middleware
 //Employee
 const foodFilterRoutes = require('./routes/search_filter.route.js'); 
-const cart=require('./routes/cartRoute.js');
+const cart=require('./routes/cart.route.js');
 configViewEngine(app)
 const path = require('path'); // Thêm dòng này để sử dụng `path`
 

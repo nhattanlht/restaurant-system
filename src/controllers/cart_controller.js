@@ -1,4 +1,4 @@
-const CartModel= require('../models/cardModel');
+const CartModel= require('../models/cart.model');
 class CartController{
     // Hiển thị giỏ hàng
     static renderCart(req,res){
