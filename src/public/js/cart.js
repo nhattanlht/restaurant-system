@@ -177,7 +177,13 @@ updateCartQuantity();
 // Gọi loadCart khi trang được tải để giữ lại giỏ hàng
 loadCart();
 
-window.addEventListener('beforeunload', () => {
-    // Xóa giỏ hàng trong localStorage khi người dùng refresh hoặc đóng trang
-    localStorage.removeItem('cart');
-});
+// window.addEventListener('beforeunload', () => {
+//     // Xóa giỏ hàng trong localStorage khi người dùng refresh hoặc đóng trang
+//     localStorage.removeItem('cart');
+// });
+
+
+//reload giỏ hàng không bị mất
+if(window.location.href==="/cart"){
+    sendCartToServer();
+}
