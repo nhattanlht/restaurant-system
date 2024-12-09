@@ -6,7 +6,6 @@ const app = express()
 const registerRoutes = require('./routes/register.route')
 const loginRoutes = require('./routes/login.route');
 
-
 const authenticateJWT = require('./middleware/auth.middleware'); // Import the authenticateJWT middleware
 //Employee
 const foodFilterRoutes = require('./routes/search_filter.route.js'); 
