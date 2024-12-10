@@ -13,6 +13,11 @@ const {authenticate} = require('./shared/middleware/auth.middleware');
 const {AccessController} = require('./user/controllers/access.controller');
 const methodOverride = require("method-override");
 
+app.use((req, res, next) => {
+    res.setHeader("Content-Security-Policy", "script-src 'self' 'unsafe-inline'");
+    next();
+});
+
 
 // init middlewareDatabase
 app.use(methodOverride('_method'));  // Giả lập phương thức PUT thông qua trường _method

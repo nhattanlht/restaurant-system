@@ -71,6 +71,33 @@ class EmployeeModel{
             throw error;
         }
     }
+    static async updateSalary (departmentName, newSalary){
+        const pool = await sql.connect(require(connect));
+        const result = await pool
+            .request()
+            .input('departmentName', sql.NVarChar(100), departmentName)
+            .input('newSalary', sql.Money, newSalary)
+            .query(`
+                UPDATE Department
+                SET salary = @newSalary
+                WHERE department_name = @departmentName
+            `);
+        return result;
+    };
+    static async transferEmployee(employeeId, newDeptId, newBranchId, transferDate, reason) {
+        try {
+            const pool = await sql.connect(require(connect));
+            const result = await pool
+                .input('employee_id', employeeId)
+                .input('new_dept_id', newDeptId)
+                .input('new_branch_id', newBranchId)
+                .input('transfer_date', transferDate)
+                .execute('TransferEmployee'); // Gọi stored procedure
+            return { success: true, message: 'Employee transferred successfully.' };
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    }
 }
 
 module.exports = EmployeeModel;

@@ -1,80 +1,161 @@
-<h2>Reports & Analytics</h2>
-<input type="text" class="search-bar" placeholder="Search reports...">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doanh thu theo chi nhánh</title>
+</head>
+<body>
+    <h1>Thống kê doanh thu theo chi nhánh</h1>
+    <form id="revenueFilter">
+        <!-- Dropdown cho năm -->
+        <label for="year">Năm:</label>
+        <select name="year" id="year">
+            <option value="">Tất cả</option> <!-- Thêm tùy chọn này -->
+        </select>
+        
+        <!-- Dropdown cho tháng -->
+        <label for="month">Tháng:</label>
+        <select name="month" id="month">
+            <option value="">Tất cả</option> <!-- Thêm tùy chọn này -->
+            <option value="1">Tháng 1</option>
+            <option value="2">Tháng 2</option>
+            <option value="3">Tháng 3</option>
+            <option value="4">Tháng 4</option>
+            <option value="5">Tháng 5</option>
+            <option value="6">Tháng 6</option>
+            <option value="7">Tháng 7</option>
+            <option value="8">Tháng 8</option>
+            <option value="9">Tháng 9</option>
+            <option value="10">Tháng 10</option>
+            <option value="11">Tháng 11</option>
+            <option value="12">Tháng 12</option>
+        </select>
 
-<div class="filters">
-    <!-- Slicers for filtering reports -->
-    <label for="date-filter">Date:</label>
-    <select id="date-filter">
-        <option value="day">Day</option>
-        <option value="month">Month</option>
-        <option value="quarter">Quarter</option>
-        <option value="year">Year</option>
-    </select>
+        <!-- Dropdown cho ngày -->
+        <label for="day">Ngày:</label>
+        <select name="day" id="day">
+            <option value="">Tất cả</option>
+            <option value="1">Ngày 1</option>
+            <option value="2">Ngày 2</option>
+            <option value="3">Ngày 3</option>
+            <option value="4">Ngày 4</option>
+            <option value="5">Ngày 5</option>
+            <option value="6">Ngày 6</option>
+            <option value="7">Ngày 7</option>
+            <option value="8">Ngày 8</option>
+            <option value="9">Ngày 9</option>
+            <option value="10">Ngày 10</option>
+            <option value="11">Ngày 11</option>
+            <option value="12">Ngày 12</option>
+            <option value="13">Ngày 13</option>
+            <option value="14">Ngày 14</option>
+            <option value="15">Ngày 15</option>
+            <option value="16">Ngày 16</option>
+            <option value="17">Ngày 17</option>
+            <option value="18">Ngày 18</option>
+            <option value="19">Ngày 19</option>
+            <option value="20">Ngày 20</option>
+            <option value="21">Ngày 21</option>
+            <option value="22">Ngày 22</option>
+            <option value="23">Ngày 23</option>
+            <option value="24">Ngày 24</option>
+            <option value="25">Ngày 25</option>
+            <option value="26">Ngày 26</option>
+            <option value="27">Ngày 27</option>
+            <option value="28">Ngày 28</option>
+            <option value="29">Ngày 29</option>
+            <option value="30">Ngày 30</option>
+            <option value="31">Ngày 31</option>
+        </select>
 
-    <label for="branch-filter">Branch/Company:</label>
-    <select id="branch-filter">
-        <option value="all">All</option>
-        <option value="branch1">Branch 1</option>
-        <option value="branch2">Branch 2</option>
-    </select>
+        <button type="submit">Lọc Doanh Thu</button>
+    </form>
 
-    <label for="dish-filter">Dish:</label>
-    <select id="dish-filter">
-        <option value="all">All</option>
-        <option value="dish1">Dish 1</option>
-        <option value="dish2">Dish 2</option>
-    </select>
+    <div id="revenueResult"></div>
 
-    <label for="area-filter">Area:</label>
-    <select id="area-filter">
-        <option value="all">All</option>
-        <option value="area1">Area 1</option>
-        <option value="area2">Area 2</option>
-    </select>
-</div>
+    <!-- Bảng hiển thị doanh thu theo chi nhánh -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID Chi Nhánh</th>
+                <th>Tên Chi Nhánh</th>
+                <th>Tổng Doanh Thu</th>
+            </tr>
+        </thead>
+        <tbody id="branchRevenueTable">
+            <!-- Nội dung bảng sẽ được thêm vào từ server -->
+            <% if (revenueData && revenueData.length) { %>
+                <% revenueData.forEach(function(branch) { %>
+                    <tr>
+                        <td><%= branch.branch_id %></td>
+                        <td><%= branch.branch_name %></td>
+                        <td><%= branch.total_revenue %></td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr><td colspan="3">Không có dữ liệu.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
 
-<!-- Revenue statistics table -->
-<h3>Revenue Statistics</h3>
-<table id="revenue-table">
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>Branch</th>
-        <th>Dish</th>
-        <th>Area</th>
-        <th>Revenue</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Rows will be populated dynamically from JS -->
-    </tbody>
-</table>
+<script>
+// Hàm để thêm các năm gần đây vào dropdown
+function populateYears() {
+    const currentYear = new Date().getFullYear();
+    const yearSelect = document.getElementById('year');
 
-<!-- Best and Worst Selling Dishes Table -->
-<h3>Best and Worst Selling Dishes</h3>
-<table id="sales-table">
-    <thead>
-    <tr>
-        <th>Dish</th>
-        <th>Quantity Sold</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Rows will be populated dynamically from JS -->
-    </tbody>
-</table>
+    for (let year = currentYear; year >= currentYear - 4; year--) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+    }
+}
 
-<!-- Employee Service Report Table -->
-<h3>Employee Service Rating Report</h3>
-<table id="service-report-table">
-    <thead>
-    <tr>
-        <th>Employee</th>
-        <th>Date</th>
-        <th>Service Rating</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Rows will be populated dynamically from JS -->
-    </tbody>
-</table>
+// Hàm để giữ lại giá trị đã chọn sau khi trang tải lại
+function setSelectedValues() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const year = urlParams.get('year');
+    const month = urlParams.get('month');
+    const day = urlParams.get('day');
+
+    if (year) {
+        document.getElementById('year').value = year;
+    }
+    if (month) {
+        document.getElementById('month').value = month;
+    }
+    if (day) {
+        document.getElementById('day').value = day;
+    }
+}
+
+// Tự động điền các năm vào dropdown khi trang được tải
+document.addEventListener('DOMContentLoaded', function () {
+    populateYears();
+    setSelectedValues(); // Đảm bảo giá trị đã chọn được giữ lại
+});
+
+// Xử lý sự kiện khi người dùng lọc doanh thu
+document.getElementById('revenueFilter').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // Lấy giá trị từ form
+    const year = this.year.value || '';
+    const month = this.month.value || '';
+    const day = this.day.value || '';
+
+    // Tạo URL với các tham số
+    const queryParams = new URLSearchParams({
+        year: year,
+        month: month,
+        day: day
+    });
+
+    // Chuyển hướng trang tới URL mới với các tham số lọc
+    window.location.href = `?${queryParams.toString()}`;
+});
+</script>
+</body>
+</html>

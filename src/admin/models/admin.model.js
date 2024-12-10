@@ -57,8 +57,8 @@ const addBranch = async (branchData) => {
     const openingTime = parseTime(opening_time);
     const closingTime = parseTime(closing_time);
 
-    const pool1 = await sql.connect(dev_config);
-    const result1 = await pool1.request()
+    const pool = await sql.connect(dev_config);
+    const result = await pool.request()
         .input('branch_name', sql.NVarChar, branch_name)
         .input('address', sql.NVarChar, address)
         .input('opening_time', sql.Time, openingTime)
@@ -73,7 +73,7 @@ const addBranch = async (branchData) => {
         INSERT INTO Branch (branch_name, address, opening_time, closing_time, status, phone_number, has_motorbike_parking, has_car_parking, area_id, manager)
         VALUES (@branch_name, @address, @opening_time, @closing_time, @status, @phone_number, @has_motorbike_parking, @has_car_parking, @area_id, @manager)
       `);
-    return result1.rowsAffected > 0;
+    return result.rowsAffected > 0;
   } catch (err) {
     console.error('Error adding branch:', err);
     throw err;
@@ -254,7 +254,6 @@ const deleteEmployee = async (employee_id) => {
     throw err; // Ném lỗi để xử lý ở nơi khác nếu cần
   }
 };
-
 
 module.exports = {
   getBranches,

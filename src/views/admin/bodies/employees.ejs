@@ -1,15 +1,17 @@
 <h2>Employee Management</h2>
 <input type="text" class="search-bar" placeholder="Search employees..." oninput="searchEmployee(this.value)">
-
+<link rel="stylesheet" href="../../../public/admin/css/admin.css">
 <!-- Employee List -->
 <div id="employee-list">
     <h3>Employee List</h3>
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <select id="filterBranch" onchange="filterEmployees()">
-            <option value="">All Branches </option>
+            <option value="">All Branches</option>
+            <!-- Dynamically populate with branch options -->
         </select>
         <select id="filterDepartment" onchange="filterEmployees()">
             <option value="">All Departments</option>
+            <!-- Dynamically populate with department options -->
         </select>
     </div>
     <table>
@@ -25,69 +27,273 @@
         </tr>
         </thead>
         <tbody id="employeeTableBody">
-        <tbody>
-            <% employees.forEach(employee => { %>
-                <tr>
-                    <td style="text-align: center;"><%= employee.employee_id %></td>
-                    <td style="text-align: center;"><%= employee.name %></td>
-                    <td style="text-align: center;"><%= employee.DOB %></td>
-                    <td style="text-align: center;"><%= employee.gender %></td>
-                    <td style="text-align: center;"><%= employee.dept_id %></td>
-                    <td style="text-align: center;"><%= employee.phone_number %></td>
-                    <td style="text-align: center;"<%= employee.user_id %>>
-                        <!--                  -->
-                        <form action="" method="post"></form>
-                        <button>Edit</button>
-                        <button>Delete</button>
-                    </td>
-                </tr>
-            <% }); %>
-        </tbody>
-
+        <% employees.forEach(employee => { %>
+            <tr class="employee-row" data-branch-id="<%= employee.branch_id %>" data-dept-id="<%= employee.dept_id %>">
+                <td style="text-align: center;"><%= employee.employee_id %></td>
+                <td style="text-align: center;"><%= employee.name %></td>
+                <td style="text-align: center;"><%= employee.DOB %></td>
+                <td style="text-align: center;"><%= employee.gender %></td>
+                <td style="text-align: center;"><%= employee.dept_id %></td>
+                <td style="text-align: center;"><%= employee.phone_number %></td>
+                <td>
+                    <a href="/admin/employees/edit/<%= employee.employee_id %>" class="button">Edit</a>
+                    <a href="/admin/employees/delete/<%= employee.employee_id %>" class="button" onclick="return confirm('Are you sure you want to delete this branch?');">Delete</a>
+                    <button class="button" onclick="showTransferModal('<%= employee.employee_id %>')">Transfer</button>
+                </td>
+            </tr>
+        <% }); %>
         </tbody>
     </table>
     <div id="employeePagination" class="pagination"></div>
     <button class="btn-primary" onclick="showEmployeeForm()">Add Employee</button>
 </div>
 
-<!-- Employee Form -->
-<div id="employee-form">
 
+<!-- Employee Form (Initially Hidden) -->
+<div id="employee-form" style="display: none;">
     <h3>Employee Details</h3>
-    <form id="employeeForm">
-        <input type="text" id="employeeId" placeholder="ID" required>
-        <input type="text" id="employeeName" placeholder="Full Name" required>
-        <input type="date" id="employeeDob" required>
-        <select id="employeeGender">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-        </select>
-        <input type="text" id="employeeDeptId" placeholder="Dept ID" required>
-        <input type="text" id="employeePhoneNumber" placeholder="Phone Number" required>
+    <form action="/admin/employees/add" method="POST">
+        <div class="form-group">
+            <label for="employee_id">Employee ID:</label>
+            <input type="number" id="employee_id" name="employee_id" required>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="DOB">Date of Birth:</label>
+            <input type="date" id="DOB" name="DOB" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="dept_id">Department ID:</label>
+            <input type="number" id="dept_id" name="dept_id" required>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" required>
+        </div>
+
+        <div class="form-group">
+            <label for="user_id">User  ID:</label>
+            <input type="number" id="user_id" name="user_id" required>
+        </div>
+
+        <button type="submit">Save</button>
     </form>
 </div>
 
 <!-- Salary Management Section Inside Employee Management -->
 <div id="salaryManagement">
     <h3>Salary Management</h3>
-    <form id="salaryForm">
-        <div>
-            <label for="branchSelect">Branch:</label>
-            <select id="branchSelect" required></select>
+    <form id="salaryForm" onsubmit="updateSalary(event)">
+        <div class="form-group">
+            <label for="departmentName">Department Name:</label>
+            <select id="departmentName" name="departmentName" required>
+                <option value="">Select Department</option>
+                <option value="Manager">Manager</option>
+                <option value="Cashier">Cashier</option>
+                <option value="Waitstaff">Waitstaff</option>
+                <option value="KitchenStaff">KitchenStaff</option>
+                <option value="Reception">Reception</option>
+            </select>
         </div>
-        <div>
-            <label for="departmentSelect">Department:</label>
-            <select id="departmentSelect" required></select>
-        </div>
-        <div>
-            <label for="currentSalary">Current Salary:</label>
-            <input type="text" id="currentSalary" disabled>
-        </div>
-        <div>
+        <div class="form-group">
             <label for="newSalary">New Salary:</label>
-            <input type="number" id="newSalary" min="0" required>
+            <input type="number" id="newSalary" name="newSalary" min="0" required placeholder="Enter new salary">
         </div>
         <button type="submit" class="btn-primary">Update Salary</button>
     </form>
+    <div id="salaryUpdateMessage" style="margin-top: 10px;"></div>
 </div>
+
+<div id="transferModal" style="display: none;" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeTransferModal()">&times;</span>
+        <h3>Transfer Employee</h3>
+        <form id="transferEmployeeForm" onsubmit="submitTransferForm(event)">
+            <div class="form-group">
+                <label for="modalEmployeeId">Employee ID:</label>
+                <input type="text" id="modalEmployeeId" name="employeeId" readonly>
+            </div>
+            <div class="form-group">
+                <label for="modalNewDeptId">New Department ID:</label>
+                <input type="number" id="modalNewDeptId" name="newDeptId" required>
+            </div>
+            <div class="form-group">
+                <label for="modalNewBranchId">New Branch ID:</label>
+                <input type="number" id="modalNewBranchId" name="newBranchId" required>
+            </div>
+            <div class="form-group">
+                <label for="modalTransferDate">Transfer Date:</label>
+                <input type="date" id="modalTransferDate" name="transferDate" required>
+            </div>
+            <button type="submit" class="btn-primary">Transfer</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+// Function to show/hide the employee form
+function showEmployeeForm() {
+    const form = document.getElementById("employee-form");
+    form.style.display = form.style.display === "none" ? "block" : "none";
+}
+
+// Function to update salary
+async function updateSalary(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const departmentName = document.getElementById("departmentName").value.trim();
+    const newSalary = parseFloat(document.getElementById("newSalary").value.trim());
+
+    // Validate inputs
+    if (!departmentName || newSalary <= 0) {
+        document.getElementById("salaryUpdateMessage").innerHTML =
+            "<p style='color: red;'>Please enter a valid department name and salary.</p>";
+        return;
+    }
+
+    try {
+        // Send request to the server
+        const response = await fetch('/admin/update-salary', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ departmentName, newSalary }),
+        });
+
+        const result = await response.json();
+
+        // Display result message
+        if (result.success) {
+            document.getElementById("salaryUpdateMessage").innerHTML =
+                `<p style='color: green;'>${result.message}</p>`;
+        } else {
+            document.getElementById("salaryUpdateMessage").innerHTML =
+                `<p style='color: red;'>${result.message}</p>`;
+        }
+    } catch (error) {
+        document.getElementById("salaryUpdateMessage").innerHTML =
+            `<p style='color: red;'>An error occurred: ${error.message}</p>`;
+    }
+}
+
+// Show transfer modal
+function showTransferModal(employeeId) {
+    document.getElementById("modalEmployeeId").value = employeeId; // Set Employee ID
+    document.getElementById("transferModal").style.display = "flex";
+}
+
+// Close transfer modal
+function closeTransferModal() {
+    document.getElementById("transferModal").style.display = "none";
+}
+
+// Submit transfer form
+async function submitTransferForm(event) {
+    event.preventDefault(); // Ngăn hành động submit mặc định
+
+    const employeeId = document.getElementById('modalEmployeeId').value.trim();
+    const newDeptId = document.getElementById('modalNewDeptId').value.trim();
+    const newBranchId = document.getElementById('modalNewBranchId').value.trim();
+    const transferDate = document.getElementById('modalTransferDate').value.trim();
+
+    try {
+        const response = await fetch('/admin/employees/transfer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ employeeId, newDeptId, newBranchId, transferDate }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert(result.message);
+            closeTransferModal();
+            location.reload(); // Reload page to update the list
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+
+// Function to search employees by name
+function searchEmployee(searchTerm) {
+    const rows = document.querySelectorAll('#employeeTableBody .employee-row');
+    searchTerm = searchTerm.toLowerCase(); // Convert to lowercase for case-insensitive search
+
+    rows.forEach(row => {
+        const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        if (name.includes(searchTerm)) {
+            row.style.display = ''; // Show row if search term matches
+        } else {
+            row.style.display = 'none'; // Hide row if search term doesn't match
+        }
+    });
+}
+
+// Function to filter employees by branch and department
+function filterEmployees() {
+    const branchFilter = document.getElementById("filterBranch").value;
+    const departmentFilter = document.getElementById("filterDepartment").value;
+    const rows = document.querySelectorAll('#employeeTableBody .employee-row');
+
+    rows.forEach(row => {
+        const branchId = row.getAttribute("data-branch-id");
+        const deptId = row.getAttribute("data-dept-id");
+
+        // Check if row matches both branch and department filters
+        if ((branchFilter === "" || branchId === branchFilter) &&
+            (departmentFilter === "" || deptId === departmentFilter)) {
+            row.style.display = ''; // Show row if it matches filters
+        } else {
+            row.style.display = 'none'; // Hide row if it doesn't match filters
+        }
+    });
+}
+
+// Function to dynamically populate filter dropdowns (for example, from the server)
+function populateFilters(branches, departments) {
+    const branchSelect = document.getElementById("filterBranch");
+    const departmentSelect = document.getElementById("filterDepartment");
+
+    // Populate branch options
+    branches.forEach(branch => {
+        const option = document.createElement("option");
+        option.value = branch.id;
+        option.textContent = branch.name;
+        branchSelect.appendChild(option);
+    });
+
+    // Populate department options
+    departments.forEach(department => {
+        const option = document.createElement("option");
+        option.value = department.id;
+        option.textContent = department.name;
+        departmentSelect.appendChild(option);
+    });
+}
+
+// Call this function when the page loads to populate filters (this data could be fetched via an API)
+populateFilters([{ id: 1, name: 'Branch 1' }, { id: 2, name: 'Branch 2' }], [{ id: 1, name: 'Manager' }, { id: 2, name: 'Cashier' }]);
+</script>

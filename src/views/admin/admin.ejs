@@ -26,11 +26,13 @@
                 <%-include('bodies/employees')%>
             </section>
         <%}%>
-        <!-- Reports Section -->
-        <section id="reports" class="hidden">
-            <%-include('bodies/reports')%>
-        </section>
 
+        <!-- Reports Section -->
+        <%if(revenueData) {%>
+            <section id="reports" class="hidden">
+                <%- include('bodies/reports') %>
+            </section>
+        <%}%>
     </main>
 </div>
 

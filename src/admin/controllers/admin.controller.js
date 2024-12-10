@@ -1,16 +1,19 @@
 const adminModel = require('../models/admin.model');
 const BranchModel = require("../models/Branch.model");
 const EmployeeModel = require("../models/employee.model");
+const ReportModel = require('../models/report.model');
 //==============================Dashboard==========================
 class AdminController {
 
   async getDashboard(req, res, netx) {
     try {
+      res.redirect('/admin/reports')
       // Render giao diện dashboard
       res.render('admin/admin', {
         title: 'Admin Dashboard',
         branches: null,
         employees: null,
+        revenueData: null,
       });
     } catch (err) {
       console.error('Error loading dashboard:', err);
@@ -27,6 +30,7 @@ class AdminController {
         title: 'Branch List',
         branches: branches,
         employees: null,
+        revenueData:null,
       });
     } catch (error) {
       console.error('Error loading admin dashboard:', error);
@@ -42,16 +46,13 @@ class AdminController {
         title: 'Branch List',
         branches: null,
         employees: employees,
+        revenueData:null,
       });
     } catch (error) {
       console.error('Error loading admin dashboard:', error);
       res.status(500).send('Internal Server Error');
     }
   }
-  const
-  getAddBranchForm = (req, res) => {
-    res.render("admin/add-branch");
-  };
 
   const
   addBranch = async (req, res) => {
@@ -144,7 +145,7 @@ class AdminController {
     try {
       const success = await adminModel.deleteBranch(branch_id); // Gọi model để xóa chi nhánh
       if (success) {
-        res.status(200).send('Branch deleted successfully');
+        res.redirect('/admin/branches');
       } else {
         res.status(400).send('Failed to delete branch');
       }
@@ -156,39 +157,15 @@ class AdminController {
 
 
 //=============================Employee======================
-// Hiển thị danh sách nhân viên
-  const
-  getEmployeeList = async (req, res) => {
-    try {
-      const employees = await adminModel.getEmployees();
-      res.render('admin/employee-list', {title: 'Employee Management', employees});
-    } catch (err) {
-      console.error('Error fetching employees:', err);
-      res.status(500).send('Internal Server Error');
-    }
-  };
 
 // Thêm nhân viên
   const
   addEmployee = async (req, res) => {
     try {
       await adminModel.addEmployee(req.body);
-      res.redirect('admin/employees-list');
+      res.redirect('/admin/employees');
     } catch (err) {
       console.error('Error adding employee:', err);
-      res.status(500).send('Internal Server Error');
-    }
-  };
-
-// Hiển thị form thêm nhân viên
-  const
-  getAddEmployeeForm = (req, res) => {
-    try {
-      res.render('admin/add-employee', {
-        title: 'Thêm Nhân Viên',
-      });
-    } catch (err) {
-      console.error('Error rendering add employee form:', err);
       res.status(500).send('Internal Server Error');
     }
   };
@@ -213,7 +190,7 @@ class AdminController {
     const {employee_id} = req.params;
     try {
       await adminModel.editEmployee(employee_id, req.body);
-      res.redirect('/admin/employees');
+      res.redirect('/');
     } catch (err) {
       console.error('Error updating employee:', err);
       res.status(500).send('Internal Server Error');
@@ -232,7 +209,92 @@ class AdminController {
       res.status(500).send('Internal Server Error');
     }
   };
+
+  const
+  updateSalaryByDepartmentName = async (req, res) => {
+    const { departmentName, newSalary } = req.body;
+
+    if (!departmentName || !newSalary || newSalary <= 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid input. Department name and salary are required.',
+        });
+    }
+
+    try {
+        const result = await EmployeeModel.updateSalary(departmentName, newSalary);
+
+        if (result.rowsAffected[0] === 0) {
+            return res.status(404).json({
+                success: false,
+                message: `Department "${departmentName}" not found.`,
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: `Salary updated successfully for department "${departmentName}".`,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: `Error updating salary: ${error.message}`,
+        });
+    }
+};
+  async getRevenueByBranch(req, res) {
+    try {
+        // Lấy các tham số lọc từ query string
+        let { year, month, day } = req.query;
+        // Gọi model để lấy dữ liệu doanh thu, truyền các tham số lọc
+        const revenueData = await ReportModel.getRevenueByBranch(
+            parseInt(year) || null, // Chuyển đổi thành số hoặc để null nếu không có
+            parseInt(month) || null,
+            parseInt(day) || null
+        );
+
+        // Render view với dữ liệu doanh thu
+        res.render('admin/admin', { 
+            title: 'Branch Revenue',
+            branches: null, // Dữ liệu chi nhánh nếu cần, null ở đây do không sử dụng
+            employees: null, // Dữ liệu nhân viên nếu cần, null ở đây do không sử dụng
+            revenueData: revenueData, // Dữ liệu doanh thu được lấy từ model
+        });
+    } catch (error) {
+        console.error('Error in getRevenueByBranch:', error);
+        res.status(500).send('Internal Server Error'); // Gửi phản hồi lỗi nếu có vấn đề xảy ra
+    }
+  }
+
+  async handleTransferEmployee(req, res) {
+    const { employeeId, newDeptId, newBranchId, transferDate, reason } = req.body;
+
+    if (!employeeId || !newDeptId || !newBranchId || !transferDate) {
+        return res.status(400).json({ success: false, message: 'All fields are required except reason.' });
+    }
+
+    const result = await EmployeeModel.transferEmployee(employeeId, newDeptId, newBranchId, transferDate, reason);
+
+    if (result.success) {
+        return res.status(200).json(result);
+    } else {
+        return res.status(500).json(result);
+    }
+  }
+  async transferEmployee(req, res) {
+    const { employeeId, newDeptId, newBranchId, transferDate } = req.body;
+
+    try {
+        await employeeModel.transferEmployee(employeeId, newDeptId, newBranchId, transferDate);
+        res.status(200).json({ success: true, message: "Employee transferred successfully!" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 }
+
+}
+//=============================Report=================================
+
 module.exports = {
- AdminController
+ AdminController,
 };

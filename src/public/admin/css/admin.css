@@ -29,7 +29,7 @@ body {
 
 .sidebar nav a {
   display: block;
-  width: 100%;
+  width: 90%;
   padding: 12px 20px;
   margin: 10px 0;
   border: none;
@@ -43,28 +43,35 @@ body {
 }
 .sidebar  a {
   text-decoration: none;
+  width: 60%;
 }
 
 .sidebar nav a:hover {
-  background-color: #bcbcbc;
+  background-color: #f4b400;
 }
 
 .sidebar nav a.active {
   background-color: #f4b400;
-  color: #ffffff;
+  color: #352525;
 }
 
 .content {
-  flex: 1;
-  padding: 20px;
+  flex: 1; /* Chiếm không gian còn lại */
+  padding: 15px; /* Giảm padding */
   overflow-y: auto;
+  background-color: #ffffff; /* Đặt màu nền cho phần nội dung */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Thêm bóng cho phần nội dung */
+  border-radius: 10px; /* Bo góc cho phần nội dung */
+  margin-left: 10px; /* Tạo khoảng cách giữa sidebar và content */
+  max-width: calc(100% - 220px); /* Đảm bảo content không vượt quá chiều rộng của layout */
 }
 
 section {
   background: #ffffff;
   border-radius: 10px;
-  padding: 20px;
+  padding: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px; /* Tăng khoảng cách giữa các section */
 }
 
 /*.hidden {*/
@@ -238,4 +245,84 @@ input.search-bar {
 }
 .active {
   font-weight: bold; /* Hoặc bạn có thể chọn màu sắc khác để làm nổi bật nút đang chọn */
+}
+
+body {
+  background-color: white;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  overflow-y: auto;
+}
+.container {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1 {
+  color: #d6942a;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+input[type="text"], input[type="number"], input[type="date"], select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+button:hover {
+  background-color: #0056b3;
+}
+a {
+  display: inline-block;
+  margin-top: 20px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.close {
+  float: right;
+  font-size: 1.2em;
+  cursor: pointer;
 }

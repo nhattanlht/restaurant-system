@@ -117,6 +117,7 @@
 
 
 'use strict'
+const express = require('express');
 const JWT = require('jsonwebtoken');
 const { HEADERS } = require("../../configs/header.config");
 const UserModel = require('../../shared/models/user.model');
