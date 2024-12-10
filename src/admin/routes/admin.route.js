@@ -1,31 +1,3 @@
-// const express = require("express");
-// const router = express.Router();
-// const adminController = require('../controllers/admin.controller.js');
-
-// // --- Quản lý chi nhánh ---
-// router.get('/', adminController.getDashboard); // Xem danh sách chi nhánh
-// router.get('/branches', adminController.getBranch); // Xem danh sách chi nhánh
-// router.get('/branches/add', adminController.getAddBranchForm); // Hiển thị form thêm chi nhánh
-// router.post('/branches/add', adminController.addBranch); // Xử lý thêm chi nhánh
-// router.get('/branches/edit/:branch_id', adminController.getEditBranchForm); // Hiển thị form chỉnh sửa chi nhánh
-// router.post('/branches/edit/:branch_id', adminController.editBranch); // Xử lý cập nhật chi nhánh
-// router.get('/branches/delete/:branch_id', adminController.deleteBranch); // Xóa chi nhánh
-
-// // // --- Quản lý nhân sự ---
-// router.get('/employees', adminController.getEmployeeList); // Xem danh sách nhân viên
-// router.get('/employees/add', adminController.getAddEmployeeForm); // Hiển thị form thêm nhân viên
-// router.post('/employees/add', adminController.addEmployee); // Xử lý thêm nhân viên
-// router.get('/employees/delete/:employee_id', adminController.deleteEmployee); // Xóa nhân viên
-// router.get('/employees/edit/:employee_id', adminController.getEditEmployeeForm); // Sửa thông tin nhân viên
-// router.post('/employees/edit/:employee_id', adminController.editEmployee); // Cập nhật thông tin nhân viên
-
-// // // --- Báo cáo và thống kê ---
-// // router.get('/reports/revenue', adminController.getRevenueReport); // Báo cáo doanh thu
-// // router.get('/reports/best-sellers', adminController.getBestSellers); // Báo cáo các món ăn bán chạy
-// // router.get('/reports/employee-performance', adminController.getEmployeePerformance); // Báo cáo hiệu suất nhân viên
-
-// module.exports = router;
-
 const express = require('express');
 const router = express.Router();
 // Hiển thị dashboard admin
