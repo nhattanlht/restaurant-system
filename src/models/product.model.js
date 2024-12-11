@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const sql = require('mssql');
+const config = require('../configs/mssql.config');
 
 class FoodModel {
     static async searchFoods(filters = {}) {
@@ -104,7 +105,7 @@ class FoodModel {
         }
     }
     // Lấy chi nhánh theo ID thành phố
-    static async getBranchesByCity(areaid) {
+    static async getBranchesByArea(areaid) {
         try {
             await sql.connect(config);
             const request = new sql.Request();
@@ -120,6 +121,38 @@ class FoodModel {
             await sql.close();
         }
     }
+
+    static async searchFoodsByBranch(branchName) {
+        try {
+            const filePath = path.join(__dirname, '../../branch_menu_data.json'); // Đường dẫn file JSON
+            const data = fs.readFileSync(filePath, 'utf-8');
+    
+            if (!data) {
+                throw new Error('Không tìm thấy dữ liệu trong file JSON');
+            }
+    
+            const branchData = JSON.parse(data);
+    
+            // Tìm chi nhánh theo tên
+            const branch = branchData.branches.find(branch => branch.branch_name.toLowerCase() === branchName.toLowerCase());
+            console.log('Chi nhánh đang tìm kiếm:', branchName); 
+            if (!branch) {
+                throw new Error(`Không tìm thấy chi nhánh "${branchName}"`);
+            }
+    
+            // Lấy tất cả món ăn của chi nhánh
+            const filteredFoods = branch.menu_items.map(item => ({
+                branch: branch.branch_name,
+                ...item
+            }));
+    
+            return filteredFoods;
+        } catch (error) {
+            console.error('Lỗi khi tìm món ăn theo chi nhánh:', error.message);
+            throw new Error(error.message);
+        }
+    }
+    
 
 }
 

@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function showPopup() {
         popup.classList.add("active");
         // Lấy danh sách thành phố khi trang web tải
-        loadAreas();
     }
 
     // Đóng popup
@@ -51,10 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Lấy danh sách thành phố từ API
     async function loadAreas() {
         try {
-            const response = await fetch('http://localhost:3001/api/areas');  // Gọi API đúng với URL
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            const response = await fetch('/api/areas');  // Gọi API đúng với URL
             const areas = await response.json();
             areas.forEach(area => {
                 const option = document.createElement("option");
@@ -67,10 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Cập nhật chi nhánh dựa trên khu vực đã chọn
+    // Cập nhật bàn dựa trên chi nhánh đã chọn
     async function loadBranches(areaId) {
         try {
-            const response = await fetch(`/api/branches/${areaId}`);  // Gọi API để lấy chi nhánh theo areaId
+            const response = await fetch(`/api/branches/${areaId}`);
             const branches = await response.json();
             branchSelect.innerHTML = `<option value="" disabled selected>-- Chọn chi nhánh --</option>`;
             branches.forEach(branch => {
@@ -79,28 +75,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 option.textContent = branch.branch_name;
                 branchSelect.appendChild(option);
             });
-            tableSelect.innerHTML = `<option value="" disabled selected>-- Chọn bàn --</option>`;
+            tableSelect.innerHTML = `<option value="" disabled selected>-- Chọn bàn --</option>`; // Reset bảng
+            for (let i = 1; i <= 20; i++) {
+                const option = document.createElement("option");
+                option.value = i;
+                option.textContent = `Bàn ${i}`;
+                tableSelect.appendChild(option);
+            }
         } catch (error) {
             console.error("Error loading branches:", error);
         }
     }
 
-    // Cập nhật bàn dựa trên chi nhánh đã chọn
-    async function loadTables(branchId) {
-        try {
-            const response = await fetch(`/api/tables?branchId=${branchId}`);  // Gọi API để lấy bàn theo branchId
-            const tables = await response.json();
-            tableSelect.innerHTML = `<option value="" disabled selected>-- Chọn bàn --</option>`;
-            tables.forEach(table => {
-                const option = document.createElement("option");
-                option.value = table.table_id;
-                option.textContent = `Bàn ${table.table_number}`;
-                tableSelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error("Error loading tables:", error);
-        }
-    }
 
     // Cập nhật chi nhánh khi chọn khu vực
     areaSelect.addEventListener("change", () => {
@@ -108,17 +94,31 @@ document.addEventListener("DOMContentLoaded", () => {
         loadBranches(selectedAreaId);
     });
 
-    // Cập nhật bàn khi chọn chi nhánh
-    branchSelect.addEventListener("change", () => {
-        const selectedBranchId = branchSelect.value;
-        loadTables(selectedBranchId);
-    });
-
     // Gán sự kiện
     openPopupBtn.addEventListener("click", showPopup);
     closePopupBtn.addEventListener("click", closePopup);
     cancelPopupBtn.addEventListener("click", closePopup);
 
-
+    loadAreas();
 });
 
+//sử lý khi người dùng đặt bàn
+document.getElementById('infoForm').addEventListener('submit', function (event) {
+    // Ngừng hành động mặc định của form để không tải lại trang
+    event.preventDefault();
+
+    // Lấy giá trị từ các trường trong form
+    let name = document.getElementById('name').value;
+    let phone = document.getElementById('phone').value;
+    let email = document.getElementById('email').value;
+    let identity = document.getElementById('identity').value;
+    let gender = document.querySelector('input[name="gender"]:checked').value; // Lấy giới tính đã chọn
+    let area = document.getElementById('area').value;
+    let branch = document.getElementById('branch').value;
+    let table = document.getElementById('table').value;
+
+    let queryString = `?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}&identity=${encodeURIComponent(identity)}&gender=${encodeURIComponent(gender)}&area=${encodeURIComponent(area)}&branch=${encodeURIComponent(branch)}&table=${encodeURIComponent(table)}`;
+
+    // Chuyển hướng đến trang với query string
+    window.location.href = '/filter/submit' + queryString;  // Chuyển hướng đến /submit với query string đã tạo
+});

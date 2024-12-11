@@ -1,3 +1,4 @@
+const { filter } = require('compression');
 const FilterModel = require('../models/product.model.js');
 
 class FilterController {
@@ -55,6 +56,30 @@ class FilterController {
             res.status(500).send('Server Error');
         }
     }
-
+    static async getFoodsbyBranch(req, res) {
+        try {
+            const { name, phone, email, identity, gender, area, branch, table } = req.query;
+    
+            let filters = {
+                branch: branch || 'all', // Nhận từ client
+                category: 'all', // Mặc định nếu không có
+                price: null, // Mặc định nếu không có
+                search: ''
+            };
+    
+            // Đặt giá trị khu vực cố định để kiểm tra
+    
+            // Gọi hàm tìm kiếm theo chi nhánh
+            let foods = await FilterModel.searchFoodsByBranch(filters.area);
+    
+            // Render kết quả
+            res.render('filter', { foods, filters });
+        } catch (error) {
+            // Ghi log lỗi chi tiết
+            console.error("Error occurred in getFoodsbyBranch:", error.message);
+            res.status(500).json({ message: 'Error fetching food data', error });
+        }
+    }
+    
 }
 module.exports = FilterController;

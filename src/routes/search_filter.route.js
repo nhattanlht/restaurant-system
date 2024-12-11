@@ -3,9 +3,10 @@ const router=express.Router();
 const FilterController=require('../controllers/search_filter_controller.js');
 router.get('/filter',FilterController.renderFoods);
 router.get('/filter/result',FilterController.getFoods);
+router.get('/filter/submit',FilterController.getFoodsbyBranch);
 // Route lấy tất cả khu vực
-router.get('/areas', FilterController.getAllAreas);
+router.get('/api/areas', FilterController.getAllAreas);
 
 // Route lấy chi nhánh theo khu vực
-router.get('/branches/:areaId', FilterController.getBranchesByArea);
+router.get('/api/branches/:areaId', FilterController.getBranchesByArea);
 module.exports=router;

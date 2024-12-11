@@ -41,9 +41,6 @@ app.use('/login', loginRoutes);
 app.use('',cart);
 app.use('', foodFilterRoutes);
 
-// Định nghĩa route API
-app.use('/api', foodFilterRoutes);
-
 app.get('/protected', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'This is a protected route', user: req.user });
 });
