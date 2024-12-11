@@ -1,5 +1,8 @@
+'use strict'
+
 const fs = require('fs');
 const path = require('path');
+const sql = require('mssql');
 
 class FoodModel {
     static async searchFoods(filters = {}) {
@@ -87,6 +90,37 @@ class FoodModel {
             throw new Error(error.message);
         }
     }
+    // Lấy tất cả thành phố
+    static async getAreas() {
+        try {
+            await sql.connect(config);
+            const result = await sql.query('SELECT area_id, area_name FROM Area');
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching cities:', error);
+            throw error;
+        } finally {
+            await sql.close();
+        }
+    }
+    // Lấy chi nhánh theo ID thành phố
+    static async getBranchesByCity(areaid) {
+        try {
+            await sql.connect(config);
+            const request = new sql.Request();
+            request.input('areaid', sql.Int, areaid);
+
+            const query = 'SELECT branch_id, branch_name FROM Branch WHERE area_id = @areaid';
+            const result = await request.query(query);
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching branches:', error);
+            throw error;
+        } finally {
+            await sql.close();
+        }
+    }
+
 }
 
 module.exports = FoodModel;
