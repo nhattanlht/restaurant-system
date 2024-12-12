@@ -69,41 +69,16 @@
                 <div class="row g-0 gx-3 align-items-center mb-4">
                     <!-- Branch Filter -->
                     <div class="col-md-2">
-                        <label for="branch" class="form-label text-white">Branch</label>
-                        <select id="branch" class="form-select">
-                            <option value="all" <% if (filters.branch==='all' ) { %>selected<% } %>>All</option>
-                            <option value="TPHCM" <% if (filters.branch==='TPHCM' ) { %>selected<% } %>>TPHCM</option>
-                            <option value="Tiền Giang" <% if (filters.branch==='Tiền Giang' ) { %>selected<% } %>>Tiền
-                                    Giang</option>
-                            <option value="Long An" <% if (filters.branch==='Long An' ) { %>selected<% } %>>Long An
-                            </option>
-                            <option value="Đồng Nai" <% if (filters.branch==='Đồng Tháp' ) { %>selected<% } %>>Đồng Nai
-                            </option>
-                            <option value="Cần Thơ" <% if (filters.branch==='Đồng Tháp' ) { %>selected<% } %>>Cần Thơ
-                            </option>
+                        <label for="branchsearch" class="form-label text-white">Branch</label>
+                        <select id="branchsearch" class="form-select">
+                            <option value="" disabled selected>-- Chọn chi nhánh --</option>
                         </select>
                     </div>
                     <!-- Category Filter -->
                     <div class="col-md-2">
                         <label for="category" class="form-label text-white">Category</label>
                         <select id="category" class="form-select">
-                            <option value="all" <% if (filters.category==='all' ) { %>selected<% } %>>All</option>
-                            <option value="Sushi Truyền Thống" <% if (filters.category==='Sushi Truyền Thống' ) { %>
-                                selected<% } %>>Sushi Truyền Thống</option>
-                            <option value="Sushi Đặc Biệt" <% if (filters.category==='Sushi Đặc Biệt' ) { %>selected<% }
-                                    %>
-                                    >Sushi Đặc Biệt</option>
-                            <option value="Salad và Khai Vị" <% if (filters.category==='Salad và Khai Vị' ) { %>selected
-                                <% } %>>Salad và Khai Vị
-                            </option>
-                            <option value="Món Nướng và Chiên" <% if (filters.category==='Món Nướng và Chiên' ) { %>
-                                selected<% } %>>Món Nướng và Chiên</option>
-                            <option value="Cơm và Mì" <% if (filters.category==='Cơm và Mì' ) { %>selected<% } %>>Cơm và
-                                    Mì</option>
-                            <option value="Món Ăn Phụ" <% if (filters.category==='Món Ăn Phụ' ) { %>selected<% } %>>Món
-                                    Ăn Phụ</option>
-                            <option value="Đồ Uống" <% if (filters.category==='Đồ Uống' ) { %>selected<% } %>>Đồ Uống
-                            </option>
+                            <option value="" disabled selected>-- Chọn loại món ăn --</option>
                         </select>
                     </div>
                     <!-- Price Filter -->

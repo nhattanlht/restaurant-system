@@ -9,8 +9,6 @@ document.getElementById('filter-btn').addEventListener('click', function () {
 
     // Chuyển hướng đến trang với các tham số lọc
     window.location.href = '/filter/result' + queryString;
-
-
 });
 
 //cho nút search
@@ -92,6 +90,54 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    async function loadAllBranches() {
+        try {
+            // Gọi API để lấy danh sách tất cả các chi nhánh
+            const response = await fetch('/api/branches'); // Đảm bảo URL API chính xác
+            const branches = await response.json();
+            
+            // Truy cập vào phần tử <select> có id="branch"
+            const branchSelect = document.getElementById('branchsearch');
+            
+            // Xóa các tùy chọn hiện tại (nếu có)
+            branchSelect.innerHTML = `<option value="all" selected>All</option>`;
+    
+            // Thêm các tùy chọn mới từ API
+            branches.forEach(branch => {
+                const option = document.createElement("option");
+                option.value = branch.branch_id; // Giá trị là branch_id
+                option.textContent = branch.branch_name; // Hiển thị tên chi nhánh
+                branchSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error loading branches:", error);
+        }
+    }
+
+    async function loadAllCategories() {
+        try {
+            // Gọi API để lấy danh sách tất cả các chi nhánh
+            const response = await fetch('/api/categories'); // Đảm bảo URL API chính xác
+            const categories = await response.json();
+            
+            // Truy cập vào phần tử <select> có id="branch"
+            const categorySelect = document.getElementById('category');
+            
+            // Xóa các tùy chọn hiện tại (nếu có)
+            categorySelect.innerHTML = `<option value="all" selected>All</option>`;
+    
+            // Thêm các tùy chọn mới từ API
+            categories.forEach(category => {
+                const option = document.createElement("option");
+                option.value = category.category_id; // Giá trị là category_id
+                option.textContent = category.category_name; // Hiển thị tên chi nhánh
+                categorySelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error loading categories:", error);
+        }
+    }
+
 
     // Cập nhật chi nhánh khi chọn khu vực
     areaSelect.addEventListener("change", () => {
@@ -103,7 +149,12 @@ document.addEventListener("DOMContentLoaded", () => {
     openPopupBtn.addEventListener("click", showPopup);
     closePopupBtn.addEventListener("click", closePopup);
     cancelPopupBtn.addEventListener("click", closePopup);
-
+    
+    //branch cho nút search
+    loadAllBranches();
+    //Phân loại món ăn
+    loadAllCategories();
+    //Areas cho đặt bàn
     loadAreas();
 });
 

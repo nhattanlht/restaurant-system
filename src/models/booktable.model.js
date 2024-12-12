@@ -1,50 +1,134 @@
 const sql = require('mssql');
 const config = require('../configs/mssql.config');
 
+const formatDateTime = (dateTimeString) => {
+    // Tạo đối tượng Date từ chuỗi đầu vào
+    const date = new Date(dateTimeString);
+
+    if (isNaN(date.getTime())) {
+        throw new Error(`Invalid datetime format: ${dateTimeString}`);
+    }
+
+    // Lấy các phần của ngày và thời gian
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0, cần +1
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    // Trả về chuỗi theo định dạng 'YYYY-MM-DD HH:mm:ss'
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
+const extractTimeFromDateTime = (dateTimeString) => {
+    // Tạo đối tượng Date từ chuỗi datetime
+    const date = new Date(dateTimeString);
+
+    // Kiểm tra xem chuỗi datetime có hợp lệ không
+    if (isNaN(date.getTime())) {
+        throw new Error(`Invalid datetime format: ${dateTimeString}`);
+    }
+
+    // Lấy giờ, phút, giây từ đối tượng Date
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    // Trả về chuỗi thời gian theo định dạng HH:mm:ss
+    return `${hours}:${minutes}:${seconds}`;
+};
+
+// Chuyển đổi chuỗi thành thời gian (giả sử định dạng là HH:mm:ss)
+const parseTime = (timeString) => {
+    // Kiểm tra xem chuỗi có đúng định dạng không (HH:mm:ss)
+    const timeParts = timeString.split(':');
+    if (timeParts.length !== 3) {
+        throw new Error('Invalid time format for: ${timeString}');
+    }
+    // Đảm bảo rằng các phần của thời gian là số hợp lệ
+    const [hours, minutes, seconds] = timeParts.map(part => parseInt(part, 10));
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours < 0 || hours >= 24 || minutes < 0 || minutes >= 60 || seconds < 0 || seconds >= 60) {
+        throw new Error('Invalid time value for: ${timeString}');
+    }
+    // Trả về đối tượng Date với thời gian xác định
+    const now = new Date();
+    now.setHours(hours, minutes, seconds, 0);
+    return now;
+};
+
+const parseDateTime = (dateTimeString) => {
+    // Kiểm tra định dạng (giả sử định dạng là 'YYYY-MM-DD HH:mm:ss')
+    const [datePart, timePart] = dateTimeString.split(' ');
+    if (!datePart || !timePart) {
+        throw new Error('Invalid datetime format for: ${ dateTimeString }');
+    }
+
+    // Tách và kiểm tra phần ngày
+    const dateParts = datePart.split('-').map(part => parseInt(part, 10));
+    if (dateParts.length !== 3) {
+        throw new Error('Invalid date format for: ${ datePart }');
+    }
+    const [year, month, day] = dateParts;
+
+    // Tách và kiểm tra phần thời gian
+    const timeParts = timePart.split(':').map(part => parseInt(part, 10));
+    if (timeParts.length !== 3) {
+        throw new Error('Invalid time format for: ${ timePart }');
+    }
+    const [hours, minutes, seconds] = timeParts;
+
+    // Kiểm tra các giá trị có hợp lệ hay không
+    if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(hours) || isNaN(minutes) || isNaN(seconds) ||
+        month < 1 || month > 12 || day < 1 || day > 31 ||
+        hours < 0 || hours >= 24 || minutes < 0 || minutes >= 60 || seconds < 0 || seconds >= 60) {
+        throw new Error('Invalid datetime value for: ${ dateTimeString }');
+    }
+
+    // Trả về đối tượng Date
+    return new Date(year, month - 1, day, hours, minutes, seconds);
+};
+
 class BooktableModel {
     static async NewOrderforBooking(infotable = {}) {
         try {
             const { customer_id, table, arrival_time } = infotable;
             await sql.connect(config);
 
-            // // Lấy id order
-            // const maxIdQuery = `SELECT ISNULL(MAX(order_id), 0) + 1 AS new_order_id FROM [Order]`;
-            // const maxIdRequest = new sql.Request();
-            // const maxIdResult = await maxIdRequest.query(maxIdQuery);
-            // const newOrderId = maxIdResult.recordset[0].new_order_id;
+            // Lấy id order
+            const maxIdQuery = `SELECT ISNULL(MAX(order_id), 0) + 1 AS new_order_id FROM [Order]`;
+            const maxIdRequest = new sql.Request();
+            const maxIdResult = await maxIdRequest.query(maxIdQuery);
+            const newOrderId = maxIdResult.recordset[0].new_order_id;
 
-            // // Thêm thông tin đơn hàng mới với customer_id
-            // const OrderinsertQuery = `
-            // INSERT INTO [Order] (order_id, customer_id)
-            // VALUES (@OrderId, @CustomerId)
-            // `;
+            // Thêm thông tin đơn hàng mới với customer_id
+            const OrderinsertQuery = `
+            INSERT INTO [Order] (order_id, order_date, customer_id)
+            VALUES (@OrderId, @OrderDate, @CustomerId)
+            `;
 
-            // const OrderinsertRequest = new sql.Request();
-            // OrderinsertRequest.input('OrderId', sql.Int, newOrderId);
-            // OrderinsertRequest.input('CustomerId', sql.BigInt, customer_id);
+            let date = formatDateTime(new Date());
+            const OrderinsertRequest = new sql.Request();
+            OrderinsertRequest.input('OrderId', sql.Int, newOrderId);
+            OrderinsertRequest.input('OrderDate', sql.DateTime, parseDateTime(date));
+            OrderinsertRequest.input('CustomerId', sql.BigInt, customer_id);
 
-            // await OrderinsertRequest.query(OrderinsertQuery);
+            await OrderinsertRequest.query(OrderinsertQuery);
 
-            // console.log('Order inserted successfully');
-            let newOrderId = 501;
+            console.log('Order inserted successfully');
 
             // Thêm thông tin đơn hàng ăn tại chỗ mới với order_id
             const TableNumber = Math.floor(Math.random() * 50) + 1; // Tạo số bàn ngẫu nhiên từ 1 đến 50
 
-            // const Dine_In_OrderinsertQuery = `
-            // INSERT INTO [Dine_In_Ordering] (order_id, table_number, arrival_time, guest_count)
-            // VALUES (@OrderId, @TableNumber, @ArrivalTime, @GuestCount)
-            // `;
-
             const Dine_In_OrderinsertQuery = `
-            INSERT INTO [Dine_In_Ordering] (order_id, table_number, guest_count)
-            VALUES (@OrderId, @TableNumber, @GuestCount)
+            INSERT INTO [Dine_In_Ordering] (order_id, table_number, arrival_time, guest_count)
+            VALUES (@OrderId, @TableNumber, @ArrivalTime, @GuestCount)
             `;
 
             const Dine_In_OrderinsertRequest = new sql.Request();
             Dine_In_OrderinsertRequest.input('OrderId', sql.Int, newOrderId);
             Dine_In_OrderinsertRequest.input('TableNumber', sql.Int, TableNumber);
-            // Dine_In_OrderinsertRequest.input('ArrivalTime', sql.Time, arrival_time);  // Make sure arrival_time is in the right format
+            Dine_In_OrderinsertRequest.input('ArrivalTime', sql.Time, parseTime(extractTimeFromDateTime(arrival_time)));  // Make sure arrival_time is in the right format
             Dine_In_OrderinsertRequest.input('GuestCount', sql.Int, table);
 
             await Dine_In_OrderinsertRequest.query(Dine_In_OrderinsertQuery);

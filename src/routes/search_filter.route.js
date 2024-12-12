@@ -9,4 +9,8 @@ router.get('/api/areas', FilterController.getAllAreas);
 
 // Route lấy chi nhánh theo khu vực
 router.get('/api/branches/:areaId', FilterController.getBranchesByArea);
+
+// Route lấy chi nhánh 
+router.get('/api/branches', FilterController.getBranches);
+router.get('/api/categories', FilterController.getCategories);
 module.exports=router;

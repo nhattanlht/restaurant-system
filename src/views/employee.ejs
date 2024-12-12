@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/css/employee.css">
+    <title>Branch Revenue Report</title>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>System Management</h1>
+        <a href="#">New Customer</a>
+        <a href="#">Customer Management</a>
+        <a href="#">Item Management</a>
+        <a href="#">Reports</a>
+    </div>
+    <div class="main-content">
+        <h2>Thống kê doanh thu theo chi nhánh</h2>
+        <form method="GET" action="/reports/filter">
+            <label for="year">Năm:</label>
+            <select name="year" id="year">
+                <option value="all">Tất cả</option>
+            </select>
+            <label for="month">Tháng:</label>
+            <select name="month" id="month">
+                <option value="all">Tất cả</option>
+            </select>
+            <label for="day">Ngày:</label>
+            <select name="day" id="day">
+                <option value="all">Tất cả</option>
+            </select>
+            <button type="submit">Lọc Doanh Thu</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Chi Nhánh</th>
+                    <th>Tên Chi Nhánh</th>
+                    <th>Tổng Doanh Thu</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>18</td>
+                    <td>Chi nhánh Bình Thạnh</td>
+                    <td>11186000000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

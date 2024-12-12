@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #333;
+    color: #fff;
+    width: 250px;
+    padding: 20px;
+    height: 100vh;
+}
+
+.sidebar h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color:orange;
+}
+
+.sidebar a {
+    display: block;
+    background-color: #ccc;
+    padding: 10px;
+    border-radius: 10px;
+    color: #333;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.main-content {
+    padding: 20px;
+    flex: 1;
+    margin: 15px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+form label {
+    margin-right: 10px;
+}
+
+form select, button {
+    margin-right: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}

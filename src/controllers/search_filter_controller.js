@@ -46,6 +46,28 @@ class FilterController {
         }
     }
 
+    // Lấy chi nhánh 
+    static async getBranches(req, res) {
+        try {
+            const branches = await FilterModel.getBranches();
+            res.json(branches);  // Trả về danh sách chi nhánh
+        } catch (error) {
+            console.error('Error fetching branches:', error);
+            res.status(500).send('Server Error');
+        }
+    }
+    
+    // Lấy phân loại món ăn
+    static async getCategories(req, res) {
+        try {
+            const categories = await FilterModel.getCategories();
+            res.json(categories);  // Trả về danh sách chi nhánh
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            res.status(500).send('Server Error');
+        }
+    }
+
     // Lấy chi nhánh theo ID khu vực
     static async getBranchesByArea(req, res) {
         const areaId = req.params.areaId;  // ID khu vực từ URL
@@ -81,9 +103,6 @@ class FilterController {
                 price: null,
                 search: ''
             };
-
-            // Cần xóa khu vực cố định
-            filters.branch = "Cần Thơ";
 
             // Gọi hàm tìm kiếm theo chi nhánh
             let foods = await FilterModel.searchFoodsByBranch(filters.branch);
