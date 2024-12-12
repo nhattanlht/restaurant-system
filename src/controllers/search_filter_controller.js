@@ -56,22 +56,30 @@ class FilterController {
             res.status(500).send('Server Error');
         }
     }
+
     static async getFoodsbyBranch(req, res) {
         try {
             const { name, phone, email, identity, gender, area, branch, table } = req.query;
-    
-            let filters = {
-                branch: branch || 'all', // Nhận từ client
-                category: 'all', // Mặc định nếu không có
-                price: null, // Mặc định nếu không có
-                search: ''
+
+            // Tạo thông tin khách hàng từ request
+            let customerInfo = { name, phone, email, identity, gender };
+
+            // Kiểm tra hoặc tạo khách hàng
+            let customer_id = await FilterModel.checkOrCreateCustomer(customerInfo);
+
+            console.log('customer_id: ', customer_id)
+            let filters = { 
+                branch: branch || 'all', 
+                category: 'all', 
+                price: null, 
+                search: '' 
             };
-    
+
             // Đặt giá trị khu vực cố định để kiểm tra
-    
+            filters.branch = "Cần Thơ"
             // Gọi hàm tìm kiếm theo chi nhánh
-            let foods = await FilterModel.searchFoodsByBranch(filters.area);
-    
+            let foods = await FilterModel.searchFoodsByBranch(filters.branch);
+
             // Render kết quả
             res.render('filter', { foods, filters });
         } catch (error) {
@@ -80,6 +88,6 @@ class FilterController {
             res.status(500).json({ message: 'Error fetching food data', error });
         }
     }
-    
+
 }
 module.exports = FilterController;

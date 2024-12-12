@@ -122,6 +122,7 @@ class FoodModel {
         }
     }
 
+    //tìm kiếm thức ăn theo chi nhánh
     static async searchFoodsByBranch(branchName) {
         try {
             const filePath = path.join(__dirname, '../../branch_menu_data.json'); // Đường dẫn file JSON
@@ -153,7 +154,58 @@ class FoodModel {
         }
     }
     
+    //Kiểm tra khách hàng đã tồn tại hay chưa
+    static async checkOrCreateCustomer(infocustomer = {}) {
+        try {
+            const { name, phone, email, identity, gender } = infocustomer;
+    
+            await sql.connect(config);
+    
+            // Kiểm tra email trong bảng Customer
+            const emailCheckQuery = `SELECT customer_id FROM Customer WHERE email = @Email`;
+            const result = await sql.query({
+                text: emailCheckQuery,
+                input: { Email: email }
+            });
+    
+            if (result.recordset && result.recordset.length > 0) {
+                // Email đã tồn tại, trả về customer_id
+                return result.recordset[0].customer_id;
+            } else {
+                // Email chưa tồn tại, tạo customer_id mới
+                const maxIdQuery = `SELECT ISNULL(MAX(customer_id), 0) + 1 AS new_customer_id FROM Customer`;
+                const maxIdResult = await sql.query(maxIdQuery);
+                const newCustomerId = maxIdResult.recordset[0].new_customer_id;
+    
+                // Thêm thông tin khách hàng mới với customer_id
+                const insertQuery = `
+                    INSERT INTO Customer (customer_id, name, phone_number, email, identity_card, gender)
+                    VALUES (@CustomerId, @Name, @Phone, @Email, @Identity, @Gender)
+                `;
+                await sql.query({
+                    text: insertQuery,
+                    input: {
+                        CustomerId: newCustomerId,
+                        Name: name || null,
+                        Phone: phone || null,
+                        Email: email,
+                        Identity: identity || null,
+                        Gender: gender || null
+                    }
+                });
 
+                console.log('User inserted successfully')
+    
+                return newCustomerId; // Trả về customer_id vừa tạo
+            }
+        } catch (error) {
+            console.error('Error in checkOrCreateCustomer:', error);
+            throw error;
+        } finally {
+            await sql.close();
+        }
+    }
+    
 }
 
 module.exports = FoodModel;
