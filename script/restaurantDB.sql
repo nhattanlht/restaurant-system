@@ -253,3 +253,18 @@ ALTER TABLE Branch
 ADD CONSTRAINT CK_HasCarParking_Branch
 CHECK (has_car_parking IN (0, 1));
 
+
+-- Thêm cột branch_id vào bảng Employee
+ALTER TABLE [Employee]
+ADD branch_id INT;
+
+-- Thiết lập khóa ngoại liên kết branch_id với bảng Branch
+ALTER TABLE [Employee]
+ADD CONSTRAINT FK_Employee_Branch FOREIGN KEY (branch_id)
+REFERENCES [Branch](branch_id);
+
+ALTER TABLE [Department]
+DROP CONSTRAINT FK__Departmen__branc__41EDCAC5;
+
+ALTER TABLE [Department]
+DROP COLUMN branch_id;

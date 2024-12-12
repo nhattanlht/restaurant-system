@@ -16,9 +16,7 @@ class ReportModel {
                 JOIN 
                     [Employee] e ON o.employee_id = e.employee_id
                 JOIN 
-                    [Department] d ON e.dept_id = d.department_id
-                JOIN 
-                    [Branch] b ON d.branch_id = b.branch_id
+                    [Branch] b ON e.branch_id = b.branch_id
                 WHERE
                     (@year IS NULL OR YEAR(o.order_date) = @year) AND
                     (@month IS NULL OR MONTH(o.order_date) = @month) AND

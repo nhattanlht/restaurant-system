@@ -16,32 +16,47 @@
     </div>
     <table>
         <thead>
-        <tr>
-            <th style="text-align: center;">ID</th>
-            <th style="text-align: center;">Full Name</th>
-            <th style="text-align: center;">DOB</th>
-            <th style="text-align: center;">Gender</th>
-            <th style="text-align: center;">Dept ID</th>
-            <th style="text-align: center;">Phone Number</th>
-            <th style="text-align: center;">Actions</th>
-        </tr>
+            <tr>
+                <th style="text-align: center;">ID</th>
+                <th style="text-align: center;">Full Name</th>
+                <th style="text-align: center;">DOB</th>
+                <th style="text-align: center;">Gender</th>
+                <th style="text-align: center;">Dept ID</th>
+                <th style="text-align: center;">Phone Number</th>
+                <th style="text-align: center;">Actions</th>
+            </tr>
         </thead>
         <tbody id="employeeTableBody">
-        <% employees.forEach(employee => { %>
-            <tr class="employee-row" data-branch-id="<%= employee.branch_id %>" data-dept-id="<%= employee.dept_id %>">
-                <td style="text-align: center;"><%= employee.employee_id %></td>
-                <td style="text-align: center;"><%= employee.name %></td>
-                <td style="text-align: center;"><%= employee.DOB %></td>
-                <td style="text-align: center;"><%= employee.gender %></td>
-                <td style="text-align: center;"><%= employee.dept_id %></td>
-                <td style="text-align: center;"><%= employee.phone_number %></td>
-                <td>
-                    <a href="/admin/employees/edit/<%= employee.employee_id %>" class="button">Edit</a>
-                    <a href="/admin/employees/delete/<%= employee.employee_id %>" class="button" onclick="return confirm('Are you sure you want to delete this branch?');">Delete</a>
-                    <button class="button" onclick="showTransferModal('<%= employee.employee_id %>')">Transfer</button>
-                </td>
-            </tr>
-        <% }); %>
+            <% employees.forEach(employee=> { %>
+                <tr class="employee-row" data-branch-id="<%= employee.branch_id %>"
+                    data-dept-id="<%= employee.dept_id %>">
+                    <td style="text-align: center;">
+                        <%= employee.employee_id %>
+                    </td>
+                    <td style="text-align: center;">
+                        <%= employee.name %>
+                    </td>
+                    <td style="text-align: center;">
+                        <%= employee.DOB %>
+                    </td>
+                    <td style="text-align: center;">
+                        <%= employee.gender %>
+                    </td>
+                    <td style="text-align: center;">
+                        <%= employee.dept_id %>
+                    </td>
+                    <td style="text-align: center;">
+                        <%= employee.phone_number %>
+                    </td>
+                    <td>
+                        <a href="/admin/employees/edit/<%= employee.employee_id %>" class="button">Edit</a>
+                        <a href="/admin/employees/delete/<%= employee.employee_id %>" class="button"
+                            onclick="return confirm('Are you sure you want to delete this branch?');">Delete</a>
+                        <button class="button"
+                            onclick="showTransferModal('<%= employee.employee_id %>')">Transfer</button>
+                    </td>
+                </tr>
+                <% }); %>
         </tbody>
     </table>
     <div id="employeePagination" class="pagination"></div>
@@ -78,8 +93,11 @@
         </div>
 
         <div class="form-group">
-            <label for="dept_id">Department ID:</label>
-            <input type="number" id="dept_id" name="dept_id" required>
+            <label for="dept_id">Department:</label>
+            <select id="dept_id" name="dept_id" required>
+                <option value="">Select Department</option>
+                <!-- Dynamically populated options -->
+            </select>
         </div>
 
         <div class="form-group">
@@ -93,7 +111,7 @@
         </div>
 
         <div class="form-group">
-            <label for="user_id">User  ID:</label>
+            <label for="user_id">User ID:</label>
             <input type="number" id="user_id" name="user_id" required>
         </div>
 
@@ -153,147 +171,160 @@
 
 
 <script>
-// Function to show/hide the employee form
-function showEmployeeForm() {
-    const form = document.getElementById("employee-form");
-    form.style.display = form.style.display === "none" ? "block" : "none";
-}
-
-// Function to update salary
-async function updateSalary(event) {
-    event.preventDefault(); // Prevent default form submission
-
-    const departmentName = document.getElementById("departmentName").value.trim();
-    const newSalary = parseFloat(document.getElementById("newSalary").value.trim());
-
-    // Validate inputs
-    if (!departmentName || newSalary <= 0) {
-        document.getElementById("salaryUpdateMessage").innerHTML =
-            "<p style='color: red;'>Please enter a valid department name and salary.</p>";
-        return;
+    // Function to show/hide the employee form
+    function showEmployeeForm() {
+        const form = document.getElementById("employee-form");
+        form.style.display = form.style.display === "none" ? "block" : "none";
     }
 
-    try {
-        // Send request to the server
-        const response = await fetch('/admin/update-salary', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ departmentName, newSalary }),
+    // Function to update salary
+    async function updateSalary(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const departmentName = document.getElementById("departmentName").value.trim();
+        const newSalary = parseFloat(document.getElementById("newSalary").value.trim());
+
+        // Validate inputs
+        if (!departmentName || newSalary <= 0) {
+            document.getElementById("salaryUpdateMessage").innerHTML =
+                "<p style='color: red;'>Please enter a valid department name and salary.</p>";
+            return;
+        }
+
+        try {
+            // Send request to the server
+            const response = await fetch('/admin/update-salary', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ departmentName, newSalary }),
+            });
+
+            const result = await response.json();
+
+            // Display result message
+            if (result.success) {
+                document.getElementById("salaryUpdateMessage").innerHTML =
+                    `<p style='color: green;'>${result.message}</p>`;
+            } else {
+                document.getElementById("salaryUpdateMessage").innerHTML =
+                    `<p style='color: red;'>${result.message}</p>`;
+            }
+        } catch (error) {
+            document.getElementById("salaryUpdateMessage").innerHTML =
+                `<p style='color: red;'>An error occurred: ${error.message}</p>`;
+        }
+    }
+
+    // Show transfer modal
+    function showTransferModal(employeeId) {
+        document.getElementById("modalEmployeeId").value = employeeId; // Set Employee ID
+        document.getElementById("transferModal").style.display = "flex";
+    }
+
+    // Close transfer modal
+    function closeTransferModal() {
+        document.getElementById("transferModal").style.display = "none";
+    }
+
+    // Submit transfer form
+    async function submitTransferForm(event) {
+        event.preventDefault(); // Ngăn hành động submit mặc định
+
+        const employeeId = document.getElementById('modalEmployeeId').value.trim();
+        const newDeptId = document.getElementById('modalNewDeptId').value.trim();
+        const newBranchId = document.getElementById('modalNewBranchId').value.trim();
+        const transferDate = document.getElementById('modalTransferDate').value.trim();
+
+        try {
+            const response = await fetch('/admin/employees/transfer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ employeeId, newDeptId, newBranchId, transferDate }),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert(result.message);
+                closeTransferModal();
+                location.reload(); // Reload page to update the list
+            } else {
+                alert('Error: ' + result.message);
+            }
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    }
+
+    // Function to search employees by name
+    function searchEmployee(searchTerm) {
+        const rows = document.querySelectorAll('#employeeTableBody .employee-row');
+        searchTerm = searchTerm.toLowerCase(); // Convert to lowercase for case-insensitive search
+
+        rows.forEach(row => {
+            const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            if (name.includes(searchTerm)) {
+                row.style.display = ''; // Show row if search term matches
+            } else {
+                row.style.display = 'none'; // Hide row if search term doesn't match
+            }
+        });
+    }
+
+    // Hàm để lọc nhân viên theo chi nhánh và phòng ban
+    function filterEmployees() {
+        const branchFilter = document.getElementById("filterBranch").value;
+        const departmentFilter = document.getElementById("filterDepartment").value;
+        const rows = document.querySelectorAll('#employeeTableBody .employee-row');
+
+        rows.forEach(row => {
+            const branchId = row.getAttribute("data-branch-id");
+            const deptId = row.getAttribute("data-dept-id");
+
+            // Kiểm tra nếu row khớp với bộ lọc chi nhánh và phòng ban
+            if ((branchFilter === "" || branchId === branchFilter) &&
+                (departmentFilter === "" || deptId === departmentFilter)) {
+                row.style.display = ''; // Hiển thị row nếu khớp với bộ lọc
+            } else {
+                row.style.display = 'none'; // Ẩn row nếu không khớp
+            }
+        });
+    }
+
+    // Hàm để điền thông tin vào dropdown filter (từ server hoặc API)
+    function populateFilters(branches, departments) {
+        const branchSelect = document.getElementById("filterBranch");
+        const departmentSelect = document.getElementById("filterDepartment");
+
+        // Điền các lựa chọn chi nhánh
+        branches.forEach(branch => {
+            const option = document.createElement("option");
+            option.value = branch.id;
+            option.textContent = branch.name;
+            branchSelect.appendChild(option);
         });
 
-        const result = await response.json();
-
-        // Display result message
-        if (result.success) {
-            document.getElementById("salaryUpdateMessage").innerHTML =
-                `<p style='color: green;'>${result.message}</p>`;
-        } else {
-            document.getElementById("salaryUpdateMessage").innerHTML =
-                `<p style='color: red;'>${result.message}</p>`;
-        }
-    } catch (error) {
-        document.getElementById("salaryUpdateMessage").innerHTML =
-            `<p style='color: red;'>An error occurred: ${error.message}</p>`;
-    }
-}
-
-// Show transfer modal
-function showTransferModal(employeeId) {
-    document.getElementById("modalEmployeeId").value = employeeId; // Set Employee ID
-    document.getElementById("transferModal").style.display = "flex";
-}
-
-// Close transfer modal
-function closeTransferModal() {
-    document.getElementById("transferModal").style.display = "none";
-}
-
-// Submit transfer form
-async function submitTransferForm(event) {
-    event.preventDefault(); // Ngăn hành động submit mặc định
-
-    const employeeId = document.getElementById('modalEmployeeId').value.trim();
-    const newDeptId = document.getElementById('modalNewDeptId').value.trim();
-    const newBranchId = document.getElementById('modalNewBranchId').value.trim();
-    const transferDate = document.getElementById('modalTransferDate').value.trim();
-
-    try {
-        const response = await fetch('/admin/employees/transfer', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ employeeId, newDeptId, newBranchId, transferDate }),
+        // Điền các lựa chọn phòng ban
+        departments.forEach(department => {
+            const option = document.createElement("option");
+            option.value = department.id;
+            option.textContent = department.name;
+            departmentSelect.appendChild(option);
         });
-
-        const result = await response.json();
-        if (result.success) {
-            alert(result.message);
-            closeTransferModal();
-            location.reload(); // Reload page to update the list
-        } else {
-            alert('Error: ' + result.message);
-        }
-    } catch (error) {
-        alert('Error: ' + error.message);
     }
-}
 
-// Function to search employees by name
-function searchEmployee(searchTerm) {
-    const rows = document.querySelectorAll('#employeeTableBody .employee-row');
-    searchTerm = searchTerm.toLowerCase(); // Convert to lowercase for case-insensitive search
+    // Ví dụ về cách gọi API để lấy dữ liệu chi nhánh và phòng ban
+    async function fetchBranchAndDepartmentData() {
+        try {
+            const response = await fetch('/admin/branches-and-departments');
+            const data = await response.json();
 
-    rows.forEach(row => {
-        const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-        if (name.includes(searchTerm)) {
-            row.style.display = ''; // Show row if search term matches
-        } else {
-            row.style.display = 'none'; // Hide row if search term doesn't match
+            // Gọi hàm để điền thông tin vào filter
+            populateFilters(data.branches, data.departments);
+        } catch (error) {
+            console.error('Error fetching branch and department data:', error);
         }
-    });
-}
+    }
 
-// Function to filter employees by branch and department
-function filterEmployees() {
-    const branchFilter = document.getElementById("filterBranch").value;
-    const departmentFilter = document.getElementById("filterDepartment").value;
-    const rows = document.querySelectorAll('#employeeTableBody .employee-row');
-
-    rows.forEach(row => {
-        const branchId = row.getAttribute("data-branch-id");
-        const deptId = row.getAttribute("data-dept-id");
-
-        // Check if row matches both branch and department filters
-        if ((branchFilter === "" || branchId === branchFilter) &&
-            (departmentFilter === "" || deptId === departmentFilter)) {
-            row.style.display = ''; // Show row if it matches filters
-        } else {
-            row.style.display = 'none'; // Hide row if it doesn't match filters
-        }
-    });
-}
-
-// Function to dynamically populate filter dropdowns (for example, from the server)
-function populateFilters(branches, departments) {
-    const branchSelect = document.getElementById("filterBranch");
-    const departmentSelect = document.getElementById("filterDepartment");
-
-    // Populate branch options
-    branches.forEach(branch => {
-        const option = document.createElement("option");
-        option.value = branch.id;
-        option.textContent = branch.name;
-        branchSelect.appendChild(option);
-    });
-
-    // Populate department options
-    departments.forEach(department => {
-        const option = document.createElement("option");
-        option.value = department.id;
-        option.textContent = department.name;
-        departmentSelect.appendChild(option);
-    });
-}
-
-// Call this function when the page loads to populate filters (this data could be fetched via an API)
-populateFilters([{ id: 1, name: 'Branch 1' }, { id: 2, name: 'Branch 2' }], [{ id: 1, name: 'Manager' }, { id: 2, name: 'Cashier' }]);
+    // Gọi hàm fetch khi trang được tải
+    fetchBranchAndDepartmentData();
 </script>

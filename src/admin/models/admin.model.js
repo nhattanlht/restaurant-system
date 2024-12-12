@@ -183,7 +183,7 @@ const getEmployeeById = async (employee_id) => {
 };
 
 // Thêm mới nhân viên
-const addEmployee = async ({employee_id, name, DOB, gender, dept_id, address, phone_number, user_id }) => {
+const addEmployee = async ({employee_id, name, DOB, gender, dept_id, address, phone_number, user_id, branch_id }) => {
   try {
     const pool = await sql.connect(dev_config);
     const result = await pool.request()
@@ -195,9 +195,10 @@ const addEmployee = async ({employee_id, name, DOB, gender, dept_id, address, ph
         .input('address', sql.NVarChar, address)
         .input('phone_number', sql.NVarChar, phone_number)
         .input('user_id', sql.Int, user_id)
+        .input('branch_id', sql.Int, branch_id)
         .query(`
-        INSERT INTO Employee (employee_id, name, DOB, gender, dept_id, address, phone_number, user_id) 
-        VALUES (@employee_id ,@name, @DOB, @gender, @dept_id, @address, @phone_number, @user_id)
+        INSERT INTO Employee (employee_id, name, DOB, gender, dept_id, address, phone_number, user_id, branch_id) 
+        VALUES (@employee_id ,@name, @DOB, @gender, @dept_id, @address, @phone_number, @user_id, @branch_id)
       `);
 
     return result.rowsAffected > 0; // Trả về true nếu thêm thành công
