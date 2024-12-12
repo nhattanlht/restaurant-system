@@ -36,6 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const branchSelect = document.getElementById("branch");
     const tableSelect = document.getElementById("table");
 
+    //cho datetime theo thời điểm
+    const datetimeInput = document.getElementById('datetime');
+            const now = new Date().toISOString().slice(0, 16); // Lấy thời gian hiện tại định dạng yyyy-MM-ddTHH:mm
+            datetimeInput.min = now;
+
     // Hiển thị popup
     function showPopup() {
         popup.classList.add("active");
@@ -116,8 +121,9 @@ document.getElementById('infoForm').addEventListener('submit', function (event) 
     let area = document.getElementById('area').value;
     let branch = document.getElementById('branch').value;
     let table = document.getElementById('table').value;
+    let arrival_time = document.getElementById('datetime').value;
 
-    let queryString = `?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}&identity=${encodeURIComponent(identity)}&gender=${encodeURIComponent(gender)}&area=${encodeURIComponent(area)}&branch=${encodeURIComponent(branch)}&table=${encodeURIComponent(table)}`;
+    let queryString = `?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}&identity=${encodeURIComponent(identity)}&gender=${encodeURIComponent(gender)}&area=${encodeURIComponent(area)}&branch=${encodeURIComponent(branch)}&table=${encodeURIComponent(table)}&arrival_time=${encodeURIComponent(arrival_time)}`;
 
     // Chuyển hướng đến trang với query string
     window.location.href = '/filter/submit' + queryString;  // Chuyển hướng đến /submit với query string đã tạo

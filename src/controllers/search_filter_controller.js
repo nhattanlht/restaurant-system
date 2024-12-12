@@ -1,5 +1,6 @@
 const { filter } = require('compression');
 const FilterModel = require('../models/product.model.js');
+const BooktableModel = require('../models/booktable.model.js');
 
 class FilterController {
     static async getFoods(req, res) {
@@ -59,24 +60,31 @@ class FilterController {
 
     static async getFoodsbyBranch(req, res) {
         try {
-            const { name, phone, email, identity, gender, area, branch, table } = req.query;
+            const { name, phone, email, identity, gender, area, branch, table, arrival_time } = req.query;
 
             // Tạo thông tin khách hàng từ request
             let customerInfo = { name, phone, email, identity, gender };
 
             // Kiểm tra hoặc tạo khách hàng
-            let customer_id = await FilterModel.checkOrCreateCustomer(customerInfo);
+            let customer_id = await BooktableModel.checkOrCreateCustomer(customerInfo);
+            
+            // Thông tin để đặt bàn
+            let tableinfo = { customer_id, table: Number(table), arrival_time};
 
-            console.log('customer_id: ', customer_id)
-            let filters = { 
-                branch: branch || 'all', 
-                category: 'all', 
-                price: null, 
-                search: '' 
+            // Gọi phương thức để thêm đơn hàng mới
+            let order_id = await BooktableModel.NewOrderforBooking(tableinfo);
+
+            // Các bộ lọc để tìm kiếm món ăn
+            let filters = {
+                branch: branch || 'all',
+                category: 'all',
+                price: null,
+                search: ''
             };
 
-            // Đặt giá trị khu vực cố định để kiểm tra
-            filters.branch = "Cần Thơ"
+            // Cần xóa khu vực cố định
+            filters.branch = "Cần Thơ";
+
             // Gọi hàm tìm kiếm theo chi nhánh
             let foods = await FilterModel.searchFoodsByBranch(filters.branch);
 
