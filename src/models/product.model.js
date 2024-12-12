@@ -19,7 +19,7 @@ class FoodModel {
             }
             if (filters.category && filters.category !== 'all') {
                 request.input('category', sql.NVarChar, filters.category);
-                whereConditions.push('c.category_name = @category');
+                whereConditions.push('c.category_id = @category');
             }
             if (filters.price) {
                 request.input('price', sql.Money, filters.price);

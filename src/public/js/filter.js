@@ -1,6 +1,6 @@
 //cho filter
 document.getElementById('filter-btn').addEventListener('click', function () {
-    let branch = document.getElementById('branch').value;
+    let branch = document.getElementById('branchsearch').value;
     let category = document.getElementById('category').value;
     let price = document.getElementById('price-max').value;
 
@@ -14,7 +14,7 @@ document.getElementById('filter-btn').addEventListener('click', function () {
 //cho nút search
 document.getElementById('search-btn').addEventListener('click', function () {
     let search = document.getElementById('search-box').value;
-    let branch = document.getElementById('branch').value;
+    let branch = document.getElementById('branchsearch').value;
     let category = document.getElementById('category').value;
     let price = document.getElementById('price-max').value;
 
@@ -36,8 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //cho datetime theo thời điểm
     const datetimeInput = document.getElementById('datetime');
-            const now = new Date().toISOString().slice(0, 16); // Lấy thời gian hiện tại định dạng yyyy-MM-ddTHH:mm
-            datetimeInput.min = now;
+    const now = new Date().toISOString().slice(0, 16); // Lấy thời gian hiện tại định dạng yyyy-MM-ddTHH:mm
+    datetimeInput.min = now;
 
     // Hiển thị popup
     function showPopup() {
@@ -90,55 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    async function loadAllBranches() {
-        try {
-            // Gọi API để lấy danh sách tất cả các chi nhánh
-            const response = await fetch('/api/branches'); // Đảm bảo URL API chính xác
-            const branches = await response.json();
-            
-            // Truy cập vào phần tử <select> có id="branch"
-            const branchSelect = document.getElementById('branchsearch');
-            
-            // Xóa các tùy chọn hiện tại (nếu có)
-            branchSelect.innerHTML = `<option value="all" selected>All</option>`;
-    
-            // Thêm các tùy chọn mới từ API
-            branches.forEach(branch => {
-                const option = document.createElement("option");
-                option.value = branch.branch_id; // Giá trị là branch_id
-                option.textContent = branch.branch_name; // Hiển thị tên chi nhánh
-                branchSelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error("Error loading branches:", error);
-        }
-    }
-
-    async function loadAllCategories() {
-        try {
-            // Gọi API để lấy danh sách tất cả các chi nhánh
-            const response = await fetch('/api/categories'); // Đảm bảo URL API chính xác
-            const categories = await response.json();
-            
-            // Truy cập vào phần tử <select> có id="branch"
-            const categorySelect = document.getElementById('category');
-            
-            // Xóa các tùy chọn hiện tại (nếu có)
-            categorySelect.innerHTML = `<option value="all" selected>All</option>`;
-    
-            // Thêm các tùy chọn mới từ API
-            categories.forEach(category => {
-                const option = document.createElement("option");
-                option.value = category.category_id; // Giá trị là category_id
-                option.textContent = category.category_name; // Hiển thị tên chi nhánh
-                categorySelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error("Error loading categories:", error);
-        }
-    }
-
-
     // Cập nhật chi nhánh khi chọn khu vực
     areaSelect.addEventListener("change", () => {
         const selectedAreaId = areaSelect.value;
@@ -149,10 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
     openPopupBtn.addEventListener("click", showPopup);
     closePopupBtn.addEventListener("click", closePopup);
     cancelPopupBtn.addEventListener("click", closePopup);
-    
-    //branch cho nút search
+
+    // Load branches and categories only once
     loadAllBranches();
-    //Phân loại món ăn
     loadAllCategories();
     //Areas cho đặt bàn
     loadAreas();
@@ -179,3 +129,57 @@ document.getElementById('infoForm').addEventListener('submit', function (event) 
     // Chuyển hướng đến trang với query string
     window.location.href = '/filter/submit' + queryString;  // Chuyển hướng đến /submit với query string đã tạo
 });
+
+// Initialize flags to track if the data has been loaded
+let branchesLoaded = false;
+let categoriesLoaded = false;
+
+// Load branches function (only runs once)
+async function loadAllBranches() {
+    if (branchesLoaded) return;  // Skip if already loaded
+
+    try {
+        const response = await fetch('/api/branches');
+        const branches = await response.json();
+
+        const branchSelect = document.getElementById('branchsearch');
+        branchSelect.innerHTML = `<option value="all" selected>All</option>`;
+
+        branches.forEach(branch => {
+            const option = document.createElement("option");
+            option.value = branch.branch_id;
+            option.textContent = branch.branch_name;
+            branchSelect.appendChild(option);
+        });
+
+        // Mark as loaded
+        branchesLoaded = true;
+    } catch (error) {
+        console.error("Error loading branches:", error);
+    }
+}
+
+// Load categories function (only runs once)
+async function loadAllCategories() {
+    if (categoriesLoaded) return;  // Skip if already loaded
+
+    try {
+        const response = await fetch('/api/categories');
+        const categories = await response.json();
+
+        const categorySelect = document.getElementById('category');
+        categorySelect.innerHTML = `<option value="all" selected>All</option>`;
+
+        categories.forEach(category => {
+            const option = document.createElement("option");
+            option.value = category.category_id;
+            option.textContent = category.category_name;
+            categorySelect.appendChild(option);
+        });
+
+        // Mark as loaded
+        categoriesLoaded = true;
+    } catch (error) {
+        console.error("Error loading categories:", error);
+    }
+}

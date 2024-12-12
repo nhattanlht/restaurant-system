@@ -7,7 +7,7 @@ class FilterController {
         try {
             const { branch, category, price, search } = req.query;
             console.log("Received filters:", req.query);
-
+            
             let filters = {
                 branch: branch || 'all', //nhận từ client
                 category: category || 'all',
