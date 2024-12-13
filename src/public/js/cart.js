@@ -22,6 +22,14 @@ const loadCart = () => {
     }
 };
 
+// Lưu giỏ hàng vào localStorage mỗi khi có thay đổi
+const saveCart = () => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    updateCartQuantity(); // Cập nhật số lượng hiển thị
+    renderCartItems(cart); // Hiển thị lại giỏ hàng
+};
+
 
 // Hàm gửi giỏ hàng lên server (trong ví dụ này là POST)
 const sendCartToServer = async () => {
@@ -108,15 +116,6 @@ function renderCartItems(cart) {
 }
 
 
-// Lưu giỏ hàng vào localStorage mỗi khi có thay đổi
-const saveCart = () => {
-    console.log("Giỏ hàng hiện tại:", cart); // In giỏ hàng ra console để kiểm tra
-    localStorage.setItem('cart', JSON.stringify(cart));
-
-    updateCartQuantity(); // Cập nhật số lượng hiển thị
-    renderCartItems(cart); // Hiển thị lại giỏ hàng
-};
-
 document.addEventListener("DOMContentLoaded", () => {
     // Xử lý sự kiện thêm món vào giỏ hàng
     document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -164,26 +163,116 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    document.querySelector(".shopping-bag-button").onclick = toggleCart;
+   document.querySelector(".shopping-bag-button").onclick = toggleCart;
 });
 
-
-// document.querySelector('.shopping-cart-button').addEventListener('click', function (event) {
-//     event.preventDefault(); // Ngăn việc reload trang mặc định
-//     window.location.href = '/cart'; // Điều hướng đến trang giỏ hàng
-// });
 // Khởi động: Cập nhật số lượng giỏ hàng khi trang được tải
 updateCartQuantity();
 // Gọi loadCart khi trang được tải để giữ lại giỏ hàng
 loadCart();
-
-// window.addEventListener('beforeunload', () => {
-//     // Xóa giỏ hàng trong localStorage khi người dùng refresh hoặc đóng trang
-//     localStorage.removeItem('cart');
-// });
 
 
 //reload giỏ hàng không bị mất
 if(window.location.href==="/cart"){
     sendCartToServer();
 }
+// Gắn sự kiện click cho nút "Xóa" trong giỏ hàng
+document.querySelectorAll('.remove-item').forEach(button => {
+    button.addEventListener('click', function () {
+        const itemId = this.dataset.id.trim(); // Loại bỏ khoảng trắng thừa 
+        const itemName = this.dataset.name;
+        removeItemFromCart(itemId,itemName);  // Gọi hàm xóa món ăn khỏi giỏ hàng
+    });
+});
+
+// Hàm xóa món ăn khỏi giỏ hàng
+const removeItemFromCart = async (itemId,itemName) => {
+    try {
+        console.log("Gửi yêu cầu xóa món ăn với ID:", itemId);  // Log ID của món ăn đang xóa
+        const response = await fetch('/cart/remove', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ itemId }), // Gửi ID món ăn cần xóa
+        });
+
+        const result = await response.json();
+        console.log("Kết quả trả về từ server:", result);  // Log kết quả trả về từ server
+
+        if (response.ok) {
+
+            localStorage.setItem('cart', JSON.stringify(result.cart));     // Tải lại giỏ hàng từ localStorage và cập nhật giao diện
+
+       
+            loadCart();  // Hàm này sẽ tự động cập nhật số lượng giỏ hàng và hiển thị lại các món ăn
+            // Hiển thị thông báo
+            showToast(`Món "${itemName}"  đã được xóa khỏi giỏ hàng`,'success');
+
+            setTimeout(() => {
+                window.location.reload();  // Reload trang giỏ hàng
+            }, 1000);
+          
+         // Chờ 1 giây để toast được hiển thị trước khi reload trang
+        } else {
+            showToast('Lỗi khi xóa món ăn. Vui lòng thử lại.');
+        }
+    } catch (error) {
+        console.error('Lỗi khi xóa món ăn:', error);
+        showToast('Lỗi khi xóa món ăn. Vui lòng thử lại.');
+    }
+};
+// Gắn sự kiện bấm nút "Cập nhật giỏ hàng"
+document.getElementById('update-cart-button').addEventListener('click', async () => {
+    // Lấy tất cả các mục trong giỏ hàng
+    const cartItems = document.querySelectorAll('.cart-item');
+    const updatedCart = [];
+
+    // Duyệt qua từng món ăn trong giỏ hàng và lấy ID và số lượng mới
+    cartItems.forEach(item => {
+        const itemId = item.querySelector('.cart-item-quantity').dataset.id;
+        const quantity = parseInt(item.querySelector('.cart-item-quantity').value);
+
+        // Kiểm tra số lượng hợp lệ
+        if (isNaN(quantity) || quantity < 1) {
+            return; // Bỏ qua món ăn này nếu số lượng không hợp lệ
+        }
+
+        updatedCart.push({ itemId, quantity });
+    });
+
+    try {
+        // Gửi yêu cầu cập nhật giỏ hàng lên server
+        const response = await fetch('/cart/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cart: updatedCart }) // Gửi thông tin giỏ hàng mới
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log('Phản hồi từ server: ', result);
+
+            // Lưu lại giỏ hàng mới vào localStorage
+            localStorage.setItem('cart', JSON.stringify(result.cart));
+            
+            //Chỉnh lại số lượng giỏ hàng
+            loadCart();
+            // Hiển thị thông báo thành công
+            showToast('Giỏ hàng đã được cập nhật thành công.', 'success');
+
+            // Reload lại trang sau khi cập nhật giỏ hàng
+            setTimeout(() => {
+                window.location.reload(); // Reload trang sau 1 giây để hiển thị các thay đổi
+            }, 1000);
+
+        } else {
+            showToast('Có lỗi khi cập nhật giỏ hàng.');
+        }
+    } catch (error) {
+        console.error('Có lỗi khi cập nhật giỏ hàng:', error);
+        showToast('Có lỗi khi cập nhật giỏ hàng.');
+    }
+});

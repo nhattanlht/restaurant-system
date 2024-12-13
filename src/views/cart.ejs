@@ -21,11 +21,11 @@
                     <div class="cart-item-details">
                         <p><strong><%= item.name %></strong></p>
                         <p>Số lượng: 
-                            <input type="number" value="<%= item.quantity %>" min="1" class="cart-item-quantity" />
+                            <input type="number" value="<%= item.quantity %>" min="1" class="cart-item-quantity" data-id="<%=item.id %>" />
                         </p>
                         <p>Giá: <%= item.price %> VND</p>
                     </div>
-                    <button class="remove-item" data-id="<%= item.id %>">Xóa</button>
+                    <button class="remove-item" data-id="<%= item.id%>" data-name='<%= item.name %>'>Xóa</button>
                 </div>
             <% }); %>
         <% } else { %>
@@ -33,47 +33,35 @@
         <% } %>
     </div>
 
+    <button id="update-cart-button" class="btn-update-cart">Cập nhật giỏ hàng</button>
+
     <div id="cart-total">
         <p>Tổng tiền: <span id="cart-total-price"><%= totalAmount %></span> VND</p>
     </div>
-    <a href="/checkout" class="btn-checkout">Thanh toán</a>
+
+    <!-- Form gửi thông tin giỏ hàng đến /checkout -->
+    <form id="checkout-form" action="/checkout" method="POST">
+        <div id="cart-items">
+            <% if (cart.length > 0) { %>
+                <% cart.forEach(item => { %>
+                    <input type="hidden" name="items[<%= item.id %>][id]" value="<%= item.id %>">
+                    <input type="hidden" name="items[<%= item.id %>][name]" value="<%= item.name %>">
+                    <input type="hidden" name="items[<%= item.id %>][quantity]" value="<%= item.quantity %>">
+                    <input type="hidden" name="items[<%= item.id %>][price]" value="<%= item.price %>">
+                <% }); %>
+            <% } else { %>
+                <p>Giỏ hàng của bạn trống.</p>
+            <% } %>
+        </div>
+        <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
+        <button type="submit" class="btn-checkout">Thanh toán</button>
+    </form>
+    
+
 </div>
 </div>
+<div id="toast" class="toast"></div>
 
-    <!-- JavaScript xử lý hành động thêm và xóa món -->
-    <script>
-        // Xóa món khỏi giỏ hàng
-        document.querySelectorAll('.remove-item').forEach(button => {
-            button.addEventListener('click', function() {
-                const itemId = this.dataset.id;
-                fetch('/cart/remove', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: itemId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    location.reload(); // Reload lại trang sau khi xóa món
-                });
-            });
-        });
-
-        // Cập nhật số lượng món trong giỏ hàng
-        document.querySelectorAll('.cart-item-quantity').forEach(input => {
-            input.addEventListener('change', function() {
-                const itemId = this.dataset.id;
-                const quantity = this.value;
-                fetch('/cart/update', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: itemId, quantity: quantity })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    location.reload(); // Reload lại trang sau khi cập nhật số lượng
-                }); 
-            });
-        });
-    </script>
+<script src="/js/cart.js"></script>
 </body>
 </html>

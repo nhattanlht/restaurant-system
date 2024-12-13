@@ -7,15 +7,12 @@ router.get('/cart', CartController.renderCart);
 // Nhận giỏ hàng từ client và lưu vào session hoặc xử lý tùy thích
 router.post('/cart',CartController.saveCartFromClient);
 
-// // Thêm món vào giỏ hàng
-// router.post('/cart/add', CartController.addToCart);
+// Xóa món ăn khỏi giỏ hàng (AJAX)
+router.post('/cart/remove', CartController.removeItemFromCart);
+//Sửa đổi số lượng món ăn
+router.post('/cart/update', CartController.updateItemQuantity);
 
-// // Xóa món khỏi giỏ hàng
-// router.post('/cart/remove', CartController.removeFromCart);
-
-// // Cập nhật số lượng món ăn
-// router.post('/cart/update', CartController.updateCart);
-
-// router.get('/cart/quantity', CartController.getCartQuantity); 
+// POST chuyển đến trang checkout
+router.post('/checkout', CartController.renderCheckout);
 
 module.exports = router; 

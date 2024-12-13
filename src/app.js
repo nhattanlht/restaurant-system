@@ -3,6 +3,8 @@ const session = require('express-session'); // Đảm bảo đã import express-
 const configViewEngine = require('./configs/engine.config')
 const layoutRoute = require('./routes/layout.route')
 const app = express()
+
+
 const registerRoutes = require('./routes/register.route')
 const loginRoutes = require('./routes/login.route');
 
@@ -12,13 +14,16 @@ const foodFilterRoutes = require('./routes/search_filter.route.js');
 const cart=require('./routes/cart.route.js');
 configViewEngine(app)
 const path = require('path'); // Thêm dòng này để sử dụng `path`
-
-
+//Checkout
+const checkoutRoute=require('./routes/checkout.route.js');
+//Session
 app.use(session({
-    secret: 'your-secret-key',  // Chìa khóa bảo mật cho session
-    resave: false,  // Không lưu lại session nếu không thay đổi
-    saveUninitialized: true,  // Lưu session ngay cả khi chưa thay đổi
-    cookie: { secure: false }  // Set `secure: true` nếu bạn đang sử dụng HTTPS
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000 // Thời gian sống của session (ở đây là 24 giờ)
+    }
 }));
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
@@ -36,7 +41,7 @@ require('./db/init.mssql')
 // routes
 app.use('/', layoutRoute)
 app.use('/register', registerRoutes);
-
+app.use('',checkoutRoute);
 app.use('/login', loginRoutes);
 app.use('',cart);
 app.use('', foodFilterRoutes);
