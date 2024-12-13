@@ -10,7 +10,7 @@ const authenticateJWT = require('./middleware/auth.middleware'); // Import the a
 //Employee
 const foodFilterRoutes = require('./routes/search_filter.route.js'); 
 const cart=require('./routes/cart.route.js');
-const employee=require('./routes/employee.route.js');
+const employee=require('./routes/employees.route.js');
 configViewEngine(app)
 const path = require('path'); // Thêm dòng này để sử dụng `path`
 
@@ -41,7 +41,7 @@ app.use('/register', registerRoutes);
 app.use('/login', loginRoutes);
 app.use('',cart);
 app.use('', foodFilterRoutes);
-app.use('/employee', employee);
+app.use('/employees', employee);
 
 app.get('/protected', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'This is a protected route', user: req.user });

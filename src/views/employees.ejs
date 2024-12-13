@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Management</title>
+    <link rel="stylesheet" href="../public/css/employees.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <h1>System Management</h1>
+        <a href="#" id="customerManagementLink">Customer Management</a>
+        <a href="#" id="branchRevenueLink">Branch Revenue Report</a>
+    </div>
+    <div class="main-content">
+        <!-- Customer Management Section -->
+        <div id="customer-management" class="content-section" style="display: none;">
+            <h2>Customer Management</h2>
+            <form method="GET" action="/employees">
+                <input type="text" name="criteria" placeholder="Search by ID, email, or phone" required>
+                <button type="submit">Search</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer ID</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Email</th>
+                        <th>Identity Card</th>
+                        <th>Gender</th>
+                        <th>Member Card Number</th>
+                        <th>Card Type</th>
+                        <th>Accumulated Spending</th>
+                        <th>Created At</th>
+                        <th>Support Employee ID</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% customers.forEach(customer => { %>
+                        <tr data-customer-id="<%= customer.customer_id %>">
+                            <td><span><%= customer.customer_id %></span></td>
+                            <td contenteditable="false"><%= customer.name %></td>
+                            <td contenteditable="false"><%= customer.phone_number %></td>
+                            <td contenteditable="false"><%= customer.email %></td>
+                            <td contenteditable="false"><%= customer.identity_card %></td>
+                            <td contenteditable="false"><%= customer.gender %></td>
+                            <td contenteditable="false"><%= customer.member_card_number %></td>
+                            <td contenteditable="false"><%= customer.card_type %></td>
+                            <td contenteditable="false"><%= customer.accumulated_spending %></td>
+                            <td><span><%= customer.created_at %></span></td>
+                            <td><span><%= customer.support_employee_id %></span></td>
+                            <td>
+                                <button class="edit-save-btn">Edit</button> <br>
+                            <form method="POST" action="/employees/<%= customer.customer_id %>/delete">
+                                <button type="submit">Delete</button>
+                            </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Branch Revenue Report Section -->
+        <div id="branch-revenue" class="content-section">
+            <h2>Branch Revenue Report</h2>
+            <form method="GET" action="/reports/filter">
+                <label for="year">Year:</label>
+                <select name="year" id="year">
+                    <option value="all">All</option>
+                </select>
+                <label for="month">Month:</label>
+                <select name="month" id="month">
+                    <option value="all">All</option>
+                </select>
+                <label for="day">Day:</label>
+                <select name="day" id="day">
+                    <option value="all">All</option>
+                </select>
+                <button type="submit">Filter Revenue</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Branch ID</th>
+                        <th>Branch Name</th>
+                        <th>Total Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>18</td>
+                        <td>Bình Thạnh Branch</td>
+                        <td>11,186,000,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- External JS for Event Handling -->
+    <script src="../public/js/employees.js"></script>
+</body>
+
+</html>

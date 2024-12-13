@@ -60,3 +60,11 @@ table th, table td {
     padding: 10px;
     text-align: left;
 }
+
+.content-section {
+    display: none; /* Hidden by default */
+}
+
+.content-section:target {
+    display: block; /* If navigated to directly */
+}
