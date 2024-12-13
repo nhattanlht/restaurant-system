@@ -10,8 +10,9 @@ const loginRoutes = require('./routes/login.route');
 
 const authenticateJWT = require('./middleware/auth.middleware'); // Import the authenticateJWT middleware
 //Employee
-const foodFilterRoutes = require('./routes/search_filter.route.js'); 
+const customer = require('./routes/customers.route.js'); 
 const cart=require('./routes/cart.route.js');
+const employee=require('./routes/employees.route.js');
 configViewEngine(app)
 const path = require('path'); // Thêm dòng này để sử dụng `path`
 //Checkout
@@ -44,10 +45,11 @@ app.use('/register', registerRoutes);
 app.use('',checkoutRoute);
 app.use('/login', loginRoutes);
 app.use('',cart);
-app.use('', foodFilterRoutes);
+app.use('', customer);
+app.use('/employees', employee);
 
 // Định nghĩa route API
-app.use('/api', foodFilterRoutes);
+app.use('/api', customer);
 
 app.get('/protected', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'This is a protected route', user: req.user });

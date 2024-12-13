@@ -6,7 +6,7 @@
         <!-- Các thư viện và CSS bootrap cần thiết -->
         <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="/css/filter.css">
+        <link rel="stylesheet" href="/css/customers.css">
     </head>
 
     <body>
@@ -38,8 +38,8 @@
 
                         <div class="half-width">
                             <label>Giới tính:</label>
-                            <label><input type="radio" name="gender" value="male" required> Nam</label>
-                            <label><input type="radio" name="gender" value="female" required> Nữ</label>
+                            <label><input type="radio" name="gender" value="M" required checked> Nam</label>
+                            <label><input type="radio" name="gender" value="F" required> Nữ</label>
                         </div>
 
                         <label for="area">Chọn thành phố:</label>
@@ -57,6 +57,12 @@
                             <option value="" disabled selected>-- Chọn bàn --</option>
                         </select>
 
+                        <label for="table">Số người:</label>
+                        <input type="number" id="table" placeholder="Nhập số người" required>
+
+                        <label for="datetime">Chọn thời gian:</label>
+                        <input type="datetime-local" id="datetime" required>
+                        
                         <div class="half-width">
                             <button type="submit" class="submit-btn">Gửi</button>
                             <button type="button" class="cancel-btn" id="cancelPopup">Hủy</button>
@@ -68,40 +74,16 @@
             <div class="row g-0 gx-3 align-items-center mb-4">
                 <!-- Branch Filter -->
                 <div class="col-md-2">
-                    <label for="branch" class="form-label text-white">Branch</label>
-                    <select id="branch" class="form-select">
-                        <option value="all" <% if (filters.branch==='all' ) { %>selected<% } %>>All</option>
-                        <option value="TPHCM" <% if (filters.branch==='TPHCM' ) { %>selected<% } %>>TPHCM</option>
-                        <option value="Tiền Giang" <% if (filters.branch==='Tiền Giang' ) { %>selected<% } %>>Tiền
-                                Giang</option>
-                        <option value="Long An" <% if (filters.branch==='Long An' ) { %>selected<% } %>>Long An
-                        </option>
-                        <option value="Đồng Nai" <% if (filters.branch==='Đồng Tháp' ) { %>selected<% } %>>Đồng Nai
-                        </option>
-                        <option value="Cần Thơ" <% if (filters.branch==='Đồng Tháp' ) { %>selected<% } %>>Cần Thơ
-                        </option>
+                    <label for="branchsearch" class="form-label text-white">Branch</label>
+                    <select id="branchsearch" class="form-select">
+                        <option value="" disabled selected>-- Chọn chi nhánh --</option>
                     </select>
                 </div>
                 <!-- Category Filter -->
                 <div class="col-md-2">
                     <label for="category" class="form-label text-white">Category</label>
                     <select id="category" class="form-select">
-                        <option value="all" <% if (filters.category==='all' ) { %>selected<% } %>>All</option>
-                        <option value="Sushi Truyền Thống" <% if (filters.category==='Sushi Truyền Thống' ) { %>
-                            selected<% } %>>Sushi Truyền Thống</option>
-                        <option value="Sushi Đặc Biệt" <% if (filters.category==='Sushi Đặc Biệt' ) { %>selected<% } %>
-                                >Sushi Đặc Biệt</option>
-                        <option value="Salad và Khai Vị" <% if (filters.category==='Salad và Khai Vị' ) { %>selected
-                            <% } %>>Salad và Khai Vị
-                        </option>
-                        <option value="Món Nướng và Chiên" <% if (filters.category==='Món Nướng và Chiên' ) { %>
-                            selected<% } %>>Món Nướng và Chiên</option>
-                        <option value="Cơm và Mì" <% if (filters.category==='Cơm và Mì' ) { %>selected<% } %>>Cơm và
-                                Mì</option>
-                        <option value="Món Ăn Phụ" <% if (filters.category==='Món Ăn Phụ' ) { %>selected<% } %>>Món
-                                Ăn Phụ</option>
-                        <option value="Đồ Uống" <% if (filters.category==='Đồ Uống' ) { %>selected<% } %>>Đồ Uống
-                        </option>
+                        <option value="" disabled selected>-- Chọn loại món ăn --</option>
                     </select>
                 </div>
                 <!-- Price Filter -->
@@ -122,10 +104,8 @@
                     </div>
                     <div class="col-md-2 d-flex">
                         <button class="btn btn-success w-100 mt-4" id="search-btn">Search</button>
-                    </div>
-                </div>
-
             </div>
+
         </div>
         <div class="container py-5">
             <div class="row">
@@ -171,7 +151,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-        <script src="/js/filter.js"></script>
+        <script src="/js/customers.js"></script>
         <script src="/js/cart.js"></script>
     </body>
 

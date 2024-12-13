@@ -1,4 +1,4 @@
-const CustomerModel= require('../models/customer.model');
+const CustomerModel= require('../models/checkout.model');
 const OrderModel=require('../models/orderModel');
 const OrderDetailModel=require('../models/OrderDetailModel');
 class CheckoutController {
