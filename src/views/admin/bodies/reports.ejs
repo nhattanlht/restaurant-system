@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doanh thu theo chi nhánh</title>
 </head>
+
 <body>
     <h1>Thống kê doanh thu theo chi nhánh</h1>
     <form id="revenueFilter">
@@ -13,7 +15,7 @@
         <select name="year" id="year">
             <option value="">Tất cả</option> <!-- Thêm tùy chọn này -->
         </select>
-        
+
         <!-- Dropdown cho tháng -->
         <label for="month">Tháng:</label>
         <select name="month" id="month">
@@ -88,74 +90,112 @@
             <% if (revenueData && revenueData.length) { %>
                 <% revenueData.forEach(function(branch) { %>
                     <tr>
-                        <td><%= branch.branch_id %></td>
-                        <td><%= branch.branch_name %></td>
-                        <td><%= branch.total_revenue %></td>
+                        <td>
+                            <%= branch.branch_id %>
+                        </td>
+                        <td>
+                            <%= branch.branch_name %>
+                        </td>
+                        <td>
+                            <%= branch.total_revenue %>
+                        </td>
                     </tr>
-                <% }); %>
-            <% } else { %>
-                <tr><td colspan="3">Không có dữ liệu.</td></tr>
-            <% } %>
+                    <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="3">Không có dữ liệu.</td>
+                            </tr>
+                            <% } %>
         </tbody>
     </table>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Món</th>
+                <th>Tên Món</th>
+                <th>Tổng Doanh Thu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (revenueItem && revenueItem.length) { %>
+                <% revenueItem.forEach(function(item) { %>
+                    <tr>
+                        <td>
+                            <%= item.item_id %>
+                        </td>
+                        <td>
+                            <%= item.item_name %>
+                        </td>
+                        <td>
+                            <%= item.total_revenue %>
+                        </td>
+                    </tr>
+                    <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="3">Không có dữ liệu.</td>
+                            </tr>
+                            <% } %>
+        </tbody>
+    </table>
+    <script>
+        // Hàm để thêm các năm gần đây vào dropdown
+        function populateYears() {
+            const currentYear = new Date().getFullYear();
+            const yearSelect = document.getElementById('year');
 
-<script>
-// Hàm để thêm các năm gần đây vào dropdown
-function populateYears() {
-    const currentYear = new Date().getFullYear();
-    const yearSelect = document.getElementById('year');
+            for (let year = currentYear; year >= currentYear - 4; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            }
+        }
 
-    for (let year = currentYear; year >= currentYear - 4; year--) {
-        const option = document.createElement('option');
-        option.value = year;
-        option.textContent = year;
-        yearSelect.appendChild(option);
-    }
-}
+        // Hàm để giữ lại giá trị đã chọn sau khi trang tải lại
+        function setSelectedValues() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const year = urlParams.get('year');
+            const month = urlParams.get('month');
+            const day = urlParams.get('day');
 
-// Hàm để giữ lại giá trị đã chọn sau khi trang tải lại
-function setSelectedValues() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const year = urlParams.get('year');
-    const month = urlParams.get('month');
-    const day = urlParams.get('day');
+            if (year) {
+                document.getElementById('year').value = year;
+            }
+            if (month) {
+                document.getElementById('month').value = month;
+            }
+            if (day) {
+                document.getElementById('day').value = day;
+            }
+        }
 
-    if (year) {
-        document.getElementById('year').value = year;
-    }
-    if (month) {
-        document.getElementById('month').value = month;
-    }
-    if (day) {
-        document.getElementById('day').value = day;
-    }
-}
+        // Tự động điền các năm vào dropdown khi trang được tải
+        document.addEventListener('DOMContentLoaded', function () {
+            populateYears();
+            setSelectedValues(); // Đảm bảo giá trị đã chọn được giữ lại
+        });
 
-// Tự động điền các năm vào dropdown khi trang được tải
-document.addEventListener('DOMContentLoaded', function () {
-    populateYears();
-    setSelectedValues(); // Đảm bảo giá trị đã chọn được giữ lại
-});
+        // Xử lý sự kiện khi người dùng lọc doanh thu
+        document.getElementById('revenueFilter').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-// Xử lý sự kiện khi người dùng lọc doanh thu
-document.getElementById('revenueFilter').addEventListener('submit', function (event) {
-    event.preventDefault();
+            // Lấy giá trị từ form
+            const year = this.year.value || '';
+            const month = this.month.value || '';
+            const day = this.day.value || '';
 
-    // Lấy giá trị từ form
-    const year = this.year.value || '';
-    const month = this.month.value || '';
-    const day = this.day.value || '';
+            // Tạo URL với các tham số
+            const queryParams = new URLSearchParams({
+                year: year,
+                month: month,
+                day: day
+            });
 
-    // Tạo URL với các tham số
-    const queryParams = new URLSearchParams({
-        year: year,
-        month: month,
-        day: day
-    });
-
-    // Chuyển hướng trang tới URL mới với các tham số lọc
-    window.location.href = `?${queryParams.toString()}`;
-});
-</script>
+            // Chuyển hướng trang tới URL mới với các tham số lọc
+            window.location.href = `?${queryParams.toString()}`;
+        });
+    </script>
 </body>
+
 </html>

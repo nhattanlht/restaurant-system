@@ -1,19 +1,69 @@
-const adminModel = require('../models/admin.model');
 const BranchModel = require("../models/Branch.model");
 const EmployeeModel = require("../models/employee.model");
 const ReportModel = require('../models/report.model');
+
+function formatTime(time) {
+  if (time instanceof Date) {
+    // Nếu time là một đối tượng Date, ta sẽ lấy giờ, phút, giây từ đối tượng này
+    const hours = time.getHours().toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+    const seconds = time.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  } else if (typeof time === 'string' && time.trim().length > 0) {
+    // Nếu time là chuỗi, xử lý như bạn đã làm
+    const timeParts = time.split(':');
+    if (timeParts.length === 3) {
+      return timeParts.map(part => part.padStart(2, '0')).join(':');
+    }
+  } else if (typeof time === 'number') {
+    // Nếu time là số, ví dụ giờ, phút, giây được cung cấp riêng lẻ
+    const hours = Math.floor(time / 3600).toString().padStart(2, '0');
+    const minutes = Math.floor((time % 3600) / 60).toString().padStart(2, '0');
+    const seconds = (time % 60).toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  }
+  // Nếu không hợp lệ, trả về giá trị mặc định '00:00:00'
+  return '00:00:00';
+}
+
+// Hàm formatDay để chuẩn hóa ngày tháng
+function formatDay(date) {
+  if (date instanceof Date) {
+    // Nếu date là đối tượng Date, chuyển sang định dạng 'YYYY-MM-DD'
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Tháng bắt đầu từ 0, nên phải cộng thêm 1
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  } else if (typeof date === 'string' && date.trim().length > 0) {
+    // Nếu date là chuỗi, thử tạo đối tượng Date từ chuỗi
+    const parsedDate = new Date(date);
+    if (!isNaN(parsedDate)) {
+      const year = parsedDate.getFullYear();
+      const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = parsedDate.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+  }
+  // Nếu không hợp lệ, trả về giá trị mặc định '0000-00-00'
+  return '0000-00-00';
+}
+
 //==============================Dashboard==========================
 class AdminController {
 
   async getDashboard(req, res, netx) {
     try {
-      res.redirect('/admin/reports')
+      res.redirect('/admin/reports');
       // Render giao diện dashboard
       res.render('admin/admin', {
         title: 'Admin Dashboard',
         branches: null,
         employees: null,
         revenueData: null,
+        revenueItem: null,
+        areas: null,
+        managers: null,
+        departments: null,
       });
     } catch (err) {
       console.error('Error loading dashboard:', err);
@@ -21,38 +71,33 @@ class AdminController {
     }
   };
 
-//==============================Branch==========================
+  //==============================Branch=========================
+
   async getBranch(req, res, netx) {
     try {
       const branches = await BranchModel.getAllBranches();
-      console.log(branches)
+      const areas = await BranchModel.getAllAreas();
+      const manager = await BranchModel.getAllManagers();
+      const departments = await EmployeeModel.getAllDepartment();
+      branches.forEach(branch => {
+        branch.opening_time = formatTime(branch.opening_time);
+        branch.closing_time = formatTime(branch.closing_time);
+      });
       res.render('admin/admin', {
         title: 'Branch List',
         branches: branches,
         employees: null,
-        revenueData:null,
+        revenueData: null,
+        revenueItem: null,
+        areas: areas,
+        managers: manager,
+        departments: departments,
       });
     } catch (error) {
       console.error('Error loading admin dashboard:', error);
       res.status(500).send('Internal Server Error');
     }
   };
-
-
-  async getEmployee(req, res, next) {
-    try {
-      const employees = await EmployeeModel.getAllEmployees();
-      res.render('admin/admin', {
-        title: 'Branch List',
-        branches: null,
-        employees: employees,
-        revenueData:null,
-      });
-    } catch (error) {
-      console.error('Error loading admin dashboard:', error);
-      res.status(500).send('Internal Server Error');
-    }
-  }
 
   const
   addBranch = async (req, res) => {
@@ -69,7 +114,7 @@ class AdminController {
       manager
     } = req.body;
     try {
-      await adminModel.addBranch({
+      await BranchModel.addBranch({
         branch_name,
         address,
         opening_time,
@@ -88,25 +133,25 @@ class AdminController {
     }
   };
 
-// Hiển thị form chỉnh sửa chi nhánh
+  // Hiển thị form chỉnh sửa chi nhánh
   const
   getEditBranchForm = async (req, res) => {
-    const {branch_id} = req.params;
+    const { branch_id } = req.params;
     try {
       // Lấy thông tin chi nhánh từ model
-      const branch = await adminModel.getBranchById(branch_id);
+      const branch = await BranchModel.getBranchById(branch_id);
       if (!branch) return res.status(404).send('Branch not found');
-      res.render('admin/edit-branch', {title: 'Edit Branch', branch});
+      res.render('admin/edit-branch', { title: 'Edit Branch', branch });
     } catch (err) {
       console.error('Error fetching branch:', err);
       res.status(500).send('Internal Server Error');
     }
   };
 
-// Cập nhật thông tin chi nhánh
+  // Cập nhật thông tin chi nhánh
   const
   editBranch = async (req, res) => {
-    const {branch_id} = req.params;
+    const { branch_id } = req.params;
     const {
       branch_name,
       address,
@@ -117,10 +162,10 @@ class AdminController {
       has_motorbike_parking,
       has_car_parking,
       area_id,
-      manager
+      manager,
     } = req.body;
     try {
-      await adminModel.updateBranch(branch_id, {
+      await BranchModel.updateBranch(branch_id, {
         branch_name,
         address,
         opening_time,
@@ -141,9 +186,9 @@ class AdminController {
 
   const
   deleteBranch = async (req, res) => {
-    const {branch_id} = req.params; // Lấy branch_id từ URL
+    const { branch_id } = req.params; // Lấy branch_id từ URL
     try {
-      const success = await adminModel.deleteBranch(branch_id); // Gọi model để xóa chi nhánh
+      const success = await BranchModel.deleteBranch(branch_id); // Gọi model để xóa chi nhánh
       if (success) {
         res.redirect('/admin/branches');
       } else {
@@ -156,13 +201,38 @@ class AdminController {
   };
 
 
-//=============================Employee======================
+  //=============================Employee======================
 
-// Thêm nhân viên
+  //lấy danh sách tất cả nhân viên
+  async getEmployee(req, res, next) {
+    try {
+      const employees = await EmployeeModel.getAllEmployees();
+      const departments = await EmployeeModel.getAllDepartment();
+      const branches = await BranchModel.getAllBranches();
+      employees.forEach(employee => {
+        employee.DOB = formatDay(employee.DOB);
+      });
+      res.render('admin/admin', {
+        title: 'employee-list',
+        branches: branches,
+        employees: employees,
+        revenueData: null,
+        revenueItem: null,
+        areas: null,
+        managers: null,
+        departments: departments,
+      });
+    } catch (error) {
+      console.error('Error loading admin dashboard:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+
+  // Thêm nhân viên
   const
   addEmployee = async (req, res) => {
     try {
-      await adminModel.addEmployee(req.body);
+      await EmployeeModel.addEmployee(req.body);
       res.redirect('/admin/employees');
     } catch (err) {
       console.error('Error adding employee:', err);
@@ -170,39 +240,39 @@ class AdminController {
     }
   };
 
-// Hiển thị form sửa nhân viên
+  // Hiển thị form sửa nhân viên
   const
   getEditEmployeeForm = async (req, res) => {
-    const {employee_id} = req.params;
+    const { employee_id } = req.params;
     try {
-      const employee = await adminModel.getEmployeeById(employee_id);
+      const employee = await EmployeeModel.getEmployeeById(employee_id);
       if (!employee) return res.status(404).send('Employee not found');
-      res.render('admin/edit-employee', {title: 'Edit Employee', employee});
+      res.render('admin/edit-employee', { title: 'Edit Employee', employee });
     } catch (err) {
       console.error('Error fetching employee:', err);
       res.status(500).send('Internal Server Error');
     }
   };
 
-// Cập nhật thông tin nhân viên
+  // Cập nhật thông tin nhân viên
   const
   editEmployee = async (req, res) => {
-    const {employee_id} = req.params;
+    const { employee_id } = req.params;
     try {
-      await adminModel.editEmployee(employee_id, req.body);
-      res.redirect('/');
+      await EmployeeModel.editEmployee(employee_id, req.body);
+      res.redirect('/admin/employees');
     } catch (err) {
       console.error('Error updating employee:', err);
       res.status(500).send('Internal Server Error');
     }
   };
 
-// Xóa nhân viên
+  // Xóa nhân viên
   const
   deleteEmployee = async (req, res) => {
-    const {employee_id} = req.params;
+    const { employee_id } = req.params;
     try {
-      await adminModel.deleteEmployee(employee_id);
+      await EmployeeModel.deleteEmployee(employee_id);
       res.redirect('/admin/employees');
     } catch (err) {
       console.error('Error deleting employee:', err);
@@ -215,85 +285,96 @@ class AdminController {
     const { departmentName, newSalary } = req.body;
 
     if (!departmentName || !newSalary || newSalary <= 0) {
-        return res.status(400).json({
-            success: false,
-            message: 'Invalid input. Department name and salary are required.',
-        });
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid input. Department name and salary are required.',
+      });
     }
 
     try {
-        const result = await EmployeeModel.updateSalary(departmentName, newSalary);
+      const result = await EmployeeModel.updateSalary(departmentName, newSalary);
 
-        if (result.rowsAffected[0] === 0) {
-            return res.status(404).json({
-                success: false,
-                message: `Department "${departmentName}" not found.`,
-            });
-        }
-
-        res.status(200).json({
-            success: true,
-            message: `Salary updated successfully for department "${departmentName}".`,
+      if (result.rowsAffected[0] === 0) {
+        return res.status(404).json({
+          success: false,
+          message: `Department "${departmentName}" not found.`,
         });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: `Salary updated successfully for department "${departmentName}".`,
+      });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: `Error updating salary: ${error.message}`,
-        });
+      res.status(500).json({
+        success: false,
+        message: `Error updating salary: ${error.message}`,
+      });
     }
-};
-  async getRevenueByBranch(req, res) {
-    try {
-        // Lấy các tham số lọc từ query string
-        let { year, month, day } = req.query;
-        // Gọi model để lấy dữ liệu doanh thu, truyền các tham số lọc
-        const revenueData = await ReportModel.getRevenueByBranch(
-            parseInt(year) || null, // Chuyển đổi thành số hoặc để null nếu không có
-            parseInt(month) || null,
-            parseInt(day) || null
-        );
-
-        // Render view với dữ liệu doanh thu
-        res.render('admin/admin', { 
-            title: 'Branch Revenue',
-            branches: null, // Dữ liệu chi nhánh nếu cần, null ở đây do không sử dụng
-            employees: null, // Dữ liệu nhân viên nếu cần, null ở đây do không sử dụng
-            revenueData: revenueData, // Dữ liệu doanh thu được lấy từ model
-        });
-    } catch (error) {
-        console.error('Error in getRevenueByBranch:', error);
-        res.status(500).send('Internal Server Error'); // Gửi phản hồi lỗi nếu có vấn đề xảy ra
-    }
-  }
+  };
 
   async handleTransferEmployee(req, res) {
     const { employeeId, newDeptId, newBranchId, transferDate, reason } = req.body;
 
     if (!employeeId || !newDeptId || !newBranchId || !transferDate) {
-        return res.status(400).json({ success: false, message: 'All fields are required except reason.' });
+      return res.status(400).json({ success: false, message: 'All fields are required except reason.' });
     }
 
     const result = await EmployeeModel.transferEmployee(employeeId, newDeptId, newBranchId, transferDate, reason);
 
     if (result.success) {
-        return res.status(200).json(result);
+      return res.status(200).json(result);
     } else {
-        return res.status(500).json(result);
+      return res.status(500).json(result);
     }
   }
   async transferEmployee(req, res) {
-    const { employeeId, newDeptId, newBranchId, transferDate } = req.body;
+    const { employeeId, newBranchId } = req.body;
 
     try {
-        await employeeModel.transferEmployee(employeeId, newDeptId, newBranchId, transferDate);
-        res.status(200).json({ success: true, message: "Employee transferred successfully!" });
+      await EmployeeModel.transferEmployee(employeeId, newBranchId);
+      res.status(200).json({ success: true, message: "Employee transferred successfully!" });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+      res.status(500).json({ success: false, message: error.message });
     }
+  }
+  //=============================Report=================================
+  async getRevenueByBranch(req, res) {
+    try {
+      // Lấy các tham số lọc từ query string
+      let { year, month, day } = req.query;
+      // Gọi model để lấy dữ liệu doanh thu, truyền các tham số lọc
+      const revenueData = await ReportModel.getRevenueByBranch(
+        parseInt(year) || null, // Chuyển đổi thành số hoặc để null nếu không có
+        parseInt(month) || null,
+        parseInt(day) || null
+      );
+      const revenueItem = await ReportModel.getRevenueByItem(
+        parseInt(year) || null, // Chuyển đổi thành số hoặc để null nếu không có
+        parseInt(month) || null,
+        parseInt(day) || null
+      );
+
+      console.log(revenueItem)
+
+      // Render view với dữ liệu doanh thu
+      res.render('admin/admin', {
+        title: 'Branch Revenue',
+        branches: null, // Dữ liệu chi nhánh nếu cần, null ở đây do không sử dụng
+        employees: null,
+        revenueData: revenueData, // Dữ liệu doanh thu được lấy từ model
+        revenueItem: revenueItem, // Dữ liệu doanh thu được lấy từ model
+        areas: null,
+        managers: null,
+        departmets: null,
+      });
+    } catch (error) {
+      console.error('Error in getRevenueByBranch:', error);
+      res.status(500).send('Internal Server Error'); // Gửi phản hồi lỗi nếu có vấn đề xảy ra
+    }
+  }
 }
-}
-//=============================Report=================================
 
 module.exports = {
- AdminController,
+  AdminController,
 };

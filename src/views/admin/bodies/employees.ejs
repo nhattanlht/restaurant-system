@@ -7,11 +7,20 @@
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <select id="filterBranch" onchange="filterEmployees()">
             <option value="">All Branches</option>
-            <!-- Dynamically populate with branch options -->
+            <% branches.forEach(branch=> { %>
+                <option value="<%= branch.branch_id %>">
+                    <%= branch.branch_name %>
+                </option>
+                <% }); %>
         </select>
+
         <select id="filterDepartment" onchange="filterEmployees()">
             <option value="">All Departments</option>
-            <!-- Dynamically populate with department options -->
+            <% departments.forEach(department=> { %>
+                <option value="<%= department.department_id %>">
+                    <%= department.department_name %>
+                </option>
+                <% }); %>
         </select>
     </div>
     <table>
@@ -21,7 +30,6 @@
                 <th style="text-align: center;">Full Name</th>
                 <th style="text-align: center;">DOB</th>
                 <th style="text-align: center;">Gender</th>
-                <th style="text-align: center;">Dept ID</th>
                 <th style="text-align: center;">Phone Number</th>
                 <th style="text-align: center;">Actions</th>
             </tr>
@@ -43,9 +51,6 @@
                         <%= employee.gender %>
                     </td>
                     <td style="text-align: center;">
-                        <%= employee.dept_id %>
-                    </td>
-                    <td style="text-align: center;">
                         <%= employee.phone_number %>
                     </td>
                     <td>
@@ -58,6 +63,9 @@
                 </tr>
                 <% }); %>
         </tbody>
+        <div id="employeePagination" class="pagination">
+            <!-- Các nút phân trang sẽ được thêm động ở đây -->
+        </div>
     </table>
     <div id="employeePagination" class="pagination"></div>
     <button class="btn-primary" onclick="showEmployeeForm()">Add Employee</button>
@@ -95,8 +103,11 @@
         <div class="form-group">
             <label for="dept_id">Department:</label>
             <select id="dept_id" name="dept_id" required>
-                <option value="">Select Department</option>
-                <!-- Dynamically populated options -->
+                <% departments.forEach(department=> { %>
+                    <option value="<%= department.department_id %>">
+                        <%= department.department_name %>
+                    </option>
+                    <% }); %>
             </select>
         </div>
 
@@ -125,23 +136,27 @@
     <form id="salaryForm" onsubmit="updateSalary(event)">
         <div class="form-group">
             <label for="departmentName">Department Name:</label>
-            <select id="departmentName" name="departmentName" required>
+            <select id="departmentName" name="departmentName" required onchange="displayCurrentSalary()">
                 <option value="">Select Department</option>
-                <option value="Manager">Manager</option>
-                <option value="Cashier">Cashier</option>
-                <option value="Waitstaff">Waitstaff</option>
-                <option value="KitchenStaff">KitchenStaff</option>
-                <option value="Reception">Reception</option>
+                <% departments.forEach(department=> { %>
+                    <option value="<%= department.department_id %>" data-salary="<%= department.salary %>">
+                        <%= department.department_name %>
+                    </option>
+                    <% }); %>
             </select>
         </div>
         <div class="form-group">
             <label for="newSalary">New Salary:</label>
             <input type="number" id="newSalary" name="newSalary" min="0" required placeholder="Enter new salary">
         </div>
+        <div id="currentSalaryDisplay" style="margin-top: 10px;">
+            <!-- Current salary will be displayed here -->
+        </div>
         <button type="submit" class="btn-primary">Update Salary</button>
     </form>
     <div id="salaryUpdateMessage" style="margin-top: 10px;"></div>
 </div>
+
 
 <div id="transferModal" style="display: none;" class="modal">
     <div class="modal-content">
@@ -153,24 +168,156 @@
                 <input type="text" id="modalEmployeeId" name="employeeId" readonly>
             </div>
             <div class="form-group">
-                <label for="modalNewDeptId">New Department ID:</label>
-                <input type="number" id="modalNewDeptId" name="newDeptId" required>
-            </div>
-            <div class="form-group">
                 <label for="modalNewBranchId">New Branch ID:</label>
                 <input type="number" id="modalNewBranchId" name="newBranchId" required>
-            </div>
-            <div class="form-group">
-                <label for="modalTransferDate">Transfer Date:</label>
-                <input type="date" id="modalTransferDate" name="transferDate" required>
             </div>
             <button type="submit" class="btn-primary">Transfer</button>
         </form>
     </div>
 </div>
 
-
 <script>
+
+    const rowsPerPage = 10; // Số lượng nhân viên mỗi trang
+    let currentPage = 1; // Trang hiện tại
+
+    function displayCurrentSalary() {
+        const departmentSelect = document.getElementById("departmentName");
+        const selectedOption = departmentSelect.options[departmentSelect.selectedIndex];
+
+        // Lấy giá trị lương hiện tại từ data-salary
+        const currentSalary = selectedOption.getAttribute("data-salary");
+
+        // Hiển thị lương hiện tại
+        const salaryDisplay = document.getElementById("currentSalaryDisplay");
+        if (currentSalary) {
+            salaryDisplay.innerHTML = `<strong>Current Salary:</strong> $${currentSalary}`;
+        } else {
+            salaryDisplay.innerHTML = "";
+        }
+    }
+
+
+    // Hàm để hiển thị dữ liệu cho trang hiện tại
+    function displayPage(page) {
+        const rows = document.querySelectorAll('#employeeTableBody .employee-row');
+        const totalRows = rows.length;
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+        // Đảm bảo trang hợp lệ
+        if (page < 1) page = 1;
+        if (page > totalPages) page = totalPages;
+
+        // Ẩn tất cả các hàng
+        rows.forEach(row => row.style.display = 'none');
+
+        // Hiển thị các hàng của trang hiện tại
+        const startIndex = (page - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        for (let i = startIndex; i < endIndex && i < totalRows; i++) {
+            rows[i].style.display = '';
+        }
+
+        // Cập nhật nút phân trang
+        updatePaginationButtons(page, totalPages);
+    }
+
+    // Hàm cập nhật các nút phân trang
+    function updatePaginationButtons(page, totalPages) {
+        const paginationContainer = document.getElementById('employeePagination');
+        paginationContainer.innerHTML = '';
+
+        // Nút Previous
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Previous';
+        prevButton.disabled = page === 1;
+        prevButton.onclick = () => displayPage(page - 1);
+        paginationContainer.appendChild(prevButton);
+
+        // Các nút số trang
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            pageButton.className = page === i ? 'active' : '';
+            pageButton.onclick = () => displayPage(i);
+            paginationContainer.appendChild(pageButton);
+        }
+
+        // Nút Next
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.disabled = page === totalPages;
+        nextButton.onclick = () => displayPage(page + 1);
+        paginationContainer.appendChild(nextButton);
+    }
+
+    // Gọi hàm phân trang khi trang được tải
+    document.addEventListener('DOMContentLoaded', () => {
+        displayPage(1);
+    });
+
+    // Populate filters
+    function populateFilters() {
+        const branchSelect = document.getElementById('filterBranch');
+        const departmentSelect = document.getElementById('filterDepartment');
+
+        branches.forEach(branch => {
+            const option = document.createElement('option');
+            option.value = branch_id;
+            option.textContent = branch_name;
+            branchSelect.appendChild(option);
+        });
+
+        departments.forEach(dept => {
+            const option = document.createElement('option');
+            option.value = department_id;
+            option.textContent = department_name;
+            departmentSelect.appendChild(option);
+        });
+    }
+
+    // Render employee rows
+    function renderEmployees() {
+        const tbody = document.getElementById('employeeTableBody');
+        tbody.innerHTML = '';
+        employees.forEach(employee => {
+            const row = document.createElement('tr');
+            row.classList.add('employee-row');
+            row.setAttribute('data-branch-id', employee.branch_id);
+            row.setAttribute('data-dept-id', employee.dept_id);
+
+            row.innerHTML = `
+                    <td>${employee.id}</td>
+                    <td>${employee.name}</td>
+                    <td>${employee.DOB}</td>
+                    <td>${employee.gender}</td>
+                    <td>${employee.dept_id}</td>
+                    <td>${employee.phone}</td>
+                `;
+
+            tbody.appendChild(row);
+        });
+
+        displayPage(1);
+    }
+
+    // Filter employees by branch and department
+    function filterEmployees() {
+        const branchFilter = document.getElementById('filterBranch').value;
+        const departmentFilter = document.getElementById('filterDepartment').value;
+        const rows = document.querySelectorAll('.employee-row');
+
+        rows.forEach(row => {
+            const branchId = row.getAttribute('data-branch-id');
+            const deptId = row.getAttribute('data-dept-id');
+
+            const matchesBranch = !branchFilter || branchId === branchFilter;
+            const matchesDept = !departmentFilter || deptId === departmentFilter;
+
+            row.style.display = matchesBranch && matchesDept ? '' : 'none';
+        });
+    }
+
     // Function to show/hide the employee form
     function showEmployeeForm() {
         const form = document.getElementById("employee-form");
@@ -231,15 +378,13 @@
         event.preventDefault(); // Ngăn hành động submit mặc định
 
         const employeeId = document.getElementById('modalEmployeeId').value.trim();
-        const newDeptId = document.getElementById('modalNewDeptId').value.trim();
         const newBranchId = document.getElementById('modalNewBranchId').value.trim();
-        const transferDate = document.getElementById('modalTransferDate').value.trim();
 
         try {
             const response = await fetch('/admin/employees/transfer', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ employeeId, newDeptId, newBranchId, transferDate }),
+                body: JSON.stringify({ employeeId, newBranchId }),
             });
 
             const result = await response.json();
@@ -254,6 +399,7 @@
             alert('Error: ' + error.message);
         }
     }
+
 
     // Function to search employees by name
     function searchEmployee(searchTerm) {
@@ -270,61 +416,4 @@
         });
     }
 
-    // Hàm để lọc nhân viên theo chi nhánh và phòng ban
-    function filterEmployees() {
-        const branchFilter = document.getElementById("filterBranch").value;
-        const departmentFilter = document.getElementById("filterDepartment").value;
-        const rows = document.querySelectorAll('#employeeTableBody .employee-row');
-
-        rows.forEach(row => {
-            const branchId = row.getAttribute("data-branch-id");
-            const deptId = row.getAttribute("data-dept-id");
-
-            // Kiểm tra nếu row khớp với bộ lọc chi nhánh và phòng ban
-            if ((branchFilter === "" || branchId === branchFilter) &&
-                (departmentFilter === "" || deptId === departmentFilter)) {
-                row.style.display = ''; // Hiển thị row nếu khớp với bộ lọc
-            } else {
-                row.style.display = 'none'; // Ẩn row nếu không khớp
-            }
-        });
-    }
-
-    // Hàm để điền thông tin vào dropdown filter (từ server hoặc API)
-    function populateFilters(branches, departments) {
-        const branchSelect = document.getElementById("filterBranch");
-        const departmentSelect = document.getElementById("filterDepartment");
-
-        // Điền các lựa chọn chi nhánh
-        branches.forEach(branch => {
-            const option = document.createElement("option");
-            option.value = branch.id;
-            option.textContent = branch.name;
-            branchSelect.appendChild(option);
-        });
-
-        // Điền các lựa chọn phòng ban
-        departments.forEach(department => {
-            const option = document.createElement("option");
-            option.value = department.id;
-            option.textContent = department.name;
-            departmentSelect.appendChild(option);
-        });
-    }
-
-    // Ví dụ về cách gọi API để lấy dữ liệu chi nhánh và phòng ban
-    async function fetchBranchAndDepartmentData() {
-        try {
-            const response = await fetch('/admin/branches-and-departments');
-            const data = await response.json();
-
-            // Gọi hàm để điền thông tin vào filter
-            populateFilters(data.branches, data.departments);
-        } catch (error) {
-            console.error('Error fetching branch and department data:', error);
-        }
-    }
-
-    // Gọi hàm fetch khi trang được tải
-    fetchBranchAndDepartmentData();
 </script>

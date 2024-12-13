@@ -38,6 +38,48 @@ class ReportModel {
             throw error;
         }
     }
+
+    // Hàm lấy doanh thu theo món
+    static async getRevenueByItem(year, month, day) {
+        try {
+            const pool = await sql.connect(dev_config);
+            const query = `
+                SELECT 
+                    mi.item_id,
+                    mi.item_name,
+                    SUM(od.quantity * od.price) AS total_revenue
+                FROM 
+                    dbo.Order_Detail od
+                JOIN 
+                    dbo.Menu_Item mi ON od.item_id = mi.item_id
+                JOIN 
+                    dbo.[Order] o ON od.order_id = o.order_id
+                WHERE 
+                    (@year IS NULL OR YEAR(o.order_date) = @year) AND
+                    (@month IS NULL OR MONTH(o.order_date) = @month) AND
+                    (@day IS NULL OR DAY(o.order_date) = @day)
+                GROUP BY 
+                    mi.item_id, mi.item_name
+                ORDER BY 
+                    total_revenue DESC;
+            `;
+            
+            // Tạo request với các tham số động
+            const request = pool.request();
+            request.input('year', sql.Int, year || null);  // Nếu year là null thì cho phép chọn tất cả năm
+            request.input('month', sql.Int, month || null);  // Nếu month là null thì cho phép chọn tất cả tháng
+            request.input('day', sql.Int, day || null);  // Nếu day là null thì cho phép chọn tất cả ngày
+    
+            // Thực hiện truy vấn
+            const result = await request.query(query);
+            return result.recordset;  // Trả về danh sách doanh thu theo món
+        } catch (error) {
+            console.error('Error fetching revenue data by item:', error);
+            throw error;  // Ném lỗi để Controller có thể xử lý
+        }
+    }
+    
 }
+
 
 module.exports = ReportModel;

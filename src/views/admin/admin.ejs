@@ -15,22 +15,22 @@
     <!-- Main Content -->
     <main class="content">
         <!-- Branch Management Section -->
-        <%if(branches) {%>
+        <%if(branches && areas) {%>
             <section id="branches">
-                <%-include('bodies/branches')%>
+                <%-include('bodies/branches', {branches, areas, managers})%>
             </section>
         <%}%>
 
         <%if(employees) {%>
             <section id="employees" class="hidden">
-                <%-include('bodies/employees')%>
+                <%- include('bodies/employees', { employees, departments, branches }) %>
             </section>
         <%}%>
 
         <!-- Reports Section -->
         <%if(revenueData) {%>
             <section id="reports" class="hidden">
-                <%- include('bodies/reports') %>
+                <%- include('bodies/reports', { revenueData, revenueItem}) %>
             </section>
         <%}%>
     </main>

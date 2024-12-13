@@ -326,3 +326,35 @@ a {
   font-size: 1.2em;
   cursor: pointer;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.pagination button.active {
+  background-color: #007BFF;
+  color: white;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  background-color: #f0f0f0;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+#employeePagination button {
+  color: black; /* Đổi màu chữ thành đen */
+}
+

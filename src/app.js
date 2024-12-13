@@ -18,7 +18,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 // init middlewareDatabase
 app.use(methodOverride('_method'));  // Giả lập phương thức PUT thông qua trường _method
 
@@ -26,21 +25,16 @@ app.use(methodOverride('_method'));  // Giả lập phương thức PUT thông q
 app.use('/', layoutRoute)
 app.use('/', accessRoutes)
 
-
-
 // app.use('/', layoutAdminRoutes)
 // app.use('/', getAdminOrder)
 app.use('/', registerAdminRoutes)
-//admin routes
 app.use('/admin', authenticate, adminRoutes)
 app.get('/logout', (req, res) => {
     const controller = new AccessController();
     controller.logout(req, res);
 });
 
-
 app.use((req, res, next) => {
-
     res.setHeader("Content-Security-Policy", "default-src 'self'; font-src 'self' https://fonts.gstatic.com;");
     next();
 });
@@ -65,8 +59,6 @@ app.use((error, req, res, next) => {
 });
 
 //handle error
-
-
 
 module.exports = app
 

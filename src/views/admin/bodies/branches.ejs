@@ -5,8 +5,7 @@
     <table>
         <thead>
         <tr>
-            <th style="width: 5%; text-align: center;">ID</th>
-            <th style="width: 15%; text-align: center;">Branch Name</th>
+            <th style="width: 20%; text-align: center;">Branch Name</th>
             <th style="width: 20%; text-align: center;">Address</th>
             <th style="width: 5%; text-align: center;">Area ID</th>
             <th style="width: 5%; text-align: center;">Manager ID</th>
@@ -21,11 +20,10 @@
         <tbody id="branchTableBody">
             <% branches.forEach(branch => { %>
                 <tr>
-                    <td><%= branch.id %></td>
                     <td><%= branch.branch_name %></td>
                     <td><%= branch.address %></td>
                     <td><%= branch.area_id %></td>
-                    <td><%= branch.manager_id %></td>
+                    <td><%= branch.manager %></td>
                     <td><%= branch.opening_time %></td>
                     <td><%= branch.closing_time %></td>
                     <td><%= branch.status %></td>
@@ -87,13 +85,22 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="area_id">Area ID</label>
-            <input type="number" id="area_id" name="area_id" required>
+            <label for="area_id">Area</label>
+            <select id="area_id" name="area_id" required>
+                <% areas.forEach(area => { %>
+                    <option value="<%= area.area_id %>"><%= area.area_name %></option>
+                <% }); %>
+            </select>
         </div>
         <div class="form-group">
-            <label for="manager">Manager ID</label>
-            <input type="number" id="manager" name="manager" required>
+            <label for="manager">Manager</label>
+            <select id="manager" name="manager" required>
+                <% managers.forEach(manager => { %>
+                    <option value="<%= manager.employee_id %>"><%= manager.name %></option>
+                <% }); %>
+            </select>
         </div>
+        
         <button type="submit">Save</button>
     </form>
 </div>
@@ -123,4 +130,6 @@ function filterBranches() {
         }
     });
 }
+
+
 </script>
