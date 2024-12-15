@@ -16,12 +16,57 @@
     </div>
     <div class="main-content">
         <!-- Customer Management Section -->
-        <div id="customer-management" class="content-section" style="display: none;">
+        <div id="customer-management" class="content-section">
             <h2>Customer Management</h2>
-            <form method="GET" action="/employees">
-                <input type="text" name="criteria" placeholder="Search by ID, email, or phone" required>
-                <button type="submit">Search</button>
-            </form>
+            <div class="function-bar">
+                <form method="GET" action="/employees">
+                    <input type="text" name="criteria" placeholder="Search by ID, email, or phone" required>
+                    <button type="submit">Search</button>
+                </form>
+                <!-- Nút hiển thị popup -->
+                <button id="openPopup">Add Customer</button>
+
+                <!-- Popup -->
+                <div class="popup-overlay" id="popup">
+                    <div class="popup-content">
+                        <span class="close-popup" id="closePopup">&times;</span>
+                        <h2>Đăng ký thông tin</h2>
+                        <form id="infoForm" method="POST" action="/employees/add">
+                            <table>
+                                <tr>
+                                    <th><label for="name">Họ và tên:</label></th>
+                                    <td><input type="text" name="name" id="name" placeholder="Nhập họ và tên" required></td>
+                                </tr>
+                                <tr>
+                                    <th><label for="phone">Số điện thoại:</label></th>
+                                    <td><input type="tel" name="phone" id="phone" placeholder="Nhập số điện thoại" required></td>
+                                </tr>
+                                <tr>
+                                    <th><label for="email">Email:</label></th>
+                                    <td><input type="email" name="email" id="email" placeholder="Nhập email" required></td>
+                                </tr>
+                                <tr>
+                                    <th><label for="identity">CMND/CCCD:</label></th>
+                                    <td><input type="text" name="identity" id="identity" placeholder="Nhập số CMND/CCCD" required></td>
+                                </tr>
+                                <tr>
+                                    <th><label>Giới tính:</label></th>
+                                    <td><input type="radio" id="male" name="gender" value="M" required checked><label
+                                            for="male">Nam</label>
+                                        <input type="radio" id="female" name="gender" value="M" required><label
+                                            for="female">Nữ</label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="half-width">
+                                <button type="submit" class="submit-btn">Gửi</button>
+                                <button type="button" class="cancel-btn" id="cancelPopup">Hủy</button>
+                            </div>
+                            <p id="success-message" style="font-weight: bold; margin-top: 10px;"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -40,27 +85,56 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% customers.forEach(customer => { %>
-                        <tr data-customer-id="<%= customer.customer_id %>">
-                            <td><span><%= customer.customer_id %></span></td>
-                            <td contenteditable="false"><%= customer.name %></td>
-                            <td contenteditable="false"><%= customer.phone_number %></td>
-                            <td contenteditable="false"><%= customer.email %></td>
-                            <td contenteditable="false"><%= customer.identity_card %></td>
-                            <td contenteditable="false"><%= customer.gender %></td>
-                            <td contenteditable="false"><%= customer.member_card_number %></td>
-                            <td contenteditable="false"><%= customer.card_type %></td>
-                            <td contenteditable="false"><%= customer.accumulated_spending %></td>
-                            <td><span><%= customer.created_at %></span></td>
-                            <td><span><%= customer.support_employee_id %></span></td>
-                            <td>
-                                <button class="edit-save-btn">Edit</button> <br>
-                            <form method="POST" action="/employees/<%= customer.customer_id %>/delete">
-                                <button type="submit">Delete</button>
-                            </form>
-                            </td>
-                        </tr>
-                    <% }); %>
+                    <% if (message) { %>
+                        <tr>
+                        <td colspan="12" style="text-align: center; color: #d6c3c3;"><%= message %></td>
+                    </tr>
+
+                            <% } else { %>
+                                <% customers.forEach(customer=> { %>
+                                    <tr data-customer-id="<%= customer.customer_id %>">
+                                        <td><span>
+                                                <%= customer.customer_id %>
+                                            </span></td>
+                                        <td contenteditable="false">
+                                            <%= customer.name %>
+                                        </td>
+                                        <td contenteditable="false">
+                                            <%= customer.phone_number %>
+                                        </td>
+                                        <td contenteditable="false">
+                                            <%= customer.email %>
+                                        </td>
+                                        <td contenteditable="false">
+                                            <%= customer.identity_card %>
+                                        </td>
+                                        <td contenteditable="false">
+                                            <%= customer.gender %>
+                                        </td>
+                                        <td contenteditable="false">
+                                            <%= customer.member_card_number %>
+                                        </td>
+                                        <td contenteditable="false">
+                                            <%= customer.card_type %>
+                                        </td>
+                                        <td contenteditable="false">
+                                            <%= customer.accumulated_spending %>
+                                        </td>
+                                        <td><span>
+                                                <%= customer.created_at %>
+                                            </span></td>
+                                        <td><span>
+                                                <%= customer.support_employee_id %>
+                                            </span></td>
+                                        <td>
+                                            <button class="edit-save-btn">Edit</button> <br>
+                                            <form method="POST" action="/employees/<%= customer.customer_id %>/delete">
+                                                <button type="submit">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                        <% } %>
                 </tbody>
             </table>
         </div>
