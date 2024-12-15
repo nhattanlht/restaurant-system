@@ -225,7 +225,7 @@ table th, table td {
   }
   
   /* Popup */
-  .popup-content {
+  /* .popup-content {
     background: #fff;
     padding: 20px;
     width: 500px;
@@ -233,10 +233,10 @@ table th, table td {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: left;
     position: relative;
-  }
+  } */
   
   /* Nút đóng */
-  .close-popup {
+  /* .close-popup {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -244,10 +244,10 @@ table th, table td {
     border: none;
     font-size: 18px;
     cursor: pointer;
-  }
+  } */
   
   /* Form với 2 cột */
-  .popup-content form {
+  /* .popup-content form {
     gap: 15px;
     z-index: 1002;
   }
@@ -255,11 +255,11 @@ table th, table td {
     border: 1px solid white;
     border-collapse: collapse;
     margin-bottom: 15px;
-  }
+  } */
 
   
   /* Cập nhật input cho đúng chiều rộng */
-  .popup-content form input{
+  /* .popup-content form input{
     padding: 8px;
     margin-top: 5px;
     border: 1px solid #ccc;
@@ -271,7 +271,7 @@ table th, table td {
   .popup-content form input[type="email"] {
     width: 95%;
   }
-  
+   */
   /* Điều chỉnh nút radio để cùng cột với input */
   .half-width {
     display: flex;  /* Sử dụng flex để các nút radio nằm trên cùng một dòng */
@@ -292,14 +292,14 @@ table th, table td {
     background: #4CAF50;
     color: white;
   }
-  
+/*   
   .cancel-btn {
     background: #f44336;
     color: white;
-  }
+  } */
   
   /* Hiển thị popup */
   .popup-overlay.active {
     display: flex;
   }
-  
+

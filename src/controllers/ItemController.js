@@ -65,9 +65,9 @@ class ItemController {
    static async getAllItems(req, res) {
     try {
         // Fetch all items from the database using the ItemModel
-        const items = await ItemModel.getAllItems();
+        const items = await ItemModel.getAllItems();    
         const categories=await CategoryModel.getAllCategories();
-
+        const message='null';
         // Render the 'employees' page and pass the items to be displayed
         res.render('employees', { invoices:[],customers:[],items, categories,message });
     } catch (error) {
@@ -82,7 +82,7 @@ static async searchItems(req, res) {
     console.log("Ktra", req.query);
 
     try {
-        // Lấy danh sách tất cả các danh mục
+
         const categories = await CategoryModel.getAllCategories();
         const message='null';
         // Xây dựng truy vấn tìm kiếm
@@ -94,7 +94,7 @@ static async searchItems(req, res) {
         `;
 
         if (itemName) {
-            query += ` AND M.item_name LIKE '%${itemName}%'`;
+            query += ` AND M.item_name LIKE N'%${itemName}%'`;
         }
         if (categoryId && categoryId !== 'all') {
             query += ` AND M.category_id = ${categoryId}`;
@@ -102,7 +102,6 @@ static async searchItems(req, res) {
         if (maxPrice) {
             query += ` AND M.price <= ${maxPrice}`;
         }
-
         // Thực hiện truy vấn và lấy kết quả
         const items = await ItemModel.searchItems(query);
 
