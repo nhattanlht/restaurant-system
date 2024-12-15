@@ -84,7 +84,7 @@ static async searchItems(req, res) {
     try {
         // Lấy danh sách tất cả các danh mục
         const categories = await CategoryModel.getAllCategories();
-
+        const message='null';
         // Xây dựng truy vấn tìm kiếm
         let query = `
             SELECT M.*, C.category_name
@@ -109,6 +109,7 @@ static async searchItems(req, res) {
         // Render lại trang 'employees' với kết quả tìm kiếm và danh mục
         res.render('employees', {
             message,
+    
             customers: [], 
             invoices: [],  // Dữ liệu khách hàng nếu cần
             items,  // Món ăn tìm được
