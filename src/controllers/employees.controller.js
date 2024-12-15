@@ -5,7 +5,7 @@ class EmployeeController {
         try {
             const { criteria } = req.query;
             const customers = await EmployeeModel.searchCustomer(criteria);
-            res.render('employees', { customers });
+            res.render('employees', { customers, items: [], categories: [] });  // Only pass customers here 
         } catch (error) {
             res.status(500).send('Server Error');
         }

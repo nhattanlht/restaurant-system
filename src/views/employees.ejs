@@ -12,7 +12,8 @@
     <div class="sidebar">
         <h1>System Management</h1>
         <a href="#" id="customerManagementLink">Customer Management</a>
-        <a href="#" id="branchRevenueLink">Branch Revenue Report</a>
+        <a href="#" id="reportInvoices">Report invoices</a>
+        <a href="#" id="itemManagement"> Item Management</a>
     </div>
     <div class="main-content">
         <!-- Customer Management Section -->
@@ -66,40 +67,149 @@
         </div>
 
         <!-- Branch Revenue Report Section -->
-        <div id="branch-revenue" class="content-section">
-            <h2>Branch Revenue Report</h2>
-            <form method="GET" action="/reports/filter">
-                <label for="year">Year:</label>
-                <select name="year" id="year">
-                    <option value="all">All</option>
-                </select>
-                <label for="month">Month:</label>
-                <select name="month" id="month">
-                    <option value="all">All</option>
-                </select>
-                <label for="day">Day:</label>
-                <select name="day" id="day">
-                    <option value="all">All</option>
-                </select>
-                <button type="submit">Filter Revenue</button>
-            </form>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Branch ID</th>
-                        <th>Branch Name</th>
-                        <th>Total Revenue</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>18</td>
-                        <td>Bình Thạnh Branch</td>
-                        <td>11,186,000,000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <!-- Report Invoices Section -->
+<div id="report-invoices" class="content-section">
+    <h2>Report Invoices</h2>
+
+    <!-- Filter Form -->
+    <form method="GET" action="/employees/report-invoices">
+        <label for="name">Customer Name:</label>
+        <input type="text" name="name" placeholder="Enter customer name" />
+
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" name="phone_number" placeholder="Enter phone number" />
+
+        <label for="year">Year:</label>
+        <input type="number" name="year" placeholder="Enter year" />
+
+        <label for="month">Month:</label>
+        <select name="month">
+            <option value="all">All</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <!-- Displaying Filtered Invoices -->
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Amount</th>
+                <th>Total Amount</th>
+                <th>Payment Method</th>
+                <th>Customer Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% invoices.forEach(invoice => { %>
+                <tr>
+                    <td><%= invoice.order_id %></td>
+                    <td><%= invoice.order_date %></td>
+                    <td><%= invoice.amount %></td>
+                    <td><%= invoice.total_amount %></td>
+                    <td><%= invoice.payment_method %></td>
+                    <td><%= invoice.name %></td>
+                    <td><%= invoice.phone_number %></td>
+                    <td><%= invoice.email %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+        <!-- Item Management Section -->
+<div id="item-management" class="content-section" style="display: none;">
+    <h2>Item Management</h2>
+    <!-- Item Search Form -->
+    <form class="title" method="GET" action="/employees/items/search">
+        <input type="text" name="itemName" placeholder="Search by Name" />
+        
+        <select name="categoryId">
+            <option value="all">All Categories</option>
+            <!-- Populate categories dynamically -->
+            <% categories.forEach(category => { %>
+                <option value="<%= category.category_id %>"><%= category.category_name %></option>
+            <% }); %>
+        </select>
+
+        <input type="number" name="maxPrice" placeholder="Max Price" min="0" />
+
+        <button class="search-btn" type="submit">Search</button>
+    </form>
+
+    <!-- Items Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% items.forEach(item => { %>
+                <tr data-item-id="<%= item.item_id %>">
+                    <td contenteditable="false"><%= item.item_name %></td>
+                    <td contenteditable="false"><%= item.category_name %></td>
+                    <td contenteditable="false"><%= item.price %></td>
+                    <td contenteditable="false"><%= item.status %></td>
+                    <td>
+                        <button class="items-edit-save-btn">Edit</button>
+                        <form method="POST" action="/employees/items/<%= item.item_id %>/delete">
+                            <button type="submit" class="items-delete-btn">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                
+            <% }); %>
+        </tbody>
+    </table>
+    <!-- Nút "Thêm Món Ăn" để mở popup -->
+<button id="addItemBtn">Thêm Món Ăn</button>
+<!-- Popup nhập thông tin món ăn -->
+<div id="addItemPopup" style="display: none;">
+    <div class="popup-content">
+        <h3>Thêm Món Ăn Mới</h3>
+        <form id="addItemForm">
+            <label for="itemName">Tên Món Ăn:</label>
+            <input type="text" id="itemName" name="itemName" required />
+
+            <label for="itemCategory">Danh Mục:</label>
+            <select id="itemCategory" name="itemCategory" required>
+                <option value="">Chọn Danh Mục</option>
+                <% categories.forEach(category => { %>
+                    <option value="<%= category.category_id %>"><%= category.category_name %></option>
+                <% }); %>
+            </select>
+
+            <label for="itemPrice">Giá:</label>
+            <input type="number" id="itemPrice" name="itemPrice" required min="0" />
+           
+
+            <button type="submit">Thêm Món Ăn</button>
+            <button type="button" id="closePopup">Hủy</button>
+        </form>
+    </div>
+</div>
+</div>
+
     </div>
 
     <!-- External JS for Event Handling -->

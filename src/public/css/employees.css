@@ -46,7 +46,7 @@ form label {
     margin-right: 10px;
 }
 
-form select, button {
+form select, button .delete  {
     margin-right: 10px;
 }
 
@@ -67,4 +67,140 @@ table th, table td {
 
 .content-section:target {
     display: block; /* If navigated to directly */
+}
+
+
+/* pop up and items management  */
+/* Style cho Item Management section */
+#item-management {
+    position: relative;
+    padding: 20px;  
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Style cho tiêu đề */
+#item-management h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form tìm kiếm */
+#item-management .title form {
+    display: flex;
+    flex-direction: row;  /* Đặt phần tử trong form nằm ngang */
+    align-items: center;
+    gap: 15px; /* Khoảng cách giữa các phần tử */
+    margin-bottom: 20px;
+    padding:10px;
+}
+
+/* Đảm bảo các input, select và button có chiều rộng hợp lý */
+#item-management form input,
+#item-management form select,
+#item-management form .search-btn{
+    padding: 5px;
+    font-size: 16px;
+    width:5 10px; /* Bạn có thể thay đổi chiều rộng của các phần tử */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+/* Table styling for item list */   
+
+#item-management table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#item-management th, #item-management td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+#item-management th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#item-management td {
+    background-color: #fff;
+}
+
+#item-management tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Styling for Add Item Button */
+
+#addItemBtn {
+    position: absolute;
+    top: 20px; /* Cách cạnh trên 10px */
+    right: 10px; /* Cách cạnh phải 10px */
+    padding: 10px 20px;
+    font-size: 14px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#addItemBtn:hover {
+    background-color: #45a049;
+}
+
+/* Popup for adding items */
+#addItemPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Popup content */
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+}
+
+/* Styling for form inputs in popup */
+.popup-content input,
+.popup-content select,
+.popup-content button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Close button styling */
+#closePopup {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#closePopup:hover {
+    background-color: #cc0000;
+}
+
+.popup-content h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
 }
