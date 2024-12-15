@@ -64,6 +64,37 @@ class CustomerModel {
             throw error;
         }
     }
+    // Hàm tìm mã giảm giá trong database
+    static async findDiscountByCode(code) {
+        try {
+            // Connect to the database
+            const pool = await sql.connect(require(connect));
+
+            // Execute the query with parameter binding
+            const result = await pool.request()
+                .input('code', sql.Int, code) // Bind the 'code' parameter
+                .query(`SELECT * FROM discount WHERE discount_id = @code`); // Use @code as the placeholder
+
+            // Check if a discount was found
+            return result.recordset.length > 0 ? result.recordset[0] : null;
+        } catch (error) {
+            console.error('Error finding discount:', error); // Updated error message
+            throw error; // Re-throw the error for further handling
+        } finally {
+            // Ensure the pool is closed to avoid connection leaks
+            sql.close();
+        }
+    }
+
+    // Hàm tính tổng tiền sau khi áp dụng mã giảm giá
+    static async calculateTotalAmount(initialAmount, shippingFee, discountCode) {
+        const discount = await this.findDiscountByCode(discountCode);
+        const discountValue = discount ? discount.discount_value : 0;
+        return {
+            discountValue,
+            totalAmount: initialAmount + shippingFee - discountValue,
+        };
+    }
 }
 
 module.exports = CustomerModel

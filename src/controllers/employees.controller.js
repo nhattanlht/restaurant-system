@@ -40,9 +40,6 @@ class EmployeeController {
     static async insertCustomer(req, res) {
         try {
             const { name, phone, email, identity, gender } = req.body;
-            console.log('Request body:', req.body);
-
-            // Tạo thông tin khách hàng từ request
             // Tạo thông tin khách hàng từ request
             const customers = {
                 customer_id: null, // Default to null, or populate dynamically if available

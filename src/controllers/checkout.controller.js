@@ -1,6 +1,6 @@
-const CustomerModel= require('../models/checkout.model');
-const OrderModel=require('../models/orderModel');
-const OrderDetailModel=require('../models/OrderDetailModel');
+const CustomerModel = require('../models/checkout.model');
+const OrderModel = require('../models/orderModel');
+const OrderDetailModel = require('../models/OrderDetailModel');
 class CheckoutController {
     static async processCheckout(req, res) {
         const { name, phone, email, totalAmount, items } = req.body;
@@ -67,22 +67,22 @@ class CheckoutController {
                 }
             }
 
-           // Sau khi tạo đơn hàng và chi tiết đơn hàng thành công, trả về JSON thay vì redirect
-        return res.status(200).json({
-            order_id: orderId,
-            name,
-            phone,
-            email,
-            totalAmount: parseInt(totalAmount),
-        });
+            // Sau khi tạo đơn hàng và chi tiết đơn hàng thành công, trả về JSON thay vì redirect
+            return res.status(200).json({
+                order_id: orderId,
+                name,
+                phone,
+                email,
+                totalAmount: parseInt(totalAmount),
+            });
         } catch (err) {
             console.error("Error during checkout:", err);
             // Trả về lỗi cho client
             return res.status(500).json({ message: "Lỗi trong quá trình checkout", error: err.message });
         }
     }
-     // Phương thức render trang cảm ơn
-     static async renderThankYou(req, res) {
+    // Phương thức render trang cảm ơn
+    static async renderThankYou(req, res) {
         const { order_id, name, phone, email, totalAmount } = req.query;
 
         try {
@@ -91,6 +91,30 @@ class CheckoutController {
         } catch (err) {
             console.error("Error rendering thank-you page:", err);
             res.status(500).send('Có lỗi xảy ra khi render trang cảm ơn.');
+        }
+    }
+
+    // Xử lý mã giảm giá
+    static async applyDiscount(req, res) {
+        const { initialAmount, shippingFee, code } = req.body; // Nhận dữ liệu từ client
+        // Kiểm tra mã giảm giá có được nhập không
+        if (!code || code.trim() === '') {
+            return res.status(400).json({ message: 'Bạn cần nhập mã giảm giá!' });
+        }
+        try {
+            const { discountValue, totalAmount } = await CustomerModel.calculateTotalAmount(
+                initialAmount,
+                shippingFee,
+                code
+            );
+
+            res.json({
+                discountValue, // Giá trị giảm giá
+                totalAmount,  // Tổng tiền sau khi giảm
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Đã xảy ra lỗi khi áp dụng mã giảm giá' });
         }
     }
 }
