@@ -69,7 +69,7 @@ class ItemController {
         const categories=await CategoryModel.getAllCategories();
 
         // Render the 'employees' page and pass the items to be displayed
-        res.render('employees', { invoices:[],customers:[],items, categories });
+        res.render('employees', { invoices:[],customers:[],items, categories,message });
     } catch (error) {
         console.error("Error fetching all items:", error);
         res.status(500).send("Error fetching all items.");
@@ -108,6 +108,7 @@ static async searchItems(req, res) {
 
         // Render lại trang 'employees' với kết quả tìm kiếm và danh mục
         res.render('employees', {
+            message,
             customers: [], 
             invoices: [],  // Dữ liệu khách hàng nếu cần
             items,  // Món ăn tìm được

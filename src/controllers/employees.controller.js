@@ -5,7 +5,10 @@ class EmployeeController {
         try {
             const { criteria } = req.query;
             const customers = await EmployeeModel.searchCustomer(criteria);
-            res.render('employees', { customers, items: [], categories: [] });  // Only pass customers here 
+        
+            // Pass a flag to indicate if customers were found
+            const message = customers.length === 0 ? "Find a customer" : null;
+            res.render('employees', { customers, message,invoices:[], items: [], categories: [] });
         } catch (error) {
             res.status(500).send('Server Error');
         }
@@ -33,6 +36,37 @@ class EmployeeController {
             res.status(500).send('Server Error');
         }
     };
+
+    static async insertCustomer(req, res) {
+        try {
+            const { name, phone, email, identity, gender } = req.body;
+            console.log('Request body:', req.body);
+
+            // Tạo thông tin khách hàng từ request
+            // Tạo thông tin khách hàng từ request
+            const customers = {
+                customer_id: null, // Default to null, or populate dynamically if available
+                name: name || null,
+                phone_number: phone || null,
+                email: email || null,
+                identity_card: identity || null,
+                gender: gender || null,
+                member_card_number: null, // Add missing fields with null as default
+                card_type: null,
+                accumulated_spending: null,
+                created_at: null,
+                support_employee_id: null,
+            };
+            const message = null;
+            // Kiểm tra hoặc tạo khách hàng
+            customers.customer_id = await EmployeeModel.insertCustomer(customers);
+
+            // Kết quả
+            res.render('employees', { customers: [customers], message });
+        } catch (error) {
+            res.status(500).json({ message: 'Failed to insert customer', error });
+        }
+    }
 }
 
 module.exports = EmployeeController;

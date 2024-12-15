@@ -16,9 +16,11 @@ router.post('/items/:itemId/delete', ItemController.deleteItem);
 //report invoices
 
 router.get('/report-invoices',ReportInvoicesController.reportInvoices);
-// Ensure this route is for searching items
-// router.get('/search', EmployeeController.searchCustomer);
-// router.post('/:customerId/update', EmployeeController.updateCustomer);
-// router.post('/:customerId/delete', EmployeeController.deleteCustomer);
+
+
+router.get('/', EmployeeController.searchCustomer);
+router.post('/:customerId/update', EmployeeController.updateCustomer);
+router.post('/:customerId/delete', EmployeeController.deleteCustomer);
+router.post('/add', EmployeeController.insertCustomer);
 
 module.exports = router;

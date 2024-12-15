@@ -9,9 +9,10 @@ class InvoiceController {
         try {
             // Get filtered invoices from the model
             const invoices = await InvoiceModel.getInvoices({ name, phone_number, year, month });
-
+            const message='null';
+            
             // Render the report invoices page and pass the results
-            res.render('employees', { customers:[],categories:[],items:[],invoices });
+            res.render('employees', { customers:[],categories:[],items:[],invoices,message });
         } catch (error) {
             console.error("Error fetching invoices:", error);
             res.status(500).send("Error fetching invoices.");
