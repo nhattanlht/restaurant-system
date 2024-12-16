@@ -60,7 +60,6 @@
 /* Cập nhật input và select cho đúng chiều rộng */
 .popup-content form input,
 .popup-content form select {
-  width: 100%;
   padding: 8px;
   margin-top: 5px;
   border: 1px solid #ccc;
@@ -84,6 +83,7 @@
 
 /* Điều chỉnh khoảng cách giữa radio và label */
 .half-width input[type="radio"] {
+  margin-left: 20px;
   margin-right: 5px;  /* Khoảng cách nhỏ giữa radio button và label */
 }
 
