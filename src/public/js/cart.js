@@ -276,3 +276,18 @@ document.getElementById('update-cart-button').addEventListener('click', async ()
         showToast('Có lỗi khi cập nhật giỏ hàng.');
     }
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const updateCartButton = document.getElementById('update-cart-button');
+    const quantityInputs = document.querySelectorAll('.cart-item-quantity');
+
+    // Disable the update button initially
+    updateCartButton.disabled = true;
+
+    // Add event listeners to quantity input fields
+    quantityInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            // Enable the "Update Cart" button when the user modifies quantity
+            updateCartButton.disabled = false;
+        });
+    });
+});

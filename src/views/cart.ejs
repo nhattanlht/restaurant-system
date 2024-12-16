@@ -32,11 +32,11 @@
             <p>Giỏ hàng của bạn trống.</p>
         <% } %>
     </div>
-
-    <button id="update-cart-button" class="btn-update-cart">Cập nhật giỏ hàng</button>
+   <!-- Cập nhật giỏ hàng -->
+   <button id="update-cart-button" class="btn-update-cart" disabled>Cập nhật giỏ hàng</button>
 
     <div id="cart-total">
-        <p>Tổng tiền: <span id="cart-total-price"><%= totalAmount %></span> VND</p>
+        <p>Tổng tiền: <span id="cart-total-price"><%= parseFloat(totalAmount).toLocaleString() %></span> VND</p>
     </div>
 
     <!-- Form gửi thông tin giỏ hàng đến /checkout -->

@@ -189,7 +189,7 @@
     margin-top: 15px;
 }
 /* Cập nhật style cho các button */
-.btn-update-cart, .btn-checkout {
+.btn-checkout {
     background-color: #ff6600;
     color: white;
     border: none;
@@ -199,6 +199,36 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+/* Cập nhật giỏ hàng button khi không có thay đổi */
+.btn-update-cart {
+    background-color: #333; /* Màu nền tối */
+    color: #fff; /* Màu chữ sáng */
+    border: none;
+    padding: 10px 20px;
+    cursor: not-allowed; /* Con trỏ khi không thể nhấn */
+    opacity: 0.5; /* Giảm độ sáng khi không thể nhấn */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
+}
+
+/* Khi có thay đổi trong số lượng, bật màu sáng */
+.btn-update-cart:not([disabled]) {
+    background-color: #28a745; /* Màu xanh sáng khi có thay đổi */
+    cursor: pointer; /* Con trỏ khi có thể nhấn */
+    opacity: 1; /* Độ sáng đầy đủ khi có thể nhấn */
+}
+
+.cart-item-quantity {
+    background-color: #f0f0f0; /* Màu nền của trường số lượng */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 60px;
+    text-align: center;
+}
+
+.cart-item-quantity:focus {
+    border-color: #28a745; /* Thay đổi màu viền khi trường số lượng được chọn */
 }
 
 .btn-update-cart:hover, .btn-checkout:hover {

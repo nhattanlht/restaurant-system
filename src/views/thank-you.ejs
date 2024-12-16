@@ -16,7 +16,7 @@
             <h3>Thông tin đơn hàng</h3>
             <p><strong>Thông tin giao hàng:</strong></p>
             <p>Họ và tên: <%= name %></p>
-            <p>Số điện thoại: <%= phone %></p>
+            <p>Số điện thoại: <%= parseFloat(phone).toLocaleString() %></p>
             <p>Email: <%= email %></p>
 
             <p><strong>Tổng cộng:</strong> <%= totalAmount %> VND</p>

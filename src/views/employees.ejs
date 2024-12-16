@@ -242,7 +242,7 @@
                 <tr data-item-id="<%= item.item_id %>">
                     <td contenteditable="false"><%= item.item_name %></td>
                     <td contenteditable="false"><%= item.category_name %></td>
-                    <td contenteditable="false"><%= item.price %></td>
+                    <td contenteditable="false"><%= parseFloat(item.price).toLocaleString() %></td> <!-- Add thousands separator -->
                     <td contenteditable="false"><%= item.status %></td>
                     <td>
                         <button class="items-edit-save-btn">Edit</button>
