@@ -135,11 +135,11 @@
     <h3>Salary Management</h3>
     <form id="salaryForm" onsubmit="updateSalary(event)">
         <div class="form-group">
-            <label for="departmentName">Department Name:</label>
+            <label for="departmentName">Department:</label>
             <select id="departmentName" name="departmentName" required onchange="displayCurrentSalary()">
-                <option value="">Select Department</option>
+                <option value="">Select</option>
                 <% departments.forEach(department=> { %>
-                    <option value="<%= department.department_id %>" data-salary="<%= department.salary %>">
+                    <option value="<%= department.department_name %>" data-salary="<%= department.salary %>">
                         <%= department.department_name %>
                     </option>
                     <% }); %>

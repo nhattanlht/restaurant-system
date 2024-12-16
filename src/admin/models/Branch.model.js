@@ -8,7 +8,23 @@ class BranchModel {
     static async getAllBranches() {
         try {
             const pool = await sql.connect(require(connect));
-            const result = await pool.request().query(`SELECT * FROM ${TABLE_NAME}`);
+            const result = await pool.request().query(`
+                SELECT 
+                    b.branch_id,
+                    b.branch_name,
+                    b.address,
+                    a.area_name,
+                    b.opening_time,
+                    b.closing_time,
+                    b.status,
+                    b.phone_number,
+                    b.has_motorbike_parking,
+                    b.has_car_parking,
+                    e.name AS manager_name
+                FROM Branch b
+                LEFT JOIN Employee e ON b.manager = e.employee_id
+                LEFT JOIN Area a ON b.area_id = a.area_id
+            `);
             return result.recordset;
         } catch (error) {
             console.error('Error fetching branches:', error);
@@ -74,7 +90,6 @@ class BranchModel {
             `);
             return result.rowsAffected > 0;
         } catch (err) {
-            console.error('Error adding branch:', err);
             throw err;
         }
     };

@@ -264,7 +264,7 @@ ADD CONSTRAINT FK_Employee_Branch FOREIGN KEY (branch_id)
 REFERENCES [Branch](branch_id);
 
 ALTER TABLE [Department]
-DROP CONSTRAINT FK__Departmen__branc__41EDCAC5;
+DROP CONSTRAINT [Tên_Ràng_Buộc];
 
 ALTER TABLE [Department]
 DROP COLUMN branch_id;

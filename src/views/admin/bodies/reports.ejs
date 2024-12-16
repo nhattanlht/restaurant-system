@@ -195,6 +195,48 @@
             // Chuyển hướng trang tới URL mới với các tham số lọc
             window.location.href = `?${queryParams.toString()}`;
         });
+        // Hiệu ứng động khi người dùng thay đổi dropdown
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function () {
+                select.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+                select.style.transform = 'scale(1.05)';
+                select.style.boxShadow = '0 0 15px rgba(0, 123, 255, 0.5)';
+
+                // Reset hiệu ứng sau khi thay đổi
+                setTimeout(() => {
+                    select.style.transform = 'scale(1)';
+                    select.style.boxShadow = 'none';
+                }, 300);
+            });
+        });
+
+        // Hiệu ứng khi form được submit
+        document.getElementById('revenueFilter').addEventListener('submit', function () {
+            const button = this.querySelector('button');
+            button.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+            button.style.transform = 'scale(0.9)';
+            button.style.opacity = '0.8';
+
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+                button.style.opacity = '1';
+            }, 300);
+        });
+
+        // Hiệu ứng hover nâng cao cho bảng
+        const tableRows = document.querySelectorAll('table tbody tr');
+        tableRows.forEach(row => {
+            row.addEventListener('mouseenter', function () {
+                this.style.transition = 'background-color 0.3s ease, transform 0.3s ease';
+                this.style.backgroundColor = '#e3f2fd';
+                this.style.transform = 'scale(1.02)';
+            });
+
+            row.addEventListener('mouseleave', function () {
+                this.style.backgroundColor = '';
+                this.style.transform = 'scale(1)';
+            });
+        });
     </script>
 </body>
 

@@ -358,3 +358,9 @@ a {
   color: black; /* Đổi màu chữ thành đen */
 }
 
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+

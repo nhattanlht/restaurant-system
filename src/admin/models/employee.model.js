@@ -23,27 +23,6 @@ class EmployeeModel {
         }
     }
 
-    static async addEmployee(employeeData) {
-        const { name, DOB, gender, dept_id, address, phone_number, user_id } = employeeData;
-        try {
-            const pool = await sql.connect(require(connect));
-            await pool.request()
-                .input('name', sql.NVarChar, name)
-                .input('DOB', sql.Date, DOB)
-                .input('gender', sql.NVarChar, gender)
-                .input('dept_id', sql.Int, dept_id)
-                .input('address', sql.NVarChar, address)
-                .input('phone_number', sql.NVarChar, phone_number)
-                .input('user_id', sql.Int, user_id)
-                .query(`
-                    INSERT INTO ${TABLE_NAME} (name, DOB, gender, dept_id, address, phone_number, user_id)
-                    VALUES (@name, @DOB, @gender, @dept_id, @address, @phone_number, @user_id)
-                `);
-        } catch (error) {
-            console.error('Error adding employee:', error);
-            throw error;
-        }
-    }
     static async getEmployeeById(employee_id){
         try {
           const pool = await sql.connect(require(connect));
@@ -79,7 +58,6 @@ class EmployeeModel {
       
           return result.rowsAffected > 0; // Trả về true nếu thêm thành công
         } catch (err) {
-          console.error('Error adding employee:', err);
           throw err;
         }
       };

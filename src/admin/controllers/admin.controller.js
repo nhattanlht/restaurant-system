@@ -92,14 +92,16 @@ class AdminController {
         areas: areas,
         managers: manager,
         departments: departments,
+        error: null,
       });
     } catch (error) {
-      console.error('Error loading admin dashboard:', error);
-      res.status(500).send('Internal Server Error');
+      res.render('admin/admin', { error: err.message 
+
+      });
     }
   };
 
-  const
+  const 
   addBranch = async (req, res) => {
     const {
       branch_name,
@@ -113,7 +115,9 @@ class AdminController {
       area_id,
       manager
     } = req.body;
+  
     try {
+      // Thêm chi nhánh vào cơ sở dữ liệu
       await BranchModel.addBranch({
         branch_name,
         address,
@@ -126,10 +130,33 @@ class AdminController {
         area_id,
         manager
       });
+  
+      // Sau khi thêm thành công, chuyển hướng người dùng về danh sách chi nhánh
       res.redirect('/admin/branches');
     } catch (err) {
-      console.error("Error in addBranch:", err);
-      res.status(500).send("Internal Server Error");
+      // Kiểm tra mã lỗi từ trigger nếu có
+      let errorMessage = 'An unexpected error occurred.';
+      if (err.number === 50001) {
+        errorMessage = 'Phone number must be exactly 10 digits.';
+      } else if (err.number === 50002) {
+        errorMessage = 'Closing time cannot be earlier than opening time.';
+      } else if (err.number === 50003) {
+        errorMessage = 'A single employee cannot manage multiple branches.';
+      } else {
+        errorMessage = err.message; // Trả lại thông báo lỗi mặc định
+      }
+  
+      // Render lại trang với thông báo lỗi
+      res.render('admin/admin', {
+        error: errorMessage,  // Thông báo lỗi
+        branches: null,
+        employees: null,
+        revenueData: null,
+        revenueItem: null,
+        areas: null,
+        managers: null,
+        departments: null,
+      });
     }
   };
 
@@ -175,12 +202,34 @@ class AdminController {
         has_motorbike_parking,
         has_car_parking,
         area_id,
-        manager
+        manager,
+        error: null,
       });
       res.redirect('/admin/branches');
     } catch (err) {
-      console.error("Error in editBranch:", err);
-      res.status(500).send("Internal Server Error");
+      // Kiểm tra mã lỗi từ trigger nếu có
+      let errorMessage = 'An unexpected error occurred.';
+      if (err.number === 50001) {
+        errorMessage = 'Phone number must be exactly 10 digits.';
+      } else if (err.number === 50002) {
+        errorMessage = 'Closing time cannot be earlier than opening time.';
+      } else if (err.number === 50003) {
+        errorMessage = 'A single employee cannot manage multiple branches.';
+      } else {
+        errorMessage = err.message; // Trả lại thông báo lỗi mặc định
+      }
+  
+      // Render lại trang với thông báo lỗi
+      res.render('admin/admin', {
+        error: errorMessage,  // Thông báo lỗi
+        branches: null,
+        employees: null,
+        revenueData: null,
+        revenueItem: null,
+        areas: null,
+        managers: null,
+        departments: null,
+      });
     }
   };
 
@@ -221,6 +270,7 @@ class AdminController {
         areas: null,
         managers: null,
         departments: departments,
+        error: null,
       });
     } catch (error) {
       console.error('Error loading admin dashboard:', error);
@@ -235,8 +285,23 @@ class AdminController {
       await EmployeeModel.addEmployee(req.body);
       res.redirect('/admin/employees');
     } catch (err) {
-      console.error('Error adding employee:', err);
-      res.status(500).send('Internal Server Error');
+      // Kiểm tra lỗi từ trigger
+      let errorMessage = 'An unexpected error occurred.';
+      if (err.number === 50001) {
+        errorMessage = 'Phone number must be exactly 10 digits.';
+      } else {
+        errorMessage = err.message;
+      }
+      res.render('admin/admin', {
+        error: errorMessage,  // Thông báo lỗi
+        branches: null,
+        employees: null,
+        revenueData: null,
+        revenueItem: null,
+        areas: null,
+        managers: null,
+        departments: null,
+      });
     }
   };
 
@@ -367,6 +432,7 @@ class AdminController {
         areas: null,
         managers: null,
         departmets: null,
+        error: null,
       });
     } catch (error) {
       console.error('Error in getRevenueByBranch:', error);

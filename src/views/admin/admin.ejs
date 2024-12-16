@@ -14,10 +14,18 @@
 
     <!-- Main Content -->
     <main class="content">
+        <% if (error) { %>
+            <div class="error-message">
+                <strong>Error:</strong> <%= error %>
+            </div>
+            <!-- Thêm nút quay lại -->
+            <a href="javascript:history.back()">Go Back</a>
+        <% } %>
+        
         <!-- Branch Management Section -->
         <%if(branches && areas) {%>
             <section id="branches">
-                <%-include('bodies/branches', {branches, areas, managers})%>
+                <%-include('bodies/branches', {branches, areas, managers, error})%>
             </section>
         <%}%>
 
