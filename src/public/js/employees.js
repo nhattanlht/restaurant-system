@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
         showSection(customerManagementSection);
     });
 
-    reportInvoicesLink .addEventListener('click', (e) => {
+    reportInvoicesLink.addEventListener('click', (e) => {
         e.preventDefault();
-        showSection( reportInvoicesSection);
+        showSection(reportInvoicesSection);
     });
 
     itemManagementLink.addEventListener('click', (e) => {
@@ -31,11 +31,39 @@ document.addEventListener("DOMContentLoaded", () => {
         showSection(itemManagementSection);
     });
 
-    // Optionally, set the default section to show
-    //showSection( reportInvoicesSection); // Default: Branch Revenue
+    // Define sections
+    const sections = {
+        'customer-management': document.getElementById('customer-management'),
+        'report-invoices': document.getElementById('report-invoices'),
+        'item-management': document.getElementById('item-management'),
+    };
+
+    // Hide all sections by default
+    Object.values(sections).forEach(section => section.style.display = 'none');
+
+    // Retrieve the activeSection value from the hidden input field
+    const activeSectionInput = document.querySelector('input[name="activeSection"]');
+    const activeSection = activeSectionInput ? activeSectionInput.value : null;
+
+    // Debugging logs to check if activeSection is being set correctly
+    console.log("Active Section Input Element:", activeSectionInput);  // Log the input element
+    console.log("Active Section Value (raw):", activeSection);  // Log the raw value of activeSection
+
+    if (activeSection === '') {
+        console.log("The activeSection value is empty. Make sure it's set correctly in the backend.");
+    }
+
+    // Show the active section if it's available, otherwise default to 'customer-management'
+    if (activeSection && sections[activeSection]) {
+        console.log(`Showing section: ${activeSection}`);  // Log the section being shown
+        sections[activeSection].style.display = 'block';
+    } else {
+        console.log("Defaulting to 'customer-management' section");  // Log the fallback section
+        sections['customer-management'].style.display = 'block'; // Default section
+    }
 });
 
-document.querySelectorAll('.edit-save-btn').forEach(button => {
+document.querySelectorAll('.customers-edit-save-btn').forEach(button => {
     button.addEventListener('click', function () {
         const row = this.closest('tr');
         const isEditing = this.textContent === 'Edit';
@@ -203,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.querySelectorAll('.items-delete-btn').forEach(button => {
     button.addEventListener('click', function (e) {
         e.preventDefault();
-        
+
         const row = this.closest('tr');
         const itemId = row.dataset.itemId;
 
@@ -211,83 +239,83 @@ document.querySelectorAll('.items-delete-btn').forEach(button => {
             fetch(`/employees/items/${itemId}/delete`, {
                 method: 'POST',
             })
-            .then(response => {
-                if (response.ok) {
-                    row.remove(); // Remove the row from the table
-                    alert('Item deleted successfully!');
-                } else {
+                .then(response => {
+                    if (response.ok) {
+                        row.remove(); // Remove the row from the table
+                        alert('Item deleted successfully!');
+                    } else {
+                        alert('Failed to delete item.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                     alert('Failed to delete item.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to delete item.');
-            });
+                });
         }
     })
 });
 
-// document.addEventListener("DOMContentLoaded", () => {
-//     const popup = document.getElementById("popup");
-//     const openPopupBtn = document.getElementById("openPopup");
-//     const closePopupBtn = document.getElementById("closePopup");
-//     const cancelPopupBtn = document.getElementById("cancelPopup");
+document.addEventListener("DOMContentLoaded", () => {
+    const popup = document.getElementById("popup");
+    const openPopupBtn = document.getElementById("openPopup");
+    const closePopupBtn = document.getElementById("closePopup1");
+    const cancelPopupBtn = document.getElementById("cancelPopup");
 
-//     // Hiển thị popup
-//     function showPopup() {
-//         popup.classList.add("active");
-//         // Lấy danh sách thành phố khi trang web tải
-//     }
+    // Hiển thị popup
+    function showPopup() {
+        popup.classList.add("active");
+        // Lấy danh sách thành phố khi trang web tải
+    }
 
-//     // Đóng popup
-//     function closePopup() {
-//         popup.classList.remove("active");
-//     }
+    // Đóng popup
+    function closePopup() {
+        popup.classList.remove("active");
+    }
 
-//     // Gán sự kiện
-//     openPopupBtn.addEventListener("click", showPopup);
-//     closePopupBtn.addEventListener("click", closePopup);
-//     cancelPopupBtn.addEventListener("click", closePopup);
-// });
+    // Gán sự kiện
+    openPopupBtn.addEventListener("click", showPopup);
+    closePopupBtn.addEventListener("click", closePopup1);
+    cancelPopupBtn.addEventListener("click", closePopup);
+});
 
-// document.getElementById('submit-btn').addEventListener('click', function (event) {
-//     event.preventDefault(); // Prevent the default form submission
+document.getElementById('submit-btn').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent the default form submission
 
-//     const form = document.getElementById('infoFrom'); // Ensure this matches your form's ID
-//     const formData = new FormData(form);
-//     const newCustomerData = {};
+    const form = document.getElementById('infoFrom'); // Ensure this matches your form's ID
+    const formData = new FormData(form);
+    const newCustomerData = {};
 
-//     // Convert FormData to an object
-//     formData.forEach((value, key) => {
-//         newCustomerData[key] = value.trim(); // Trim unnecessary whitespace
-//     });
+    // Convert FormData to an object
+    formData.forEach((value, key) => {
+        newCustomerData[key] = value.trim(); // Trim unnecessary whitespace
+    });
 
-//     fetch('/employees/add', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(newCustomerData),
-//     })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Failed to insert customer.');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             // Handle success response
-//             console.log(data.message); // Log success message
-//             const successMessage = document.getElementById('success-message');
-//             successMessage.textContent = 'Customer added successfully!';
-//             successMessage.style.color = 'green';
+    fetch('/employees/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newCustomerData),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to insert customer.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle success response
+            console.log(data.message); // Log success message
+            const successMessage = document.getElementById('success-message');
+            successMessage.textContent = 'Customer added successfully!';
+            successMessage.style.color = 'green';
 
-//             form.reset(); // Optionally reset the form fields
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             const errorMessage = document.getElementById('success-message');
-//             errorMessage.textContent = 'Failed to add customer. Please try again.';
-//             errorMessage.style.color = 'red';
-//         });
-// });
+            form.reset(); // Optionally reset the form fields
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const errorMessage = document.getElementById('success-message');
+            errorMessage.textContent = 'Failed to add customer. Please try again.';
+            errorMessage.style.color = 'red';
+        });
+});

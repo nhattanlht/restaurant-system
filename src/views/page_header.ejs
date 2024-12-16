@@ -10,7 +10,7 @@
 
     <!-- Font Awesome CDN for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-    
+
     <!-- Title can be dynamically set -->
     <title>
         <%= title || 'Default Title' %>
@@ -24,8 +24,8 @@
         <div class="header-right">
             <div class="action-cart">
                 <a class="shopping-bag-button" onclick="toggleCart()">
-                <img class="shopping-bag" src="/images/shopping-bag.png" alt="shopping-bag">
-                <span class="count-holder">0</span>
+                    <img class="shopping-bag" src="/images/shopping-bag.png" alt="shopping-bag">
+                    <span class="count-holder">0</span>
                 </a>
             </div>
             <a class="button" href="#">Login/Signup</a>
@@ -33,7 +33,9 @@
     </div>
 
     <div class="showcart" id="showcart">
-        <span class="showcart-title"><h4>Giỏ hàng</h4></span>
+        <span class="showcart-title">
+            <h4>Giỏ hàng</h4>
+        </span>
         <div class="showcart-item-container">
             <!-- Các mục giỏ hàng sẽ được render vào đây -->
         </div>
@@ -42,8 +44,10 @@
             <span>0 VNĐ</span>
         </div>
         <div class="showcart-footer">
-                <a href="/cart" class="button shopping-cart-button">Xem giỏ hàng</a>
-                <a href="#" class="button">Thanh toán</a>
+            <a href="/cart" class="shopping-cart-button">Xem giỏ hàng</a>
+            <form id="checkout-form" action="/checkout" method="POST">
+                <button type="submit" class="btn-checkout">Thanh toán</button>
+            </form>
         </div>
     </div>
     </div>

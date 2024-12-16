@@ -291,3 +291,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+document.getElementById('checkoutButton').addEventListener('click', function () {
+    // Get the cart data from localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Send the cart data with the POST request to '/checkout'
+    fetch('/checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            cart: cart,  // Include the cart data in the body of the request
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response from the server
+        if (data.success) {
+            // If the server responds successfully, redirect to the checkout page
+            window.location.href = '/checkout';  // Redirect to the checkout page
+        } else {
+            // If there is an error, show an alert or a toast
+            alert('Error processing checkout.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error processing checkout.');
+    });
+});

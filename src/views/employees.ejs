@@ -22,6 +22,7 @@
             <div class="function-bar">
                 <form method="GET" action="/employees/customer/search">
                     <input type="text" name="criteria" placeholder="Search by ID, email, or phone" required>
+                    <input type="hidden" name="activeSection" value="<%= activeSection %>">
                     <button type="submit">Search</button>
                 </form>
                 <!-- Nút hiển thị popup -->
@@ -29,8 +30,8 @@
 
                 <!-- Popup -->
                 <div class="popup-overlay" id="popup">
-                    <div class="popup-content">
-                        <span class="close-popup" id="closePopup">&times;</span>
+                    <div class="popup-content1">
+                        <span class="close-popup1" id="closePopup1">&times;</span>
                         <h2>Đăng ký thông tin</h2>
                         <form id="infoForm" method="POST" action="/employees/add">
                             <table>
@@ -128,7 +129,7 @@
                                                 <%= customer.support_employee_id %>
                                             </span></td>
                                         <td>
-                                            <button class="edit-save-btn">Edit</button> <br>
+                                            <button class="customers-edit-save-btn">Edit</button> <br>
                                             <form method="POST" action="/employees/<%= customer.customer_id %>/delete">
                                                 <button type="submit">Delete</button>
                                             </form>
@@ -172,7 +173,7 @@
             <option value="11">November</option>
             <option value="12">December</option>
         </select>
-
+        <input type="hidden" name="activeSection" value="<%= activeSection %>">
         <button type="submit">Filter</button>
     </form>
 
@@ -223,6 +224,7 @@
 
         <input type="number" name="maxPrice" placeholder="Max Price" min="0" />
 
+        <input type="hidden" name="activeSection" value="<%= activeSection %>">
         <button class="search-btn" type="submit">Search</button>
     </form>
 

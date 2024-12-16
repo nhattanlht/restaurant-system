@@ -37,11 +37,13 @@ body {
 .shipping-info input, .shipping-info select {
     width: 100%;
     padding: 10px;
-    margin-top: 5px;
+    margin-top: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+
 }
+
 .checkout-button {
     display: block;
     width: 100%; /* Đặt nút rộng 100% nếu muốn chiếm toàn bộ chiều rộng của khung */
@@ -105,7 +107,6 @@ input[type="radio"] {
 
 
 .cart-summary .cart-item p {
-
     margin: 5px 0;
     font-size: 14px;
 }
@@ -154,4 +155,18 @@ input[type="radio"] {
 .cart-summary .total strong {
     font-size: 18px;
     color: #007bff;
+}
+
+.shipping-info input[type="radio"], 
+.shipping-info label[for="delivery"], 
+.shipping-info label[for="pickup"] {
+    display: inline-block;  /* Align input and label in one line */
+    vertical-align: middle; /* Align them vertically in the middle */
+    margin-right: 10px;     /* Space between radio button and label */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.shipping-info label {
+    margin-top: 10px; /* Remove any extra margin from labels */
 }

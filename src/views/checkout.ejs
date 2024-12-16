@@ -24,10 +24,15 @@
             <input type="text" id="phone" name="phone" required>
 
             <h4>Phương thức giao hàng</h4>
+            
+            <input type="radio" id="pickup" name="method" value="pickup">
+            <label for="pickup">Nhận tại cửa hàng</label> <br>
+
             <input type="radio" id="delivery" name="method" value="delivery" checked>
             <label for="delivery">Giao tận nơi</label>
-            
-            <div id="delivery-details" style="display: block;"> <!-- Show when "delivery" is selected -->
+
+
+            <div id="delivery-details">
                 <label for="address">Địa chỉ:</label>
                 <input type="text" id="address" name="address" required>
             
@@ -44,9 +49,6 @@
                     <option value="">Chọn quận / huyện</option>
                 </select>
             </div>
-            
-            <input type="radio" id="pickup" name="method" value="pickup">
-            <label for="pickup">Nhận tại cửa hàng</label>
             <button class="checkout-button" id="checkout-button" type="submit">Tiếp tục</button>
         </div>
 

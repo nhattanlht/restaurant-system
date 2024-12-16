@@ -118,6 +118,16 @@
     color: #555;
 }
 
+.showcart-footer {
+    display: flex;
+    justify-content: space-between; /* Ensures the buttons are spaced evenly */
+    align-items: center; /* Centers the buttons vertically */
+}
+
+.showcart-footer a {
+    text-decoration: none;
+}
+
 .empty-cart-message {
     text-align: center;
     font-size: 16px;
@@ -232,5 +242,24 @@
 }
 
 .btn-update-cart:hover, .btn-checkout:hover {
+    background-color: #807f7e; /* Màu khi hover */
+}
+/* Cập nhật style cho các button */
+.shopping-cart-button {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin-top: 3px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+.shopping-cart-button:hover {
     background-color: #807f7e; /* Màu khi hover */
 }

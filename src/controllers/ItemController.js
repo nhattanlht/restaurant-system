@@ -69,7 +69,7 @@ class ItemController {
         const categories=await CategoryModel.getAllCategories();
         const message='null';
         // Render the 'employees' page and pass the items to be displayed
-        res.render('employees', { invoices:[],customers:[],items, categories,message });
+        res.render('employees', { invoices:[],customers:[],items, categories,message,activeSection:'item-management', });
     } catch (error) {
         console.error("Error fetching all items:", error);
         res.status(500).send("Error fetching all items.");
@@ -78,9 +78,9 @@ class ItemController {
 
 // Phương thức tìm kiếm món ăn
 static async searchItems(req, res) {
-    const { itemName, categoryId, maxPrice } = req.query;
+    const { itemName, categoryId, maxPrice} = req.query;
     console.log("Ktra", req.query);
-
+    
     try {
 
         const categories = await CategoryModel.getAllCategories();
@@ -108,7 +108,7 @@ static async searchItems(req, res) {
         // Render lại trang 'employees' với kết quả tìm kiếm và danh mục
         res.render('employees', {
             message,
-    
+            activeSection: 'item-management',
             customers: [], 
             invoices: [],  // Dữ liệu khách hàng nếu cần
             items,  // Món ăn tìm được

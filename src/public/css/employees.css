@@ -15,7 +15,7 @@ body {
     color: #fff;
     width: 250px;
     padding: 20px;
-    height: 100vh;
+    height: 100vh; /* Chiều cao toàn màn hình */
 }
 
 .sidebar h1 {
@@ -174,7 +174,7 @@ table th, table td {
 }
 
 /* Popup content */
-.popup-content {
+.popup-content, .popup-content1  {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
@@ -185,7 +185,18 @@ table th, table td {
 .popup-content input,
 .popup-content select,
 .popup-content button {
+    padding: 8px;
     width: 100%;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+
+
+/* Styling for form inputs in popup */
+.popup-content1 input,
+.popup-content1 select,
+.popup-content1 button {
     padding: 8px;
     margin-bottom: 10px;
     font-size: 16px;
@@ -205,7 +216,7 @@ table th, table td {
     background-color: #cc0000;
 }
 
-.popup-content h3 {
+.popup-content h3, .popup-content1 h3 {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
@@ -225,7 +236,7 @@ table th, table td {
   }
   
   /* Popup */
-  .popup-content {
+  .popup-content, .popup-content1 {
     background: #fff;
     padding: 20px;
     width: 500px;
@@ -247,11 +258,11 @@ table th, table td {
   }
   
   /* Form với 2 cột */
-  .popup-content form {
+  .popup-content form, .popup-content1 form {
     gap: 15px;
     z-index: 1002;
   }
-  .popup-content form table {
+  .popup-content form table, .popup-content1 form table {
     border: 1px solid white;
     border-collapse: collapse;
     margin-bottom: 15px;
@@ -259,16 +270,16 @@ table th, table td {
 
   
   /* Cập nhật input cho đúng chiều rộng */
-  .popup-content form input{
+  .popup-content form input, .popup-content1 form input{
     padding: 8px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
 
-  .popup-content form input[type="text"],
-  .popup-content form input[type="tel"],
-  .popup-content form input[type="email"] {
+  .popup-content1 form input[type="text"],
+  .popup-content1 form input[type="tel"],
+  .popup-content1 form input[type="email"] {
     width: 95%;
   }
   
