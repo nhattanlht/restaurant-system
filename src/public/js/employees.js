@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         customerManagementSection.style.display = 'none';
         reportInvoicesSection.style.display = 'none';
         itemManagementSection.style.display = 'none';
-        orderItemsSection.style.display='none';
+        orderItemsSection.style.display = 'none';
         section.style.display = 'block';
     };
 
@@ -237,6 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
 document.querySelectorAll('.items-delete-btn').forEach(button => {
     button.addEventListener('click', function (e) {
         e.preventDefault();
@@ -264,12 +265,17 @@ document.querySelectorAll('.items-delete-btn').forEach(button => {
     })
 });
 
+// Initialize flags to track if the data has been loaded
+let branchesLoaded = false;
+let categoriesLoaded = false;
+
 document.addEventListener("DOMContentLoaded", () => {
     const popup = document.getElementById("popup");
     const openPopupBtn = document.getElementById("openPopup");
     const closePopupBtn = document.getElementById("closePopup1");
     const cancelPopupBtn = document.getElementById("cancelPopup");
     const branchSelect = document.getElementById("branch");
+    const categorySelect = document.getElementById("category");
 
     // Hiển thị popup
     function showPopup() {
@@ -298,6 +304,48 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Load categories function (only runs once)
+    async function loadAllCategories() {
+        if (categoriesLoaded) return;  // Skip if already loaded
+
+        try {
+            const response = await fetch('/api/categories');  // Gọi API đúng với URL
+            const categories = await response.json();
+            categories.forEach(category => {
+                const option = document.createElement("option");
+                option.value = category.category_id;  // Giả sử category_id là ID khu vực
+                option.textContent = category.category_name;  // category_name là tên khu vực
+                categorySelect.appendChild(option);
+            });
+
+            // Mark as loaded
+            categoriesLoaded = true;
+        } catch (error) {
+            console.error("Error loading categories:", error);
+        }
+    }
+
+    // Lấy danh sách thành phố từ API
+    async function loadBranches() {
+        if (branchesLoaded) return;  // Skip if already loaded
+
+        try {
+            const response = await fetch('/api/branches');  // Gọi API đúng với URL
+            const branches = await response.json();
+            branches.forEach(branch => {
+                const option = document.createElement("option");
+                option.value = branch.branch_id;  // Giả sử branch_id là ID khu vực
+                option.textContent = branch.branch_name;  // branch_name là tên khu vực
+                branchSelect.appendChild(option);
+            });
+
+            // Mark as loaded
+            branchesLoaded = true;
+        } catch (error) {
+            console.error("Error loading branches:", error);
+        }
+    }
+    loadAllCategories();
     loadBranches();
 
     // Gán sự kiện
