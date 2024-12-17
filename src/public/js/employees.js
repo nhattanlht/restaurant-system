@@ -266,15 +266,45 @@ document.querySelectorAll('.items-delete-btn').forEach(button => {
     })
 });
 
-document.querySelectorAll('.openbtn').forEach(button => {
-    button.addEventListener('click', () => {
-        document.getElementById("mySidebar").style.width = "250px";  // Open sidebar
-        document.querySelector(".sidebar").classList.add("open");
-        document.querySelector(".sidebar").classList.remove("close");
+function openNav() {
+    const sidebar = document.getElementById("mySidebar");
+    const mainContent = document.getElementById("main-content");
+    sidebar.style.width = "250px";
+    mainContent.style.marginLeft = "250px";
+    document.querySelector(".sidebar").classList.replace("close", "open");
+}
 
-        // Push the main content to the right
-        document.getElementById("main-content").style.marginLeft = "250px";  // Adjust this value to match the width of the sidebar
-    });
+// Function to close the sidebar and reset main content margin
+function closeNav() {
+    const sidebar = document.getElementById("mySidebar");
+    const mainContent = document.getElementById("main-content");
+    sidebar.style.width = "0";
+    mainContent.style.marginLeft = "15px";
+    document.querySelector(".sidebar").classList.replace("open", "close");
+}
+function openBag() {
+    const sidebar = document.getElementById("SlideShoppingBag");
+    const mainContent = document.getElementById("showcart");
+    sidebar.style.width = "250px";
+    mainContent.style.marginRight = "250px";
+    document.querySelector(".SlideShoppingBag").classList.replace("close", "open");
+}
+
+// Function to close the sidebar and reset main content margin
+function closeBag() {
+    const sidebar = document.getElementById("SlideShoppingBag");
+    const mainContent = document.getElementById("showcart");
+    sidebar.style.width = "0";
+    mainContent.style.marginRight = "15px";
+    document.querySelector(".SlideShoppingBag").classList.replace("open", "close");
+}
+
+// Event listener to open the sidebar
+document.querySelectorAll('.openbtn').forEach(button => {
+    button.addEventListener('click', openNav);
+});
+document.querySelectorAll('.openbtnbag').forEach(button => {
+    button.addEventListener('click', openBag);
 });
 
 // Initialize flags to track if the data has been loaded
@@ -289,16 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const branchSelect = document.getElementById("branch");
     const categorySelect = document.getElementById("category");
     const closeBtn = document.getElementById("closeBtn");
-
-    /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
-    function closeNav() {
-        document.getElementById("mySidebar").style.width = "0";  // Close sidebar
-        document.getElementById("main-content").style.marginLeft = "15px";  // Keep margin-left at 15px
-
-        document.querySelector(".sidebar").classList.add("close");
-        document.querySelector(".sidebar").classList.remove("open");
-    }
-
+    const closeBtnbag = document.getElementById("closeBtnbag");
 
     // Add event listener for close button
     if (closeBtn) {
@@ -307,6 +328,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     } else {
         console.log("closeBtn is not found!");
+    }
+    if (closeBtnbag) {
+        closeBtnbag.addEventListener("click", () => {
+            closeBag();
+        });
+    } else {
+        console.log("closeBtnbag is not found!");
     }
     // Hiển thị popup
     function showPopup() {
@@ -438,5 +466,4 @@ document.getElementById('search-btn').addEventListener('click', function () {
     // Redirect to the /employees/result with the query string
     window.location.href = '/employees/result' + queryString;
 });
-
 
