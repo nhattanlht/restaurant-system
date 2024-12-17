@@ -27,7 +27,7 @@ class OrderItemsController {
                 activeSection, 
                 filters: {},  // Optionally pass filter options if needed
                 invoices: [], 
-                customers: []
+                customers: [],
             });
         } catch (error) {
             // Handle errors by returning a 500 status and an error message
@@ -63,7 +63,7 @@ class OrderItemsController {
                 filters: {},  // Optionally pass filter options if needed
                 invoices: [], 
                 customers: [],
-                items:[]
+                items:[],
             });
         } catch (error) {
             res.status(500).json({ message: 'Error fetching food data', error });

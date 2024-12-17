@@ -3,6 +3,8 @@ const router = express.Router();
 const EmployeeController = require('../controllers/employees.controller');
 const ItemController = require('../controllers/ItemController');
 const ReportInvoicesController=require('../controllers/reportInvoices.controller');
+const CustomersController=require('../controllers/customers.controller.js');
+const OrderItemsController = require('../controllers/order_items.controller.js');
 
 // Route to handle search of items
 router.get('/',ItemController.getAllItems);
@@ -22,5 +24,7 @@ router.get('/customer/search', EmployeeController.searchCustomer);
 router.post('/:customerId/update', EmployeeController.updateCustomer);
 router.post('/:customerId/delete', EmployeeController.deleteCustomer);
 router.post('/add', EmployeeController.insertCustomer);
+// Route lấy chi nhánh 
+router.get('/api/branches', CustomersController.getBranches);
 
 module.exports = router;

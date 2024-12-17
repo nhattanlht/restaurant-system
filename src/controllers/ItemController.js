@@ -1,5 +1,6 @@
 const ItemModel = require('../models/itemEmployee.model');  // Assuming the Item model is set up for menu_item
 const CategoryModel = require('../models/categories.model');  // Assuming the Category model is set up
+const FoodModel = require('../models/items.model');
 
 class ItemController {
     static async updateItem(req, res) {
@@ -63,9 +64,10 @@ class ItemController {
         // Fetch all items from the database using the ItemModel
         const items = await ItemModel.getAllItems();    
         const categories=await CategoryModel.getAllCategories();
+        const foods = await FoodModel.getAllFoods();
         const message='null';
         // Render the 'employees' page and pass the items to be displayed
-        res.render('employees', {foods:[], invoices:[],customers:[],items, categories,message,activeSection:'item-management', });
+        res.render('employees', {foods, invoices:[],customers:[],items, categories,message,activeSection:'item-management', });
     } catch (error) {
         console.error("Error fetching all items:", error);
         res.status(500).send("Error fetching all items.");

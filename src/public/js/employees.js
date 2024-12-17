@@ -269,6 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const openPopupBtn = document.getElementById("openPopup");
     const closePopupBtn = document.getElementById("closePopup1");
     const cancelPopupBtn = document.getElementById("cancelPopup");
+    const branchSelect = document.getElementById("branch");
 
     // Hiển thị popup
     function showPopup() {
@@ -280,6 +281,24 @@ document.addEventListener("DOMContentLoaded", () => {
     function closePopup() {
         popup.classList.remove("active");
     }
+
+    // Lấy danh sách thành phố từ API
+    async function loadBranches() {
+        try {
+            const response = await fetch('/api/branches');  // Gọi API đúng với URL
+            const branches = await response.json();
+            branches.forEach(branch => {
+                const option = document.createElement("option");
+                option.value = branch.branch_id;  // Giả sử branch_id là ID khu vực
+                option.textContent = branch.branch_name;  // branch_name là tên khu vực
+                branchSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error loading branches:", error);
+        }
+    }
+
+    loadBranches();
 
     // Gán sự kiện
     openPopupBtn.addEventListener("click", showPopup);
