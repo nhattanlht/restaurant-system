@@ -1,6 +1,6 @@
-const EmployeeModel = require('../models/employees.model')
-const ItemModel = require('../models/itemEmployee.model');  // Assuming the Item model is set up for menu_item
-const CategoryModel = require('../models/categories.model');  // Assuming the Category model is set up
+const EmployeeModel = require('../../user/models/employees.model')
+const ItemModel = require('../../user/models/itemEmployee.model');  // Assuming the Item model is set up for menu_item
+const CategoryModel = require('../../user/models/categories.model');  // Assuming the Category model is set up
 
 class EmployeeController {
     static searchCustomer = async (req, res) => {
@@ -11,7 +11,14 @@ class EmployeeController {
             const categories=await CategoryModel.getAllCategories();
             // Pass a flag to indicate if customers were found
             const message = customers.length === 0 ? "Find a customer" : null;
-            res.render('user/employees', { customers, message,invoices:[], items, categories });
+            res.render('admin/admin', { title: 'Admin Dashboard',
+                branches: null,
+                employees: null,
+                revenueData: null,
+                revenueItem: null,
+                areas: null,
+                managers: null,
+                departments: null,customers, message,invoices:[], items, categories });
         } catch (error) {
             res.status(500).send('Server Error');
         }
@@ -34,7 +41,7 @@ class EmployeeController {
         try {
             const { customerId } = req.params;
             await EmployeeModel.deleteCustomer(customerId);
-            res.redirect('/employees');
+            res.redirect('/admin');
         } catch (error) {
             res.status(500).send('Server Error');
         }
@@ -64,7 +71,14 @@ class EmployeeController {
             const categories=await CategoryModel.getAllCategories();
 
             // Kết quả
-            res.render('user/employees', { customers: [customers], message,invoices:[], items, categories });
+            res.render('admin/admin', { title: 'Admin Dashboard',
+                branches: null,
+                employees: null,
+                revenueData: null,
+                revenueItem: null,
+                areas: null,
+                managers: null,
+                departments: null,customers: [customers], message,invoices:[], items, categories });
         } catch (error) {
             res.status(500).json({ message: 'Failed to insert customer', error });
         }

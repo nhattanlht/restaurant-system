@@ -23,11 +23,11 @@ app.use(methodOverride('_method'));  // Giả lập phương thức PUT thông q
 
 // routes
 app.use(user)
+app.use('/admin', adminRoutes)
 
 // app.use('/', layoutAdminRoutes)
 // app.use('/', getAdminOrder)
 // app.use('/', registerAdminRoutes)
-app.use('/admin', authenticate, adminRoutes)
 
 
 

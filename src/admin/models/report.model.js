@@ -63,13 +63,13 @@ class ReportModel {
                 ORDER BY 
                     total_revenue DESC;
             `;
-            
+
             // Tạo request với các tham số động
             const request = pool.request();
             request.input('year', sql.Int, year || null);  // Nếu year là null thì cho phép chọn tất cả năm
             request.input('month', sql.Int, month || null);  // Nếu month là null thì cho phép chọn tất cả tháng
             request.input('day', sql.Int, day || null);  // Nếu day là null thì cho phép chọn tất cả ngày
-    
+
             // Thực hiện truy vấn
             const result = await request.query(query);
             return result.recordset;  // Trả về danh sách doanh thu theo món
@@ -78,7 +78,7 @@ class ReportModel {
             throw error;  // Ném lỗi để Controller có thể xử lý
         }
     }
-    
+
 }
 
 

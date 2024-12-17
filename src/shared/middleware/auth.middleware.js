@@ -263,52 +263,52 @@ const isAdmin = async (req, res, next) => {
         return next(error);
     }
 };
-const isUser = async (req, res, next) =>{
+const isUser = async (req, res, next) => {
     try {
         const { tokens, user } = req.session || {};
         const refreshToken = tokens?.refreshToken;
         const user_id = user?.user_id;
-        // Kiểm tra session hợp lệ
+
         if (!user_id || !refreshToken) {
             throw new UnauthorizedRequest('Invalid request: Missing user ID or refresh token.');
         }
 
-        // Thực hiện transaction
         await db.runTransaction(async (transaction) => {
-            // user, tokens -> user_id ... -> tokens accessToken 2h refreshToken 7 days
             const keyStore = await UserModel.findUserByUserId(user_id, transaction);
             if (!keyStore) {
                 throw new NotFoundRequest('Key token not found.');
             }
-            try {
-                // Giải mã token
-                const decodedUser = JWT.verify(refreshToken, keyStore.private_key);
-                if(decodedUser.user_id !== user_id) {
-                    throw new UnauthorizedRequest('Invalid Request headers');
-                }
-                const foundUser = await UserModel.findUserByUserId(decodedUser.user_id,transaction);
 
-                // Kiểm tra role
-                if (!['customer'].includes(foundUser.role)) {
+            try {
+                const decodedUser = JWT.verify(refreshToken, keyStore.private_key);
+
+                if (decodedUser.user_id !== user_id) {
+                    throw new UnauthorizedRequest('Token user ID does not match session user ID.');
+                }
+
+                const foundUser = await UserModel.findUserByUserId(decodedUser.user_id, transaction);
+                const allowedRoles = ['customer', 'admin', 'manager']; // Thêm các role cần hỗ trợ
+                if (!allowedRoles.includes(foundUser.role)) {
                     throw new UnauthorizedRequest('Access denied: Insufficient permissions.');
                 }
-                // Gắn keyStore và thông tin người dùng vào req
+
                 req.keyStore = keyStore;
                 req.user = decodedUser;
 
-                // Tiếp tục xử lý middleware tiếp theo
                 return next();
-
-            } catch (jwtError) {
-                console.error('JWT Verification Error:', jwtError.message);
+            } catch (error) {
+                if (error.name === 'TokenExpiredError') {
+                    throw new UnauthorizedRequest('Token expired. Please re-login.');
+                }
                 throw new UnauthorizedRequest('Invalid or expired token.');
             }
         });
     } catch (error) {
-        // Gọi next để xử lý lỗi
+        console.error('Middleware isUser error:', error.message);
         return next(error);
     }
-}
+};
+
 // Helper function to verify JWT
 const verifyJWT = (token, keySecret) => {
     return JWT.verify(token, keySecret);

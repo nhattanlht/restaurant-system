@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('partials/head')%>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Management</title>
+    <link rel="stylesheet" href="../../public/user/css/employees.css">
+</head>
+
+<body>
+<div class="layout">
+    <meta charset="UTF-8">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h1>System Management</h1>
+        <nav>
+            <a href="/admin/branches" id="btnBranches">Branch Management</a>
+            <a href="/admin/employees" id="btnEmployees">Employee Management</a>
+            <a href="/admin/reports" id="btnReports">Reports & Analytics</a>
+            <a href="/admin/customers" id="customerManagementLink">Customer Management</a>
+            <a href="/admin/report-invoices" id="reportInvoices">Report invoices</a>
+            <a href="/admin/items" id="itemManagement"> Item Management</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+        <!-- Branch Management Section -->
+        <% if (branches && areas) { %>
+            <section id="branches">
+                <%- include('bodies/branches', {branches, areas, managers}) %>
+            </section>
+        <% } %>
+
+        <% if (employees) { %>
+            <section id="employees" class="hidden">
+                <%- include('bodies/employees', { employees, departments, branches }) %>
+            </section>
+        <% } %>
+
+        <!-- Reports Section -->
+        <% if (revenueData) { %>
+            <section id="reports" class="hidden">
+                <%- include('bodies/reports', { revenueData, revenueItem }) %>
+            </section>
+        <% } %>
+
+        <!-- Customer Management Section -->
+        <% if(customers){ %>
+        <div id="customer-management" class="content-section">
+            <h2>Customer Management</h2>
+            <div class="function-bar">
+                <form method="GET" action="/employees/customer/search">
+                    <input type="text" name="criteria" placeholder="Search by ID, email, or phone" required>
+                    <button type="submit">Search</button>
+                </form>
+                <!-- Button to show popup -->
+                <button id="openPopup">Add Customer</button>
+
+                <!-- Popup -->
+                <div class="popup-overlay" id="popup">
+                    <div class="popup-content">
+                        <span class="close-popup" id="closePopup">&times;</span>
+                        <h2>Đăng ký thông tin</h2>
+                        <form id="infoForm" method="POST" action="/employees/add">
+                            <table>
+                                <tr>
+                                    <th><label for="name">Họ và tên:</label></th>
+                                    <td><input type="text" name="name" id="name" placeholder="Nhập họ và tên" required></td>
+                                </tr>
+                                <tr>
+                                    <th><label for="phone">Số điện thoại:</label></th>
+                                    <td><input type="tel" name="phone" id="phone" placeholder="Nhập số điện thoại" required></td>
+                                </tr>
+                                <tr>
+                                    <th><label for="email">Email:</label></th>
+                                    <td><input type="email" name="email" id="email" placeholder="Nhập email" required></td>
+                                </tr>
+                                <tr>
+                                    <th><label for="identity">CMND/CCCD:</label></th>
+                                    <td><input type="text" name="identity" id="identity" placeholder="Nhập số CMND/CCCD" required></td>
+                                </tr>
+                                <tr>
+                                    <th><label>Giới tính:</label></th>
+                                    <td>
+                                        <input type="radio" id="male" name="gender" value="M" required checked><label for="male">Nam</label>
+                                        <input type="radio" id="female" name="gender" value="M" required><label for="female">Nữ</label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="half-width">
+                                <button type="submit" class="submit-btn">Gửi</button>
+                                <button type="button" class="cancel-btn" id="cancelPopup">Hủy</button>
+                            </div>
+                            <p id="success-message" style="font-weight: bold; margin-top: 10px;"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Identity Card</th>
+                    <th>Gender</th>
+                    <th>Member Card Number</th>
+                    <th>Card Type</th>
+                    <th>Accumulated Spending</th>
+                    <th>Created At</th>
+                    <th>Support Employee ID</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% if (message) { %>
+                    <tr>
+                        <td colspan="12" style="text-align: center; color: #d6c3c3;"><%= message %></td>
+                    </tr>
+                <% } else { %>
+                    <% if (customers && customers.length > 0) { %>
+
+                        <% customers.forEach(customer => { %>
+                        <tr data-customer-id="<%= customer.customer_id %>">
+                            <td><span><%= customer.customer_id %></span></td>
+                            <td contenteditable="false"><%= customer.name %></td>
+                            <td contenteditable="false"><%= customer.phone_number %></td>
+                            <td contenteditable="false"><%= customer.email %></td>
+                            <td contenteditable="false"><%= customer.identity_card %></td>
+                            <td contenteditable="false"><%= customer.gender %></td>
+                            <td contenteditable="false"><%= customer.member_card_number %></td>
+                            <td contenteditable="false"><%= customer.card_type %></td>
+                            <td contenteditable="false"><%= customer.accumulated_spending %></td>
+                            <td><span><%= customer.created_at %></span></td>
+                            <td><span><%= customer.support_employee_id %></span></td>
+                            <td>
+                                <button class="edit-save-btn">Edit</button> <br>
+                                <form method="POST" action="/employees/<%= customer.customer_id %>/delete">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                    <% } %>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+        <%}%>
+        <!-- Branch Revenue Report Section -->
+        <!-- Report Invoices Section -->
+        <% if(invoices){%>
+        <div id="report-invoices" class="content-section">
+            <h2>Report Invoices</h2>
+            <!-- Filter Form -->
+            <form method="GET" action="/admin/employees/report-invoices">
+                <label for="name">Customer Name:</label>
+                <input type="text" name="name" placeholder="Enter customer name" />
+
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" name="phone_number" placeholder="Enter phone number" />
+
+                <label for="year">Year:</label>
+                <input type="number" name="year" placeholder="Enter year" />
+
+                <label for="month">Month:</label>
+                <select name="month">
+                    <option value="all">All</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+
+                <button type="submit">Filter</button>
+            </form>
+
+            <!-- Displaying Filtered Invoices -->
+            <table>
+                <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Amount</th>
+                    <th>Total Amount</th>
+                    <th>Payment Method</th>
+                    <th>Customer Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% if (invoices && invoices.length > 0) { %>
+
+                    <% invoices.forEach(invoice => { %>
+                    <tr>
+                        <td><%= invoice.order_id %></td>
+                        <td><%= invoice.order_date %></td>
+                        <td><%= invoice.amount %></td>
+                        <td><%= invoice.total_amount %></td>
+                        <td><%= invoice.payment_method %></td>
+                        <td><%= invoice.name %></td>
+                        <td><%= invoice.phone_number %></td>
+                        <td><%= invoice.email %></td>
+                    </tr>
+                <% }); %>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+        <%}%>
+        <!-- Item Management Section -->
+        <%if(invoices){%>
+        <div id="item-management" class="content-section">
+            <h2>Item Management</h2>
+            <!-- Item Search Form -->
+            <form class="title" method="GET" action="/admin/employees/items/search">
+                <input type="text" name="itemName" placeholder="Search by Name" />
+
+                <select name="categoryId">
+                    <option value="all">All Categories</option>
+                    <% if (invoices && invoices.length > 0) { %>
+                    <% invoices.forEach(category => { %>
+                        <option value="<%= category.category_id %>"><%= category.category_name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+
+                <input type="number" name="maxPrice" placeholder="Max Price" min="0" />
+
+                <button class="search-btn" type="submit">Search</button>
+            </form>
+
+            <!-- Items Table -->
+            <table>
+                <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% if (items && items.length > 0) { %>
+                    <% items.forEach(item => { %>
+                        <tr>
+                            <td><%= item.item_name %></td>
+                            <td><%= item.category_name %></td>
+                            <td><%= item.price %></td>
+                            <td>
+                                <button class="edit-btn">Edit</button>
+                                <form method="POST" action="/employees/items/<%= item.item_id %>/delete">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="4">No items found</td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+        <%}%>
+
+    </main>
+</div>
+
+<script src="../../public/admin/js/admin.js"></script>
+<script src="../../public/admin/js/employees.js"></script>
+</body>
+
+</html>

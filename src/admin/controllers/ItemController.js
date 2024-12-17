@@ -1,5 +1,5 @@
-const ItemModel = require('../models/itemEmployee.model');  // Assuming the Item model is set up for menu_item
-const CategoryModel = require('../models/categories.model');  // Assuming the Category model is set up
+const ItemModel = require('../../user/models/itemEmployee.model');  // Assuming the Item model is set up for menu_item
+const CategoryModel = require('../../user/models/categories.model');  // Assuming the Category model is set up
 
 class ItemController {
     static async updateItem(req, res) {
@@ -69,7 +69,14 @@ class ItemController {
         const categories=await CategoryModel.getAllCategories();
         const message='null';
         // Render the 'employees' page and pass the items to be displayed
-        res.render('user/employees', { invoices:[],customers:[],items, categories,message });
+        res.render('admin/admin', {  title: 'Admin Dashboard',
+            branches: null,
+            employees: null,
+            revenueData: null,
+            revenueItem: null,
+            areas: null,
+            managers: null,
+            departments: null,invoices:[],customers:[],items, categories,message });
     } catch (error) {
         console.error("Error fetching all items:", error);
         res.status(500).send("Error fetching all items.");
@@ -106,7 +113,15 @@ static async searchItems(req, res) {
         const items = await ItemModel.searchItems(query);
 
         // Render lại trang 'employees' với kết quả tìm kiếm và danh mục
-        res.render('user/employees', {
+        res.render('admin/admin', {
+            title: 'Admin Dashboard',
+            branches: null,
+            employees: null,
+            revenueData: null,
+            revenueItem: null,
+            areas: null,
+            managers: null,
+            departments: null,
             message,
     
             customers: [], 

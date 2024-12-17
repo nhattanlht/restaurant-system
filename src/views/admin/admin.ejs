@@ -3,41 +3,53 @@
 
 <head>
     <%-include('partials/head')%>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Management</title>
+    <link rel="stylesheet" href="../../public/user/css/employees.css">
 </head>
 
 <body>
 <div class="layout">
+    <meta charset="UTF-8">
+
     <!-- Sidebar -->
     <aside class="sidebar">
-        <%-include('bodies/sidebar')%>
+        <h1>System Management</h1>
+        <nav>
+            <a href="/admin/branches" id="btnBranches">Branch Management</a>
+            <a href="/admin/employees" id="btnEmployees">Employee Management</a>
+            <a href="/admin/reports" id="btnReports">Reports & Analytics</a>
+
+        </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="content">
         <!-- Branch Management Section -->
-        <%if(branches && areas) {%>
+        <% if (branches && areas) { %>
             <section id="branches">
-                <%-include('bodies/branches', {branches, areas, managers})%>
+                <%- include('bodies/branches', {branches, areas, managers}) %>
             </section>
-        <%}%>
+        <% } %>
 
-        <%if(employees) {%>
+        <% if (employees) { %>
             <section id="employees" class="hidden">
                 <%- include('bodies/employees', { employees, departments, branches }) %>
             </section>
-        <%}%>
+        <% } %>
 
         <!-- Reports Section -->
-        <%if(revenueData) {%>
+        <% if (revenueData) { %>
             <section id="reports" class="hidden">
-                <%- include('bodies/reports', { revenueData, revenueItem}) %>
+                <%- include('bodies/reports', { revenueData, revenueItem }) %>
             </section>
-        <%}%>
+        <% } %>
     </main>
 </div>
 
-
-<script src="../../public/js/admin.js"></script>
+<script src="../../public/admin/js/admin.js"></script>
+<script src="../../public/admin/js/employees.js"></script>
 </body>
 
 </html>

@@ -53,7 +53,6 @@ class AdminController {
 
   async getDashboard(req, res, netx) {
     try {
-      res.redirect('/admin/reports');
       // Render giao diện dashboard
       res.render('admin/admin', {
         title: 'Admin Dashboard',
@@ -64,6 +63,10 @@ class AdminController {
         areas: null,
         managers: null,
         departments: null,
+        message: null,
+        customers: null,
+        invoices: null,
+        items: null,
       });
     } catch (err) {
       console.error('Error loading dashboard:', err);
@@ -92,6 +95,10 @@ class AdminController {
         areas: areas,
         managers: manager,
         departments: departments,
+        message: null,
+        customers: null,
+        invoices: null,
+        items: null,
       });
     } catch (error) {
       console.error('Error loading admin dashboard:', error);
@@ -221,6 +228,10 @@ class AdminController {
         areas: null,
         managers: null,
         departments: departments,
+        message: null,
+        customers: null,
+        invoices: null,
+        items: null,
       });
     } catch (error) {
       console.error('Error loading admin dashboard:', error);
@@ -367,6 +378,10 @@ class AdminController {
         areas: null,
         managers: null,
         departmets: null,
+        message: null,
+        customers: null,
+        invoices: null,
+        items: null,
       });
     } catch (error) {
       console.error('Error in getRevenueByBranch:', error);

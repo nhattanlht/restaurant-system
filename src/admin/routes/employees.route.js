@@ -5,7 +5,7 @@ const ItemController = require('../controllers/ItemController');
 const ReportInvoicesController=require('../controllers/reportInvoices.controller');
 
 // Route to handle search of items
-router.get('/',ItemController.getAllItems);
+router.get('/items',ItemController.getAllItems);
 router.get('/items/search', ItemController.searchItems);  
 router.post('/items/add', ItemController.addItem);
 // Route to update an item

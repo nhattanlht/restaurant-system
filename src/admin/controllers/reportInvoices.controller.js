@@ -1,4 +1,4 @@
-const InvoiceModel = require('../models/invoice.model'); // Assuming you have an invoice model
+const InvoiceModel = require('../../user/models/invoice.model'); // Assuming you have an invoice model
 
 class InvoiceController {
     // Method to fetch and filter invoices by customer or month
@@ -12,7 +12,14 @@ class InvoiceController {
             const message='null';
             
             // Render the report invoices page and pass the results
-            res.render('user/employees', { customers:[],categories:[],items:[],invoices,message });
+            res.render('admin/admin', { title: 'Admin Dashboard',
+                branches: null,
+                employees: null,
+                revenueData: null,
+                revenueItem: null,
+                areas: null,
+                managers: null,
+                departments: null,customers:[],categories:[],items:[],invoices,message });
         } catch (error) {
             console.error("Error fetching invoices:", error);
             res.status(500).send("Error fetching invoices.");
