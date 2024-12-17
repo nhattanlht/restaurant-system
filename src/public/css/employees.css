@@ -43,6 +43,8 @@ body {
     top: 0;
     right: 0;
     background-color: #111;
+    color: white;
+    overflow-y: auto; 
     /* Black*/
     overflow-x: hidden;
     /* Disable horizontal scroll */
@@ -464,68 +466,79 @@ tr:nth-child(even) {
 }
 
 
-.showcart {
-    display:none;
-    position: fixed;
-    border-radius: 10px;
-    right: 20px;
-    top: 80px;
-    padding:10px;
-    z-index: 1000;
-    background-color:#ffffff;
-    box-shadow: 0.5px 0.5px 10px 1px #000;
+/* Cart heading */
+.SlideShoppingBag h4 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;  /* Center the text horizontally */
+    width: 100%;  
 }
 
-.showcart .showcart-title {
-    display:block;
-    text-align: center;
-    background-color: #e6e6e6;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    margin-bottom: 10px;
+/* Cart items container */
+#cartItemsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
 }
 
-.showcart .showcart-item {
+/* Individual cart item styling */
+.cart-item {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.1);  /* Slight background for items */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #555;  /* Subtle border */
 }
 
-.showcart .showcart-left img {
-    width: 100px;
-    height: 100px;
+/* Image styling within the cart item */
+.cart-item img {
+    width: 50px;
+    height: 50px;
     margin-right: 10px;
-    object-fit: fill;
-}
-
-
-.showcart-item-container {
-    max-height: 400px; /* Giới hạn chiều cao */
-    overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung vượt quá chiều cao */
-    padding: 10px; /* Khoảng cách bên trong */
-    background: #f9f9f9; /* Màu nền nhạt */
-    border: 1px solid #ddd; /* Đường viền nhẹ */
     border-radius: 5px;
 }
 
-.showcart-right h5 {
+/* Item name and price */
+.cart-item .item-info {
+    flex: 1;
+}
+
+/* Cart total price or status message */
+#cartItemsContainer p {
+    color: white;
+    text-align: center;
     font-size: 16px;
-    margin: 0 0 5px 0;
+    margin-top: 20px;
 }
 
-.showcart-right span {
-    font-size: 14px;
-    color: #555;
+/* Hover effect on cart items */
+.cart-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
 }
 
-.showcart-footer {
-    display: flex;
-    justify-content: space-between; /* Ensures the buttons are spaced evenly */
-    align-items: center; /* Centers the buttons vertically */
+/* Responsiveness - Adjust for smaller screens */
+@media (max-width: 768px) {
+    .SlideShoppingBag {
+        width: 80%;
+    }
 }
 
-.showcart-footer a {
-    text-decoration: none;
+#submitCartBtn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745; /* Green color */
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;  /* Give space above the button */
+}
+
+#submitCartBtn:hover {
+    background-color: #218838; /* Darker green on hover */
 }

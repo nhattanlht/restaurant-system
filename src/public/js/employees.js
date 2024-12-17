@@ -520,6 +520,40 @@ document.getElementById('search-btn').addEventListener('click', function () {
     window.location.href = '/employees/result' + queryString;
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    
+document.getElementById('submitCartBtn').addEventListener('click', function() {
+    const cartItems = []; // Collect the items in the cart
+    document.querySelectorAll('#cartItemsContainer .cart-item').forEach(itemElement => {
+        const itemId = itemElement.dataset.id;
+        const itemName = itemElement.querySelector('.item-name').textContent;
+        const itemPrice = itemElement.querySelector('.item-price').textContent;
+        const itemQuantity = itemElement.querySelector('.item-quantity').textContent;
+        
+        cartItems.push({
+            id: itemId,
+            name: itemName,
+            price: itemPrice,
+            quantity: itemQuantity
+        });
+    });
+
+    // Send cart data to the server via a POST request
+    fetch('/cart/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ cart: cartItems })  // Send cart items as JSON
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Cart saved successfully!');
+        } else {
+            alert('Error saving cart.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while saving the cart.');
+    });
 });
