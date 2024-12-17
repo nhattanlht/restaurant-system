@@ -2,16 +2,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // Select elements
     const customerManagementLink = document.getElementById('customerManagementLink');
     const reportInvoicesLink = document.getElementById('reportInvoices');
+    const orderItemsLink = document.getElementById('orderItems'); // Added for Order Items
     const itemManagementLink = document.getElementById('itemManagement');
     const customerManagementSection = document.getElementById('customer-management');
     const reportInvoicesSection = document.getElementById('report-invoices');
     const itemManagementSection = document.getElementById('item-management');
+    const orderItemsSection = document.getElementById('order-items'); // Added for Order Items section
 
     // Hide all sections and show the specific one
     const showSection = (section) => {
         customerManagementSection.style.display = 'none';
         reportInvoicesSection.style.display = 'none';
         itemManagementSection.style.display = 'none';
+        orderItemsSection.style.display='none';
         section.style.display = 'block';
     };
 
@@ -31,11 +34,17 @@ document.addEventListener("DOMContentLoaded", () => {
         showSection(itemManagementSection);
     });
 
+    orderItemsLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showSection(orderItemsSection);
+    });
+
     // Define sections
     const sections = {
         'customer-management': document.getElementById('customer-management'),
         'report-invoices': document.getElementById('report-invoices'),
         'item-management': document.getElementById('item-management'),
+        'order-items': orderItemsSection, // Added for Order Items section
     };
 
     // Hide all sections by default
@@ -318,4 +327,32 @@ document.getElementById('submit-btn').addEventListener('click', function (event)
             errorMessage.textContent = 'Failed to add customer. Please try again.';
             errorMessage.style.color = 'red';
         });
+});
+
+// xử lý sự kiện order Items
+// For the filter button
+document.getElementById('filter-btn').addEventListener('click', function () {
+    let branch = document.getElementById('branchsearch').value;
+    let category = document.getElementById('category').value;
+    let price = document.getElementById('price-max').value;
+
+    // Create the query string with filter parameters
+    let queryString = `?branch=${branch}&category=${category}&price=${price}`;
+
+    // Redirect to the /employees/result with the query string
+    window.location.href = '/employees/result' + queryString;
+});
+
+// For the search button
+document.getElementById('search-btn').addEventListener('click', function () {
+    let search = document.getElementById('search-box').value;
+    let branch = document.getElementById('branchsearch').value;
+    let category = document.getElementById('category').value;
+    let price = document.getElementById('price-max').value;
+
+    // Create the query string with search and filter parameters
+    let queryString = `?search=${search}&branch=${branch}&category=${category}&price=${price}`;
+
+    // Redirect to the /employees/result with the query string
+    window.location.href = '/employees/result' + queryString;
 });

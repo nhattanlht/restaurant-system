@@ -13,6 +13,7 @@ class EmployeeController {
             const message = customers.length === 0 ? "Find a customer" : null;
             // Add the active section flag
             res.render('employees', {
+                foods:[],
                 customers,
                 message,
                 invoices: [],

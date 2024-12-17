@@ -6,18 +6,14 @@ class ItemController {
         const { itemId } = req.params;  // Lấy itemId từ URL
         const { item_name, price, status } = req.body;  // Lấy các dữ liệu từ body request
 
-        console.log('Item ID:', itemId);  // In ra để kiểm tra itemId nhận được
-        console.log('Request Params:', req.params); // In ra toàn bộ params để kiểm tra
-        console.log('Request Body:', req.body);  // In ra toàn bộ body để kiểm tra
-
         try {
             if (!itemId || !item_name || !price || !status) {
                 return res.status(400).json({ message: 'All fields are required' });
             }
 
-            // Gọi hàm cập nhật món ăn
-            const success = await ItemModel.updateItem(itemId, item_name, price, status);
+            // Gọi hàm cập nhật món ăn  const success = await ItemModel.updateItem(itemId, item_name, price, status);
             
+          
             if (success) {
                 return res.status(200).json({ message: 'Item updated successfully' });
             } else {
@@ -69,7 +65,7 @@ class ItemController {
         const categories=await CategoryModel.getAllCategories();
         const message='null';
         // Render the 'employees' page and pass the items to be displayed
-        res.render('employees', { invoices:[],customers:[],items, categories,message,activeSection:'item-management', });
+        res.render('employees', {foods:[], invoices:[],customers:[],items, categories,message,activeSection:'item-management', });
     } catch (error) {
         console.error("Error fetching all items:", error);
         res.status(500).send("Error fetching all items.");
@@ -107,6 +103,7 @@ static async searchItems(req, res) {
 
         // Render lại trang 'employees' với kết quả tìm kiếm và danh mục
         res.render('employees', {
+            foods:[],
             message,
             activeSection: 'item-management',
             customers: [], 
