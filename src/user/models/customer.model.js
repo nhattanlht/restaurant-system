@@ -112,6 +112,37 @@ class CustomerModel {
         // lấy thông tin khách hàng ra bởi customer_id
         // cộng điểm cho khách hàng bởi sp
     }
+
+    // Lấy thông tin khách hàng theo số điện thoại
+    static async getCustomerByPhone(phoneNumber) {
+        try {
+            const pool = await sql.connect(require(connect));
+            const result = await pool.request()
+                .input('phone', sql.NVarChar, phoneNumber)
+                .query(`SELECT * FROM ${TABLE_NAME} WHERE phone_number = @phone`);
+            return result.recordset[0];
+        } catch (error) {
+            console.error('Error fetching customer by phone:', error);
+            throw error;
+        }
+    }
+
+    // Cập nhật chi tiêu của khách hàng
+    static async updateCustomerSpending(customerId, spending) {
+        try {
+            const pool = await sql.connect(require(connect));
+            const result = await pool.request()
+                .input('customer_id', sql.BigInt, customerId)
+                .input('spending', sql.Money, spending)
+                .query(`UPDATE [Customer]
+                        SET accumulated_spending = accumulated_spending + @spending
+                        WHERE customer_id = @customer_id`);
+            return result.rowsAffected > 0; // Trả về true nếu cập nhật thành công
+        } catch (error) {
+            console.error('Error updating customer spending:', error);
+            throw error;
+        }
+    }
 }
 
 module.exports = CustomerModel;

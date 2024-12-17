@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cảm ơn bạn!</title>
+    <link rel="stylesheet" href="/css/thank-you.css">
+</head>
+<body>
+    <div class="thank-you-container">
+        <h2>Đặt hàng thành công</h2>
+        <p>Mã đơn hàng #<%= order_id %></p>
+        <p>Cảm ơn bạn đã mua hàng!</p>
+
+        <div class="order-details">
+            <h3>Thông tin đơn hàng</h3>
+            <p><strong>Thông tin giao hàng:</strong></p>
+            <p>Họ và tên: <%= name %></p>
+            <p>Số điện thoại: <%= phone %></p>
+            <p>Email: <%= email %></p>
+
+            <p><strong>Tổng cộng:</strong> <%= totalAmount %> VND</p>
+        </div>
+
+        <a href="/customers" class="btn-checkout">Tiếp tục mua hàng</a>
+
+    </div>
+</body>
+</html>

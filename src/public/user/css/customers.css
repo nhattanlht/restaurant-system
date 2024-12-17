@@ -1,0 +1,112 @@
+.card-img-top {
+  height: 250px;
+  object-fit: cover;
+  /*Cắt ảnh để phù hợp mà không bị vỡ ảnh*/
+  width: 100%;
+}
+
+.book-table { 
+  position: relative;
+  left: 15px;
+}
+/* Nền mờ khi popup hiển thị */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
+}
+
+/* Popup */
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  position: relative;
+}
+
+/* Nút đóng */
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Form với 2 cột */
+.popup-content form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  z-index: 1002;
+}
+
+.popup-content form label {
+  display: block;
+}
+
+/* Cập nhật input và select cho đúng chiều rộng */
+.popup-content form input,
+.popup-content form select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Điều chỉnh nút radio để cùng cột với input */
+.half-width {
+  grid-column: span 2;  /* Đảm bảo chiếm toàn bộ một hàng */
+  display: flex;  /* Sử dụng flex để các nút radio nằm trên cùng một dòng */
+  align-items: center;
+  gap: 10px;  /* Khoảng cách giữa các nút radio */
+}
+
+/* Đảm bảo các label nằm trên cùng một dòng */
+.half-width label {
+  margin: 0;  /* Không có margin giữa các label */
+  display: inline-flex;
+  align-items: center;  /* Căn giữa các phần tử */
+}
+
+/* Điều chỉnh khoảng cách giữa radio và label */
+.half-width input[type="radio"] {
+  margin-right: 5px;  /* Khoảng cách nhỏ giữa radio button và label */
+}
+
+/* Nút */
+button {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn {
+  background: #4CAF50;
+  color: white;
+}
+
+.cancel-btn {
+  background: #f44336;
+  color: white;
+}
+
+/* Hiển thị popup */
+.popup-overlay.active {
+  display: flex;
+}

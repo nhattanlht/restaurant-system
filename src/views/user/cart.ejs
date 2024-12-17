@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng</title>
+    <link rel="stylesheet" href="../../public/user/css/cart.css">
+</head>
+<body>
+
+<!-- Giỏ hàng modal -->
+<div id="cart-modal">
+<div class="cart-container">
+    <h3>Giỏ Hàng</h3>
+    <div id="cart-items">
+        <% if (cart.length > 0) { %>
+            <% cart.forEach(item => { %>
+                <div class="cart-item">
+                    <!-- Ảnh của món ăn -->
+                    <img src="../../public/user/images/<%= item.name %>.jpg" alt="<%= item.name %>">
+                    <div class="cart-item-details">
+                        <p><strong><%= item.name %></strong></p>
+                        <p>Số lượng: 
+                            <input type="number" value="<%= item.quantity %>" min="1" class="cart-item-quantity" data-id="<%=item.id %>" />
+                        </p>
+                        <p>Giá: <%= item.price %> VND</p>
+                    </div>
+                    <button class="remove-item" data-id="<%= item.id%>" data-name='<%= item.name %>'>Xóa</button>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>Giỏ hàng của bạn trống.</p>
+        <% } %>
+    </div>
+
+    <button id="update-cart-button" class="btn-update-cart">Cập nhật giỏ hàng</button>
+
+    <div id="cart-total">
+        <p>Tổng tiền: <span id="cart-total-price"><%= totalAmount %></span> VND</p>
+    </div>
+
+    <!-- Form gửi thông tin giỏ hàng đến /checkout -->
+    <form id="checkout-form" action="/checkout" method="POST">
+        <div id="cart-items">
+            <% if (cart.length > 0) { %>
+                <% cart.forEach(item => { %>
+                    <input type="hidden" name="items[<%= item.id %>][id]" value="<%= item.id %>">
+                    <input type="hidden" name="items[<%= item.id %>][name]" value="<%= item.name %>">
+                    <input type="hidden" name="items[<%= item.id %>][quantity]" value="<%= item.quantity %>">
+                    <input type="hidden" name="items[<%= item.id %>][price]" value="<%= item.price %>">
+                <% }); %>
+            <% } else { %>
+                <p>Giỏ hàng của bạn trống.</p>
+            <% } %>
+        </div>
+        <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
+        <button type="submit" class="btn-checkout">Thanh toán</button>
+    </form>
+    
+
+</div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script src="../../public/user/js/cart.js"></script>
+</body>
+</html>

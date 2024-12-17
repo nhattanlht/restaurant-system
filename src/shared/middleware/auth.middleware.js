@@ -318,5 +318,6 @@ module.exports = {
     authentication,
     authenticationV2,
     verifyJWT,
-    authenticate: isAdmin
+    authenticate: isAdmin,
+    isUser
 };

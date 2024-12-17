@@ -2,7 +2,7 @@ const express = require('express')
 const configViewEngine = require('./configs/engine.config')
 const app = express()
 
-const layoutRoute = require('./user/routes/index')
+const user = require('./user/routes/index')
 const accessRoutes = require('./user/routes/access/access.route')
 const layoutAdminRoutes = require('./admin/routes');
 const getAdminOrder = require('./admin/routes/order.route');
@@ -22,13 +22,16 @@ app.use((req, res, next) => {
 app.use(methodOverride('_method'));  // Giả lập phương thức PUT thông qua trường _method
 
 // routes
-app.use('/', layoutRoute)
-app.use('/', accessRoutes)
+app.use(user)
 
 // app.use('/', layoutAdminRoutes)
 // app.use('/', getAdminOrder)
-app.use('/', registerAdminRoutes)
+// app.use('/', registerAdminRoutes)
 app.use('/admin', authenticate, adminRoutes)
+
+
+
+
 app.get('/logout', (req, res) => {
     const controller = new AccessController();
     controller.logout(req, res);

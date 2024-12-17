@@ -9,10 +9,11 @@ const {AdminController} = require("../controllers/admin.controller");
 const adminController = new AdminController();
 
 //lấy danh sách
-router.get('/', authenticate, forwardError(adminController.getDashboard));
-router.get('/branches', authenticate, forwardError(adminController.getBranch))
-router.get('/employees', authenticate, forwardError(adminController.getEmployee))
-router.get('/reports', authenticate, forwardError(adminController.getRevenueByBranch))
+router.use(authenticate)
+router.get('/', forwardError(adminController.getDashboard));
+router.get('/branches', forwardError(adminController.getBranch))
+router.get('/employees', forwardError(adminController.getEmployee))
+router.get('/reports', forwardError(adminController.getRevenueByBranch))
 
 //Thêm, Chỉnh sửa, xoá chi nhánh
 router.post('/branches/add', adminController.addBranch); // Xử lý thêm chi nhánh

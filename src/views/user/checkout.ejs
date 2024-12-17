@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin giao hàng</title>
+    <link rel="stylesheet" href="../../public/user/css/checkout.css">
+</head>
+
+<body>
+    <div class="cart-container">
+        <h2>ShuShi System</h2>
+        <div class="shipping-info">
+            <!-- Thông tin giao hàng -->
+            <h3>Thông tin giao hàng</h3>
+            <label for="name">Họ và tên:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+
+            <label for="phone">Số điện thoại:</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <h4>Phương thức giao hàng</h4>
+            <input type="radio" id="delivery" name="method" value="delivery" checked>
+            <label for="delivery">Giao tận nơi</label>
+
+            <div id="delivery-details">
+                <label for="address">Địa chỉ:</label>
+                <input type="text" id="address" name="address" required>
+
+                <label for="province">Tỉnh / Thành:</label>
+                <select id="province" name="province" required>
+                    <option value="">Chọn tỉnh / thành</option>
+                    <option value="TPHCM">TP HCM</option>
+                    <option value="LongAn">Long An</option>
+                </select>
+
+                <label for="district">Quận / Huyện:</label>
+                <select id="district" name="district" required>
+                    <option value="">Chọn quận / huyện</option>
+                </select>
+            </div>
+
+            <input type="radio" id="pickup" name="method" value="pickup">
+            <label for="pickup">Nhận tại cửa hàng</label>
+            <button class="checkout-button" id="checkout-button" type="submit">Tiếp tục</button>
+        </div>
+
+
+        <div class="cart-summary">
+            <!-- Thông tin giỏ hàng -->
+            <h3>Thông tin sản phẩm</h3>
+            <div id="cart-items">
+                <% if (items.length> 0) { %>
+                    <% items.forEach(item=> { %>
+                        <div class="cart-item">
+                            <img src="../../public/user/images/<%= item.name %>.jpg" alt="<%= item.name %>">
+                            <div class="cart-item-content">
+                                <p class="item-id" style="display: none;">
+                                    <%= item.id %>
+                                </p> <!-- Ẩn item.id trong DOM -->
+                                <p><strong class="item-name">
+                                        <%= item.name %>
+                                    </strong></p>
+                                <p class="item-quantity">Số lượng: <%= item.quantity %>
+                                </p>
+                                <p class="item-price">Giá: <%= parseFloat(item.price).toLocaleString() %> VND</p>
+                            </div>
+                        </div>
+                        <% }); %>
+                            <% } else { %>
+                                <p>Giỏ hàng của bạn trống.</p>
+                                <% } %>
+            </div>
+
+            <div class="discount">
+                <label for="discount-code">Mã giảm giá:</label>
+                <input type="text" id="discount-code">
+                <button id="apply-discount">Sử dụng</button>
+                <p id="discount-message"></p>
+            </div>
+
+            <div class="total">
+                <label for="shipping-fee">Phí giao hàng:</label>
+                <input type="number" id="shipping-fee" value="40000" style="display: none;"> <!-- Hidden input -->
+                <span id="formatted-shipping-fee">40,000</span> VND <!-- Visible formatted fee -->
+                <p>Tạm tính: <span id="initial-amount"><%= totalAmount %></span> VND</p>
+                <p>Trừ giảm giá: <span id="discount-value">0</span> VND</p>
+                <p><strong>Tổng cộng: <span id="total-amount"><%= parseInt(totalAmount) + 40000 %></span> VND</strong></p>
+            </div>
+            
+
+
+            <!-- Phương thức thanh toán -->
+            <div class="payment-method">
+                <h4>Phương thức thanh toán</h4>
+                <div>
+                    <input type="radio" id="cod" name="payment-method" value="cod" checked>
+                    <label for="cod">Thanh toán khi giao hàng (COD)</label>
+                </div>
+                <div>
+                    <input type="radio" id="bank" name="payment-method" value="bank">
+                    <label for="bank">Chuyển khoản qua ngân hàng</label>
+                </div>
+                <div>
+                    <input type="radio" id="momo" name="payment-method" value="momo">
+                    <label for="momo">Thanh toán qua MoMo</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="../../public/user/js/address.js"></script>
+    <script src="../../public/user/js/checkout.js"></script>
+</body>
+
+</html>

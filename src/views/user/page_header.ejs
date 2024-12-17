@@ -1,0 +1,55 @@
+<!-- Page header start -->
+
+<head>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="../../public/user/css/main.css" rel="stylesheet" />
+    <link href="../../public/user/css/cart.css" rel="stylesheet" />
+
+    <!-- Font Awesome CDN for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    
+    <!-- Title can be dynamically set -->
+    <title>
+        <%= title || 'Default Title' %>
+    </title>
+</head>
+
+<body>
+
+    <div class="header">
+        <a href="/"><img class="logo" src="../../public/user/images/logo.svg" alt="logo"></a>
+        <div class="header-right">
+            <div class="action-cart">
+                <a class="shopping-bag-button" onclick="toggleCart()">
+                <img class="shopping-bag" src="../../public/user/images/shopping-bag.png" alt="shopping-bag">
+                <span class="count-holder">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="showcart" id="showcart">
+        <span class="showcart-title"><h4>Giỏ hàng</h4></span>
+        <div class="showcart-item-container">
+            <!-- Các mục giỏ hàng sẽ được render vào đây -->
+        </div>
+        <div class="showcart-total">
+            <strong>Tổng tiền: </strong>
+            <span>0 VNĐ</span>
+        </div>
+        <div class="showcart-footer">
+                <a href="/cart" class="button shopping-cart-button">Xem giỏ hàng</a>
+                <a href="#" class="button">Thanh toán</a>
+        </div>
+    </div>
+    </div>
+
+    <!-- Banner with overlay and small banner -->
+    <div class="banner">
+        <img src="../../public/user/images/banner.png" alt="banner">
+    </div>
+    <script src="../../public/user/js/cart.js"></script>
+</body>
