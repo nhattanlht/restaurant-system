@@ -1,4 +1,4 @@
-const CartModel = require('../models/cart.model');
+const Cart = require('../models/cart.model');
 class CartController {
     // Hiển thị giỏ hàng
     static renderCart(req, res) {
@@ -114,6 +114,23 @@ class CartController {
         }
     };
 
+    static addToCart = (req, res) => {
+        const { id, name, price, image } = req.body;
 
+        // Create a new cart or retrieve from session
+        const cart = new Cart(req.session);
+
+        // Add the item to the cart
+        const item = { id, name, price: parseInt(price), image };
+        cart.addItem(item);
+
+        // Return updated cart items as JSON
+        return res.json({ success: true, cartItems: cart.getItems() });
+    };
+
+    static getCartItems = (req, res) => {
+        const cart = new Cart(req.session);
+        return res.json(cart.getItems());
+    }
 }
 module.exports = CartController;

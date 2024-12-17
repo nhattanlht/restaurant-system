@@ -395,6 +395,59 @@ document.addEventListener("DOMContentLoaded", () => {
     openPopupBtn.addEventListener("click", showPopup);
     closePopupBtn.addEventListener("click", closePopup1);
     cancelPopupBtn.addEventListener("click", closePopup);
+
+
+    // THIS FOR CARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+    document.body.addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('add-to-cart')) {
+
+            const itemData = {
+                id: event.target.dataset.id,
+                name: event.target.dataset.name,
+                price: event.target.dataset.price,
+                image: event.target.dataset.image
+            };
+
+            // Log the item data for debugging
+            console.log('Item Data:', itemData);
+
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Cart items:', data.cartItems); // Check if cart items are updated
+                    updateCartDisplay(data.cartItems);
+                    document.getElementById('SlideShoppingBag').style.display = 'block';
+                }
+            })
+            .catch(err => console.error('Error:', err));
+        }
+    });
+
+    function updateCartDisplay(cartItems) {
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        cartItemsContainer.innerHTML = ''; // Clear current cart content
+
+        if (cartItems.length > 0) {
+            cartItems.forEach(item => {
+                cartItemsContainer.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}" style="width:50px; height:50px;">
+                        <span>${item.name} x ${item.quantity} - ${item.price.toLocaleString()}₫</span>
+                    </div>
+                `;
+            });
+        } else {
+            cartItemsContainer.innerHTML = `<p>No items in cart.</p>`;
+        }
+    }
 });
 
 document.getElementById('submit-btn').addEventListener('click', function (event) {
@@ -467,3 +520,6 @@ document.getElementById('search-btn').addEventListener('click', function () {
     window.location.href = '/employees/result' + queryString;
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    
+});

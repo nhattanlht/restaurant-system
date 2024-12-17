@@ -12,6 +12,12 @@ router.post('/cart/remove', CartController.removeItemFromCart);
 //Sửa đổi số lượng món ăn
 router.post('/cart/update', CartController.updateItemQuantity);
 
+// Route to add an item to the cart
+router.post('/cart/add', CartController.addToCart);
+
+// Route to retrieve cart items
+router.get('/cart/items', CartController.getCartItems);
+
 // POST chuyển đến trang checkout
 router.post('/checkout', CartController.renderCheckout);
 

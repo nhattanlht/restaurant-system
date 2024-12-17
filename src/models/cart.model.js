@@ -3,7 +3,37 @@ class CartModel {
     static getCart(session) {
         return session.cart || [];  // Lấy giỏ hàng từ session
     }
+
+    constructor(session) {
+        this.session = session;
+        this.items = this.session.cart ? this.session.cart : [];
+    }
+
+    // Add a new item or update the quantity if it exists
+    addItem(item) {
+        const existingItem = this.items.find(cartItem => cartItem.id === item.id);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            this.items.push({ ...item, quantity: 1 });
+        }
+        this.updateSession();
+    }
+
+    // Get all cart items
+    getItems() {
+        return this.items;
+    }
+
+    // Update the session with the current cart state
+    updateSession() {
+        this.session.cart = this.items;
+    }
 }
+
+
+module.exports=CartModel;
+
 
 
    
@@ -53,5 +83,3 @@ class CartModel {
     //     const quantity = cart.reduce((total, item) => total + item.quantity, 0); // Tính tổng số lượng
     //     return quantity;
     // }
-
-module.exports=CartModel;
