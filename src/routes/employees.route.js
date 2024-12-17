@@ -23,4 +23,6 @@ router.post('/:customerId/update', EmployeeController.updateCustomer);
 router.post('/:customerId/delete', EmployeeController.deleteCustomer);
 router.post('/add', EmployeeController.insertCustomer);
 
+router.get('/result',OrderItemsController.getFoods);
+
 module.exports = router;

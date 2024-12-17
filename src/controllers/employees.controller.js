@@ -1,6 +1,7 @@
 const EmployeeModel = require('../models/employees.model')
 const ItemModel = require('../models/itemEmployee.model');  // Assuming the Item model is set up for menu_item
 const CategoryModel = require('../models/categories.model');  // Assuming the Category model is set up
+const FoodModel = require('../models/items.model.js');
 
 class EmployeeController {
     static searchCustomer = async (req, res) => {
@@ -9,11 +10,12 @@ class EmployeeController {
             const customers = await EmployeeModel.searchCustomer(criteria);
             const items = await ItemModel.getAllItems();
             const categories = await CategoryModel.getAllCategories();
+            let foods = await FoodModel.getAllFoods();
             // Pass a flag to indicate if customers were found
             const message = customers.length === 0 ? "Find a customer" : null;
             // Add the active section flag
             res.render('employees', {
-                foods:[],
+                foods,
                 customers,
                 message,
                 invoices: [],

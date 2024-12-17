@@ -77,11 +77,11 @@ class ItemController {
 // Phương thức tìm kiếm món ăn
 static async searchItems(req, res) {
     const { itemName, categoryId, maxPrice} = req.query;
-    console.log("Ktra", req.query);
     
     try {
 
         const categories = await CategoryModel.getAllCategories();
+        const foods = await FoodModel.getAllFoods();
         const message='null';
         // Xây dựng truy vấn tìm kiếm
         let query = `
@@ -105,7 +105,7 @@ static async searchItems(req, res) {
 
         // Render lại trang 'employees' với kết quả tìm kiếm và danh mục
         res.render('employees', {
-            foods:[],
+            foods,
             message,
             activeSection: 'item-management',
             customers: [], 
