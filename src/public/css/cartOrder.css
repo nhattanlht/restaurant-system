@@ -1,0 +1,37 @@
+
+.shopping-bag-button {
+    margin-right: 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.shopping-bag {
+    width: 30px;
+}
+
+.count-holder {
+    position: absolute;
+    /* Đặt số đè lên hình ảnh */
+    top: 50%;
+    /* Căn giữa theo chiều dọc */
+    left: 50%;
+    /* Căn giữa theo chiều ngang */
+    transform: translate(-93%, -35%);
+    /* Điều chỉnh để số nằm đúng tâm */
+    color: white;
+    /* Màu chữ */
+    font-size: 12px;
+    /* Kích thước chữ */
+    padding: 5px 8px;
+    /* Khoảng cách bên trong */
+    border-radius: 50%;
+    /* Tạo hình tròn */
+    text-align: center;
+    /* Căn giữa nội dung trong hình tròn */
+    min-width: 24px;
+    /* Đảm bảo kích thước tối thiểu */
+    line-height: 1;
+    /* Canh dòng hợp lý */
+}
