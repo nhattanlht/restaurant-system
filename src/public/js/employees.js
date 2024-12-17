@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const itemManagementSection = document.getElementById('item-management');
     const orderItemsSection = document.getElementById('order-items'); // Added for Order Items section
 
+
     // Hide all sections and show the specific one
     const showSection = (section) => {
         customerManagementSection.style.display = 'none';
@@ -265,6 +266,17 @@ document.querySelectorAll('.items-delete-btn').forEach(button => {
     })
 });
 
+document.querySelectorAll('.openbtn').forEach(button => {
+    button.addEventListener('click', () => {
+        document.getElementById("mySidebar").style.width = "250px";  // Open sidebar
+        document.querySelector(".sidebar").classList.add("open");
+        document.querySelector(".sidebar").classList.remove("close");
+
+        // Push the main content to the right
+        document.getElementById("main-content").style.marginLeft = "250px";  // Adjust this value to match the width of the sidebar
+    });
+});
+
 // Initialize flags to track if the data has been loaded
 let branchesLoaded = false;
 let categoriesLoaded = false;
@@ -276,7 +288,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const cancelPopupBtn = document.getElementById("cancelPopup");
     const branchSelect = document.getElementById("branch");
     const categorySelect = document.getElementById("category");
+    const closeBtn = document.getElementById("closeBtn");
 
+    /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+    function closeNav() {
+        document.getElementById("mySidebar").style.width = "0";  // Close sidebar
+        document.getElementById("main-content").style.marginLeft = "15px";  // Keep margin-left at 15px
+
+        document.querySelector(".sidebar").classList.add("close");
+        document.querySelector(".sidebar").classList.remove("open");
+    }
+
+
+    // Add event listener for close button
+    if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+            closeNav();
+        });
+    } else {
+        console.log("closeBtn is not found!");
+    }
     // Hiển thị popup
     function showPopup() {
         popup.classList.add("active");
@@ -286,22 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Đóng popup
     function closePopup() {
         popup.classList.remove("active");
-    }
-
-    // Lấy danh sách thành phố từ API
-    async function loadBranches() {
-        try {
-            const response = await fetch('/api/branches');  // Gọi API đúng với URL
-            const branches = await response.json();
-            branches.forEach(branch => {
-                const option = document.createElement("option");
-                option.value = branch.branch_id;  // Giả sử branch_id là ID khu vực
-                option.textContent = branch.branch_name;  // branch_name là tên khu vực
-                branchSelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error("Error loading branches:", error);
-        }
     }
 
     // Load categories function (only runs once)
@@ -423,3 +438,5 @@ document.getElementById('search-btn').addEventListener('click', function () {
     // Redirect to the /employees/result with the query string
     window.location.href = '/employees/result' + queryString;
 });
+
+

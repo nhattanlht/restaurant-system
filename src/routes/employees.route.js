@@ -16,15 +16,11 @@ router.post('/items/:itemId/update', ItemController.updateItem);
 router.post('/items/:itemId/delete', ItemController.deleteItem);
 
 //report invoices
-
 router.get('/report-invoices',ReportInvoicesController.reportInvoices);
-
 
 router.get('/customer/search', EmployeeController.searchCustomer);
 router.post('/:customerId/update', EmployeeController.updateCustomer);
 router.post('/:customerId/delete', EmployeeController.deleteCustomer);
 router.post('/add', EmployeeController.insertCustomer);
-// Route lấy chi nhánh 
-router.get('/api/branches', CustomersController.getBranches);
 
 module.exports = router;

@@ -11,48 +11,54 @@
 </head>
 
 <body>
-    <div class="sidebar">
-        <h1>System Management</h1>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" id="closeBtn">&times;</a>
         <a href="#" id="customerManagementLink">Customer Management</a>
         <a href="#" id="reportInvoices">Report invoices</a>
-        <a href="#" id="itemManagement"> Item Management</a>
-        <a href="#" id="orderItems"> Order Items</a>
+        <a href="#" id="itemManagement">Item Management</a>
+        <a href="#" id="orderItems">Order Items</a>
     </div>
-    <div class="main-content">
+
+    <div class="main-content" id="main-content">
         <!-- Customer Management Section -->
         <div id="customer-management" class="content-section">
+            <button class="openbtn">&#9776; Open Sidebar</button>
             <h2>Customer Management</h2>
             <div class="function-bar">
-                <form method="GET" action="/employees/customer/search">
+                <form class="title" method="GET" action="/employees/customer/search">
                     <input type="text" name="criteria" placeholder="Search by ID, email, or phone" required>
                     <input type="hidden" name="activeSection" value="<%= activeSection %>">
-                    <button type="submit">Search</button>
+                    <button type="submit" class="search-btn" id="search-btn">Search</button>
                 </form>
                 <!-- Nút hiển thị popup -->
-                <button id="openPopup">Add Customer</button>
+                <button class="addBtn" id="openPopup">Add Customer</button>
 
                 <!-- Popup -->
                 <div class="popup-overlay" id="popup">
                     <div class="popup-content1">
                         <span class="close-popup1" id="closePopup1">&times;</span>
                         <h2>Đăng ký thông tin</h2>
-                        <form id="infoForm" method="POST" action="/employees/add">
+                        <form class="title" id="infoForm" method="POST" action="/employees/add">
                             <table>
                                 <tr>
                                     <th><label for="name">Họ và tên:</label></th>
-                                    <td><input type="text" name="name" id="name" placeholder="Nhập họ và tên" required></td>
+                                    <td><input type="text" name="name" id="name" placeholder="Nhập họ và tên" required>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th><label for="phone">Số điện thoại:</label></th>
-                                    <td><input type="tel" name="phone" id="phone" placeholder="Nhập số điện thoại" required></td>
+                                    <td><input type="tel" name="phone" id="phone" placeholder="Nhập số điện thoại"
+                                            required></td>
                                 </tr>
                                 <tr>
                                     <th><label for="email">Email:</label></th>
-                                    <td><input type="email" name="email" id="email" placeholder="Nhập email" required></td>
+                                    <td><input type="email" name="email" id="email" placeholder="Nhập email" required>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th><label for="identity">CMND/CCCD:</label></th>
-                                    <td><input type="text" name="identity" id="identity" placeholder="Nhập số CMND/CCCD" required></td>
+                                    <td><input type="text" name="identity" id="identity" placeholder="Nhập số CMND/CCCD"
+                                            required></td>
                                 </tr>
                                 <tr>
                                     <th><label>Giới tính:</label></th>
@@ -92,280 +98,318 @@
                 <tbody>
                     <% if (message) { %>
                         <tr>
-                        <td colspan="12" style="text-align: center; color: #d6c3c3;"><%= message %></td>
-                    </tr>
+                            <td colspan="12" style="text-align: center; color: #d6c3c3;">
+                                <%= message %>
+                            </td>
+                        </tr>
 
-                            <% } else { %>
-                                <% customers.forEach(customer=> { %>
-                                    <tr data-customer-id="<%= customer.customer_id %>">
-                                        <td><span>
-                                                <%= customer.customer_id %>
-                                            </span></td>
-                                        <td contenteditable="false">
-                                            <%= customer.name %>
-                                        </td>
-                                        <td contenteditable="false">
-                                            <%= customer.phone_number %>
-                                        </td>
-                                        <td contenteditable="false">
-                                            <%= customer.email %>
-                                        </td>
-                                        <td contenteditable="false">
-                                            <%= customer.identity_card %>
-                                        </td>
-                                        <td contenteditable="false">
-                                            <%= customer.gender %>
-                                        </td>
-                                        <td contenteditable="false">
-                                            <%= customer.member_card_number %>
-                                        </td>
-                                        <td contenteditable="false">
-                                            <%= customer.card_type %>
-                                        </td>
-                                        <td contenteditable="false">
-                                            <%= customer.accumulated_spending %>
-                                        </td>
-                                        <td><span>
-                                                <%= customer.created_at %>
-                                            </span></td>
-                                        <td><span>
-                                                <%= customer.support_employee_id %>
-                                            </span></td>
-                                        <td>
-                                            <button class="customers-edit-save-btn">Edit</button> <br>
-                                            <form method="POST" action="/employees/<%= customer.customer_id %>/delete">
-                                                <button type="submit">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <% }); %>
-                                        <% } %>
+                        <% } else { %>
+                            <% customers.forEach(customer=> { %>
+                                <tr data-customer-id="<%= customer.customer_id %>">
+                                    <td><span>
+                                            <%= customer.customer_id %>
+                                        </span></td>
+                                    <td contenteditable="false">
+                                        <%= customer.name %>
+                                    </td>
+                                    <td contenteditable="false">
+                                        <%= customer.phone_number %>
+                                    </td>
+                                    <td contenteditable="false">
+                                        <%= customer.email %>
+                                    </td>
+                                    <td contenteditable="false">
+                                        <%= customer.identity_card %>
+                                    </td>
+                                    <td contenteditable="false">
+                                        <%= customer.gender %>
+                                    </td>
+                                    <td contenteditable="false">
+                                        <%= customer.member_card_number %>
+                                    </td>
+                                    <td contenteditable="false">
+                                        <%= customer.card_type %>
+                                    </td>
+                                    <td contenteditable="false">
+                                        <%= customer.accumulated_spending %>
+                                    </td>
+                                    <td><span>
+                                            <%= customer.created_at %>
+                                        </span></td>
+                                    <td><span>
+                                            <%= customer.support_employee_id %>
+                                        </span></td>
+                                    <td>
+                                        <button class="customers-edit-save-btn search-btn">Edit</button> <br>
+                                        <form method="POST" action="/employees/<%= customer.customer_id %>/delete">
+                                            <button type="submit" class="search-btn">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                                    <% } %>
                 </tbody>
             </table>
         </div>
 
-        <!-- Branch Revenue Report Section -->
         <!-- Report Invoices Section -->
-<div id="report-invoices" class="content-section">
-    <h2>Report Invoices</h2>
-
-    <!-- Filter Form -->
-    <form method="GET" action="/employees/report-invoices">
-        <label for="name">Customer Name:</label>
-        <input type="text" name="name" placeholder="Enter customer name" />
-
-        <label for="phone_number">Phone Number:</label>
-        <input type="text" name="phone_number" placeholder="Enter phone number" />
-
-        <label for="year">Year:</label>
-        <input type="number" name="year" placeholder="Enter year" />
-
-        <label for="month">Month:</label>
-        <select name="month">
-            <option value="all">All</option>
-            <option value="1">January</option>
-            <option value="2">February</option>
-            <option value="3">March</option>
-            <option value="4">April</option>
-            <option value="5">May</option>
-            <option value="6">June</option>
-            <option value="7">July</option>
-            <option value="8">August</option>
-            <option value="9">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
-        </select>
-        <input type="hidden" name="activeSection" value="<%= activeSection %>">
-        <button type="submit">Filter</button>
-    </form>
-
-    <!-- Displaying Filtered Invoices -->
-    <table>
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Order Date</th>
-                <th>Amount</th>
-                <th>Total Amount</th>
-                <th>Payment Method</th>
-                <th>Customer Name</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% invoices.forEach(invoice => { %>
-                <tr>
-                    <td><%= invoice.order_id %></td>
-                    <td><%= invoice.order_date %></td>
-                    <td><%= invoice.amount %></td>
-                    <td><%= invoice.total_amount %></td>
-                    <td><%= invoice.payment_method %></td>
-                    <td><%= invoice.name %></td>
-                    <td><%= invoice.phone_number %></td>
-                    <td><%= invoice.email %></td>
-                </tr>
-            <% }); %>
-        </tbody>
-    </table>
-</div>
-        <!-- Item Management Section -->
-<div id="item-management" class="content-section">
-    <h2>Item Management</h2>
-    <!-- Item Search Form -->
-    <form class="title" method="GET" action="/employees/items/search">
-        <input type="text" name="itemName" placeholder="Search by Name" />
         
-        <select name="categoryId">
-            <option value="all">All Categories</option>
-            <!-- Populate categories dynamically -->
-            <% categories.forEach(category => { %>
-                <option value="<%= category.category_id %>"><%= category.category_name %></option>
-            <% }); %>
-        </select>
+        <div id="report-invoices" class="content-section">
+            <button class="openbtn">&#9776; Open Sidebar</button>
+            <h2>Report Invoices</h2>
 
-        <input type="number" name="maxPrice" placeholder="Max Price" min="0" />
+            <!-- Filter Form -->
+            <form class="title" method="GET" action="/employees/report-invoices">
+                <label for="name">Customer Name:</label>
+                <input type="text" name="name" placeholder="Enter customer name" />
 
-        <input type="hidden" name="activeSection" value="<%= activeSection %>">
-        <button class="search-btn" type="submit">Search</button>
-    </form>
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" name="phone_number" placeholder="Enter phone number" />
 
-    <!-- Items Table -->
-    <table>
-        <thead>
-            <tr>
-                <th>Item Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% items.forEach(item => { %>
-                <tr data-item-id="<%= item.item_id %>">
-                    <td contenteditable="false"><%= item.item_name %></td>
-                    <td contenteditable="false"><%= item.category_name %></td>
-                    <td contenteditable="false"><%= parseFloat(item.price).toLocaleString() %></td> <!-- Add thousands separator -->
-                    <td contenteditable="false"><%= item.status %></td>
-                    <td>
-                        <button class="items-edit-save-btn">Edit</button>
-                        <form method="POST" action="/employees/items/<%= item.item_id %>/delete">
-                            <button type="submit" class="items-delete-btn">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                
-            <% }); %>
-        </tbody>
-    </table>
-    <!-- Nút "Thêm Món Ăn" để mở popup -->
-<button id="addItemBtn">Thêm Món Ăn</button>
-<!-- Popup nhập thông tin món ăn -->
-<div id="addItemPopup" style="display: none;">
-    <div class="popup-content">
-        <h3>Thêm Món Ăn Mới</h3>
-        <form id="addItemForm">
-            <label for="itemName">Tên Món Ăn:</label>
-            <input type="text" id="itemName" name="itemName" required />
+                <label for="year">Year:</label>
+                <input type="number" name="year" placeholder="Enter year" />
 
-            <label for="itemCategory">Danh Mục:</label>
-            <select id="itemCategory" name="itemCategory" required>
-                <option value="">Chọn Danh Mục</option>
-                <% categories.forEach(category => { %>
-                    <option value="<%= category.category_id %>"><%= category.category_name %></option>
-                <% }); %>
-            </select>
-
-            <label for="itemPrice">Giá:</label>
-            <input type="number" id="itemPrice" name="itemPrice" required min="0" />
-           
-
-            <button type="submit">Thêm Món Ăn</button>
-            <button type="button" id="closePopup">Hủy</button>
-        </form>
-    </div>
-</div>
-</div>
-  <!-- Order Items Section -->
-  <div id="order-items" class="content-section">
-    <h2>Order Items</h2>
-
-    <!-- Filter Section -->
-    <div class="container">
-        <div class="row g-0 gx-3 align-items-center mb-4">
-            <!-- Branch Filter -->
-            <div class="col-md-2">
-                <label for="branch" class="form-label text-white">Branch</label>
-                <select id="branch" class="form-select">
-                    <option value="" disabled selected>-- Chọn chi nhánh --</option>
-                    <!-- Dynamic Branch Options -->
+                <label for="month">Month:</label>
+                <select name="month">
+                    <option value="all">All</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
                 </select>
-            </div>
-            <!-- Category Filter -->
-            <div class="col-md-2">
-                <label for="category" class="form-label text-white">Category</label>
-                <select id="category" class="form-select">
-                    <option value="" disabled selected>-- Chọn loại món ăn --</option>
-                    <!-- Dynamic Category Options -->
+                <input type="hidden" name="activeSection" value="<%= activeSection %>">
+                <button class="search-btn" type="submit">Filter</button>
+            </form>
+
+            <!-- Displaying Filtered Invoices -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Order Date</th>
+                        <th>Amount</th>
+                        <th>Total Amount</th>
+                        <th>Payment Method</th>
+                        <th>Customer Name</th>
+                        <th>Phone Number</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% invoices.forEach(invoice=> { %>
+                        <tr>
+                            <td>
+                                <%= invoice.order_id %>
+                            </td>
+                            <td>
+                                <%= invoice.order_date %>
+                            </td>
+                            <td>
+                                <%= invoice.amount %>
+                            </td>
+                            <td>
+                                <%= invoice.total_amount %>
+                            </td>
+                            <td>
+                                <%= invoice.payment_method %>
+                            </td>
+                            <td>
+                                <%= invoice.name %>
+                            </td>
+                            <td>
+                                <%= invoice.phone_number %>
+                            </td>
+                            <td>
+                                <%= invoice.email %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <!-- Item Management Section -->
+        
+        <div id="item-management" class="content-section">
+            <button class="openbtn">&#9776; Open Sidebar</button>
+            <h2>Item Management</h2>
+            <!-- Item Search Form -->
+            <form class="title" method="GET" action="/employees/items/search">
+                <input type="text" name="itemName" placeholder="Search by Name" />
+
+                <select name="categoryId">
+                    <option value="all">All Categories</option>
+                    <!-- Populate categories dynamically -->
+                    <% categories.forEach(category=> { %>
+                        <option value="<%= category.category_id %>">
+                            <%= category.category_name %>
+                        </option>
+                        <% }); %>
                 </select>
-            </div>
-            <!-- Price Filter -->
-            <div class="col-md-2">
-                <label for="price-max" class="form-label text-white">Price ($)</label>
-                <input type="number" id="price-max" class="form-control" placeholder="Max Price" min="0">
-            </div>
-            <!-- Filter Button -->
-            <div class="col-md-2">
-                <button class="btn btn-primary mt-4" id="filter-btn">Filter</button>
+
+                <input type="number" name="maxPrice" placeholder="Max Price" min="0" />
+
+                <input type="hidden" name="activeSection" value="<%= activeSection %>">
+                <button class="search-btn" type="submit">Search</button>
+            </form>
+
+            <!-- Items Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% items.forEach(item=> { %>
+                        <tr data-item-id="<%= item.item_id %>">
+                            <td contenteditable="false">
+                                <%= item.item_name %>
+                            </td>
+                            <td contenteditable="false">
+                                <%= item.category_name %>
+                            </td>
+                            <td contenteditable="false">
+                                <%= parseFloat(item.price).toLocaleString() %>
+                            </td> <!-- Add thousands separator -->
+                            <td contenteditable="false">
+                                <%= item.status %>
+                            </td>
+                            <td>
+                                <button class="items-edit-save-btn search-btn" >Edit</button>
+                                <form method="POST" action="/employees/items/<%= item.item_id %>/delete">
+                                    <button type="submit" class="items-delete-btn search-btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <% }); %>
+                </tbody>
+            </table>
+            <!-- Nút "Thêm Món Ăn" để mở popup -->
+            <button id="addItemBtn" class="addBtn">Thêm Món Ăn</button>
+            <!-- Popup nhập thông tin món ăn -->
+            <div id="addItemPopup" style="display: none;">
+                <div class="popup-content">
+                    <h3>Thêm Món Ăn Mới</h3>
+                    <form id="addItemForm">
+                        <label for="itemName">Tên Món Ăn:</label>
+                        <input type="text" id="itemName" name="itemName" required />
+
+                        <label for="itemCategory">Danh Mục:</label>
+                        <select id="itemCategory" name="itemCategory" required>
+                            <option value="">Chọn Danh Mục</option>
+                            <% categories.forEach(category=> { %>
+                                <option value="<%= category.category_id %>">
+                                    <%= category.category_name %>
+                                </option>
+                                <% }); %>
+                        </select>
+
+                        <label for="itemPrice">Giá:</label>
+                        <input type="number" id="itemPrice" name="itemPrice" required min="0" />
+
+
+                        <button type="submit">Thêm Món Ăn</button>
+                        <button type="button" id="closePopup">Hủy</button>
+                    </form>
+                </div>
             </div>
         </div>
+        <!-- Order Items Section -->
+        
+        <div id="order-items" class="content-section">
+            <button class="openbtn">&#9776; Open Sidebar</button>
+            <h2>Order Items</h2>
 
-        <!-- Search Section -->
-        <div class="row g-0 gx-3 align-items-center mb-4">
-            <div class="col-md-8">
-                <input type="text" id="search-box" class="form-control mt-4" placeholder="Search foods...">
-            </div>
-            <div class="col-md-2 d-flex">
-                <button class="btn btn-success w-100 mt-4" id="search-btn">Search</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Food Items Display Section -->
-    <div class="container py-5">
-        <div class="row">
-            <% if (foods.length > 0) { %>
-                <% foods.forEach(food => { %>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <!-- Food Image -->
-                            <img src="/images/<%= food.item_name %>.jpg" class="card-img-top" alt="<%= food.item_name %>">
-                            <div class="card-body">
-                                <h5 class="card-title text-center"><%= food.item_name %></h5>
-                                <p class="card-text text-center text-success fw-bold">
-                                    <%= food.price.toLocaleString() %>₫
-                                </p>
-                            </div>
-                            <div class="card-footer text-center">
-                                <button class="btn btn-primary add-to-cart" data-id="<%= food.item_id %>"
-                                    data-name="<%= food.item_name %>" data-price="<%= food.price %>"
-                                    data-image="/images/<%= food.item_name %>.jpg">
-                                    Chọn món
-                                </button>
-                            </div>
-                        </div>
+            <!-- Filter Section -->
+            <div class="container">
+                <div class="row g-0 gx-3 align-items-center mb-4">
+                    <!-- Branch Filter -->
+                    <div class="col-md-2">
+                        <label for="branch" class="form-label text-white">Branch</label>
+                        <select id="branch" class="form-select">
+                            <option value="" disabled selected>-- Chọn chi nhánh --</option>
+                            <!-- Dynamic Branch Options -->
+                        </select>
                     </div>
-                <% }); %>
-            <% } else { %>
-                <p class="text-center">Không có món ăn nào phù hợp với tiêu chí tìm kiếm.</p>
-            <% } %>
-        </div>
-    </div>
-</div>
+                    <!-- Category Filter -->
+                    <div class="col-md-2">
+                        <label for="category" class="form-label text-white">Category</label>
+                        <select id="category" class="form-select">
+                            <option value="" disabled selected>-- Chọn loại món ăn --</option>
+                            <!-- Dynamic Category Options -->
+                        </select>
+                    </div>
+                    <!-- Price Filter -->
+                    <div class="col-md-2">
+                        <label for="price-max" class="form-label text-white">Price ($)</label>
+                        <input type="number" id="price-max" class="form-control" placeholder="Max Price" min="0">
+                    </div>
+                    <!-- Filter Button -->
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button class="w-50 search-btn" id="filter-btn" style="margin-top:31px;">Filter</button>
+                    </div>
+                </div>
 
-</div>
+                <!-- Search Section -->
+                <div class="row g-0 gx-3 align-items-center mb-4">
+                    <div class="col-md-8">
+                        <input type="text" id="search-box" class="form-control mt-4" placeholder="Search foods...">
+                    </div>
+                    <div class="col-md-2 d-flex">
+                        <button class="mt-4 search-btn w-50"  id="search-btn">Search</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Food Items Display Section -->
+            <div class="container py-5">
+                <div class="row">
+                    <% if (foods.length> 0) { %>
+                        <% foods.forEach(food=> { %>
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <!-- Food Image -->
+                                    <img src="/images/<%= food.item_name %>.jpg" class="card-img-top"
+                                        alt="<%= food.item_name %>">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">
+                                            <%= food.item_name %>
+                                        </h5>
+                                        <p class="card-text text-center text-success fw-bold">
+                                            <%= food.price.toLocaleString() %>₫
+                                        </p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button class="btn btn-primary add-to-cart" data-id="<%= food.item_id %>"
+                                            data-name="<%= food.item_name %>" data-price="<%= food.price %>"
+                                            data-image="/images/<%= food.item_name %>.jpg">
+                                            Chọn món
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <p class="text-center">Không có món ăn nào phù hợp với tiêu chí tìm kiếm.</p>
+                                    <% } %>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
     <!-- External JS for Event Handling -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
