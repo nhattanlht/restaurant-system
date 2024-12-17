@@ -18,6 +18,8 @@ router.post('/cart/add', CartController.addToCart);
 // Route to retrieve cart items
 router.get('/cart/items', CartController.getCartItems);
 
+router.post('/cart/save',CartController.saveCartToDatabase);
+
 // POST chuyển đến trang checkout
 router.post('/checkout', CartController.renderCheckout);
 

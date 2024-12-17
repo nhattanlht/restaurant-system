@@ -132,5 +132,16 @@ class CartController {
         const cart = new Cart(req.session);
         return res.json(cart.getItems());
     }
+
+    // Save the cart to the database
+    static async saveCartToDatabase(req, res) {
+        try {
+            // Use the static method on CartModel class
+            await Cart.saveCartToDatabase(req, res);  // Pass req and res to the method
+        } catch (err) {
+            console.error('Error saving cart to database:', err);
+            res.status(500).json({ message: 'Error saving cart to database', error: err.message });
+        }
+    }
 }
 module.exports = CartController;

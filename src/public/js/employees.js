@@ -73,6 +73,71 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+
+document.getElementById('submitCartBtn').addEventListener('click', function () {
+    const cartItems = []; // Collect the items in the cart
+    let hasError = false;  // Flag to track if any error occurs during cart item processing
+
+    // Loop through each item in the cart container
+    document.querySelectorAll('#cartItemsContainer .cart-item').forEach(itemElement => {
+        const itemId = itemElement.dataset.id;
+        const itemName = itemElement.querySelector('span').textContent.split(" x ")[0]; // Extract item name
+        const itemQuantity = itemElement.querySelector('input.quantity-input').value; // Get quantity from input field
+        const itemPrice = itemElement.querySelectorAll('span')[1].textContent.replace(/[^0-9]/g, ''); // Clean price (remove commas and "₫")
+
+
+
+        console.log('Item ID:', itemId);
+        console.log('Item Name:', itemName);
+        console.log('Item Quantity:', itemQuantity);
+        console.log('Item Quantity:', itemPrice);
+
+        // Check if all required data is available
+        if (itemName && itemQuantity && itemPrice) {
+            // Push the parsed data to the cartItems array
+            cartItems.push({
+                id: itemId,
+                name: itemName.trim(),
+                price: parseInt(itemPrice), // Convert price to an integer
+                quantity: parseInt(itemQuantity) // Convert quantity to an integer
+            });
+        } else {
+            console.error("Failed to parse item:", itemName, itemQuantity, itemPrice);
+            hasError = true; // Set error flag if parsing fails
+        }
+    });
+
+    if (hasError) {
+        console.error("Error: Some cart items could not be parsed correctly.");
+        alert("There was an issue with some of the items in your cart.");
+        return; // Stop the process if there's an error
+    }
+
+    // Now send the cart data to the server
+    fetch('/cart/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ cart: cartItems })  // Send cart items as JSON
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Cart saved successfully!');
+            } else {
+                console.error("Error response from server:", data); // Log error response from server
+                alert('Error saving cart: ' + data.message); // Show detailed error message
+            }
+        })
+        .catch(error => {
+            console.error('Error during fetch:', error);
+            alert('An error occurred while saving the cart.');
+        });
+});
+
+
+
 document.querySelectorAll('.customers-edit-save-btn').forEach(button => {
     button.addEventListener('click', function () {
         const row = this.closest('tr');
@@ -399,7 +464,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // THIS FOR CARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 
-    document.body.addEventListener('click', function(event) {
+    document.body.addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('add-to-cart')) {
 
             const itemData = {
@@ -419,51 +484,50 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 body: JSON.stringify(itemData)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Cart items:', data.cartItems); // Check if cart items are updated
-                    updateCartDisplay(data.cartItems);
-                    document.getElementById('SlideShoppingBag').style.display = 'block';
-                }
-            })
-            .catch(err => console.error('Error:', err));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Cart items:', data.cartItems); // Check if cart items are updated
+                        updateCartDisplay(data.cartItems);
+                        document.getElementById('SlideShoppingBag').style.display = 'block';
+                    }
+                })
+                .catch(err => console.error('Error:', err));
         }
     });
 
-    
+
     function updateCartDisplay(cartItems) {
         const cartItemsContainer = document.getElementById('cartItemsContainer');
         cartItemsContainer.innerHTML = ''; // Clear current cart content
-    
+
         if (cartItems.length > 0) {
             cartItems.forEach(item => {
                 cartItemsContainer.innerHTML += `
-                <div class="cart-item" id="cart-item-${item.id}">
-                    <img src="${item.image}" alt="${item.name}" style="width:50px; height:50px;">
-                    <span>${item.name}</span>
-                    <input type="number" class="quantity-input" value="${item.quantity}" data-id="${item.id}" min="1">
-                    <span>  ${item.price.toLocaleString()}₫</span>
-                    <button class="remove-btn" data-id="${item.id}">Xóa</button>
-                </div>
-            `;
-           
+                    <div class="cart-item" id="cart-item-${item.id}" data-id="${item.id}">
+                        <img src="${item.image}" alt="${item.name}" style="width:50px; height:50px;">
+                        <span>${item.name}</span>
+                        <input type="number" class="quantity-input" value="${item.quantity}" data-id="${item.id}" min="1">
+                        <span>${item.price.toLocaleString()}₫</span>
+                        <button class="remove-btn" data-id="${item.id}">Xóa</button>
+                    </div>
+                `;
             });
-            
+
             // Add event listeners for the quantity inputs and remove buttons
             const quantityInputs = document.querySelectorAll('.quantity-input');
             quantityInputs.forEach(input => {
-                input.addEventListener('change', function() {
+                input.addEventListener('change', function () {
                     const itemId = input.dataset.id;
                     const newQuantity = input.value;
                     updateItemQuantity(itemId, newQuantity);
                 });
             });
-        
+
             // Add event listeners for the remove buttons
             const removeButtons = document.querySelectorAll('.remove-btn');
             removeButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const itemId = button.dataset.id; // Get the item ID from the button's data-id attribute
                     removeItemFromCart(itemId);
                 });
@@ -478,7 +542,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert('Số lượng phải lớn hơn hoặc bằng 1');
             return;
         }
-    
+
         // Lấy giỏ hàng hiện tại
         const cartItems = Array.from(document.querySelectorAll('.cart-item'));
         const updatedCart = cartItems.map(item => {
@@ -489,7 +553,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 quantity: itemQuantity
             };
         });
-    
+
         // Gửi yêu cầu cập nhật giỏ hàng lên server
         fetch('/cart/update', {
             method: 'POST',
@@ -498,18 +562,18 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({ cart: updatedCart })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.cart) {
-                updateCartDisplay(data.cart); // Cập nhật lại giỏ hàng sau khi thay đổi số lượng
-                alert('Giỏ hàng đã được cập nhật');
-            }
-        })
-        .catch(err => {
-            console.error('Error updating cart:', err);
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.cart) {
+                    updateCartDisplay(data.cart); // Cập nhật lại giỏ hàng sau khi thay đổi số lượng
+                    alert('Giỏ hàng đã được cập nhật');
+                }
+            })
+            .catch(err => {
+                console.error('Error updating cart:', err);
+            });
     }
-    
+
     // Function to send request to remove item from cart
     function removeItemFromCart(itemId) {
         fetch('/cart/remove', {
@@ -519,19 +583,19 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({ itemId })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.cart) {
-                updateCartDisplay(data.cart); // Update the cart display after removing the item
-                alert('Item removed from cart');
-            }
-        })
-        .catch(err => {
-            console.error('Error removing item:', err);
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.cart) {
+                    updateCartDisplay(data.cart); // Update the cart display after removing the item
+                    alert('Item removed from cart');
+                }
+            })
+            .catch(err => {
+                console.error('Error removing item:', err);
+            });
     }
-    
-    
+
+
 });
 
 document.getElementById('submit-btn').addEventListener('click', function (event) {
@@ -604,40 +668,3 @@ document.getElementById('search-btn').addEventListener('click', function () {
     window.location.href = '/employees/result' + queryString;
 });
 
-document.getElementById('submitCartBtn').addEventListener('click', function() {
-    const cartItems = []; // Collect the items in the cart
-    document.querySelectorAll('#cartItemsContainer .cart-item').forEach(itemElement => {
-        const itemId = itemElement.dataset.id;
-        const itemName = itemElement.querySelector('.item-name').textContent;
-        const itemPrice = itemElement.querySelector('.item-price').textContent;
-        const itemQuantity = itemElement.querySelector('.item-quantity').textContent;
-        
-        cartItems.push({
-            id: itemId,
-            name: itemName,
-            price: itemPrice,
-            quantity: itemQuantity
-        });
-    });
-
-    // Send cart data to the server via a POST request
-    fetch('/cart/save', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ cart: cartItems })  // Send cart items as JSON
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Cart saved successfully!');
-        } else {
-            alert('Error saving cart.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while saving the cart.');
-    });
-});
