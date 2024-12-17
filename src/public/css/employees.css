@@ -471,32 +471,67 @@ tr:nth-child(even) {
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;  /* Center the text horizontally */
-    width: 100%;  
+    width: 100%;    
 }
-
 /* Cart items container */
 #cartItemsContainer {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-x: auto; /* Hiển thị thanh trượt ngang khi cần */
     margin-top: 20px;
 }
-
 /* Individual cart item styling */
 .cart-item {
     display: flex;
+    margin-bottom:10px;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.1);  /* Slight background for items */
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #555;  /* Subtle border */
+    position: relative; /* Position relative to allow absolute positioning of the delete button */
+    justify-content: space-between; /* Ensure that the items inside the cart are spaced */
 }
-
 /* Image styling within the cart item */
 .cart-item img {
     width: 50px;
     height: 50px;
-    margin-right: 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+/* Button delete styling - positioned under the item content */
+.cart-item .remove-btn {
+    position: absolute;  /* Position the button absolutely */
+    bottom: -10px;  /* Position it just below the item */
+    left: 80%;  /* Center the button horizontally */
+    transform: translateX(-50%);  /* Adjust for exact centering */
+    background-color: #ff4d4d; /* Red background for delete button */
+    color: rgb(233, 208, 208);
+    font-size: 12px; /* Smaller font size */
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+
+.cart-item .delete-btn:hover {
+    background-color: #e60000; /* Darker red on hover */
+}
+/* Form input styling (quantity) - smaller size */
+.cart-item input[type="number"] {
+    width: 50px;
+    margin-top:10px;
+    height: 30px;
+    font-size: 13px;  /* Smaller font size */
+    margin-left: 5px;
+    padding: 5px;
+    align-items: center;
+    border: 1px solid #555;
     border-radius: 5px;
 }
 
@@ -506,14 +541,14 @@ tr:nth-child(even) {
 }
 
 /* Cart total price or status message */
-#cartItemsContainer p {
+#cartItemsContainer span {
     color: white;
-    text-align: center;
-    font-size: 16px;
+    margin-left:7px;
+    font-size: 15px;
     margin-top: 20px;
 }
 
-/* Hover effect on cart items */
+/* Hovner effect on cart items */
 .cart-item:hover {
     background-color: rgba(255, 255, 255, 0.2);
     cursor: pointer;

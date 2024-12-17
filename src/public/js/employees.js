@@ -431,23 +431,107 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    
     function updateCartDisplay(cartItems) {
         const cartItemsContainer = document.getElementById('cartItemsContainer');
         cartItemsContainer.innerHTML = ''; // Clear current cart content
-
+    
         if (cartItems.length > 0) {
             cartItems.forEach(item => {
                 cartItemsContainer.innerHTML += `
-                    <div class="cart-item">
-                        <img src="${item.image}" alt="${item.name}" style="width:50px; height:50px;">
-                        <span>${item.name} x ${item.quantity} - ${item.price.toLocaleString()}₫</span>
-                    </div>
-                `;
+                <div class="cart-item" id="cart-item-${item.id}">
+                    <img src="${item.image}" alt="${item.name}" style="width:50px; height:50px;">
+                    <span>${item.name}</span>
+                    <input type="number" class="quantity-input" value="${item.quantity}" data-id="${item.id}" min="1">
+                    <span>  ${item.price.toLocaleString()}₫</span>
+                    <button class="remove-btn" data-id="${item.id}">Xóa</button>
+                </div>
+            `;
+           
+            });
+            
+            // Add event listeners for the quantity inputs and remove buttons
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            quantityInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const itemId = input.dataset.id;
+                    const newQuantity = input.value;
+                    updateItemQuantity(itemId, newQuantity);
+                });
+            });
+        
+            // Add event listeners for the remove buttons
+            const removeButtons = document.querySelectorAll('.remove-btn');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = button.dataset.id; // Get the item ID from the button's data-id attribute
+                    removeItemFromCart(itemId);
+                });
             });
         } else {
             cartItemsContainer.innerHTML = `<p>No items in cart.</p>`;
         }
     }
+    function updateItemQuantity(itemId, quantity) {
+        // Kiểm tra số lượng hợp lệ
+        if (quantity < 1) {
+            alert('Số lượng phải lớn hơn hoặc bằng 1');
+            return;
+        }
+    
+        // Lấy giỏ hàng hiện tại
+        const cartItems = Array.from(document.querySelectorAll('.cart-item'));
+        const updatedCart = cartItems.map(item => {
+            const id = item.id.replace('cart-item-', '');
+            const itemQuantity = item.querySelector('.quantity-input').value;
+            return {
+                itemId: id,
+                quantity: itemQuantity
+            };
+        });
+    
+        // Gửi yêu cầu cập nhật giỏ hàng lên server
+        fetch('/cart/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cart: updatedCart })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.cart) {
+                updateCartDisplay(data.cart); // Cập nhật lại giỏ hàng sau khi thay đổi số lượng
+                alert('Giỏ hàng đã được cập nhật');
+            }
+        })
+        .catch(err => {
+            console.error('Error updating cart:', err);
+        });
+    }
+    
+    // Function to send request to remove item from cart
+    function removeItemFromCart(itemId) {
+        fetch('/cart/remove', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ itemId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.cart) {
+                updateCartDisplay(data.cart); // Update the cart display after removing the item
+                alert('Item removed from cart');
+            }
+        })
+        .catch(err => {
+            console.error('Error removing item:', err);
+        });
+    }
+    
+    
 });
 
 document.getElementById('submit-btn').addEventListener('click', function (event) {
