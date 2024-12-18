@@ -1,6 +1,4 @@
 const EmployeeModel = require('../../user/models/employees.model')
-const ItemModel = require('../../user/models/itemEmployee.model');  // Assuming the Item model is set up for menu_item
-const CategoryModel = require('../../user/models/categories.model');  // Assuming the Category model is set up
 
 class EmployeeController {
     static searchCustomer = async (req, res) => {
@@ -74,8 +72,6 @@ class EmployeeController {
             const message = null;
             // Kiểm tra hoặc tạo khách hàng
             customers.customer_id = await EmployeeModel.insertCustomer(customers);
-            const items = await ItemModel.getAllItems();
-            const categories = await CategoryModel.getAllCategories();
 
             // Kết quả
             res.render('admin/admin', {
@@ -91,8 +87,8 @@ class EmployeeController {
                 customers: [customers],
                 message,
                 invoices: null,
-                items,
-                categories
+                items: null,
+                categories: null,
             });
         } catch (error) {
             res.status(500).json({ message: 'Failed to insert customer', error });

@@ -10,19 +10,7 @@ body {
     align-items: center;
 }
 
-/* The sidebar menu */
-/* .sidebar  {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 60px;
-    transition: 0.5s;
-} */
+/* The SlideShoppingBag menu */
 
 .SlideShoppingBag {
     height: 100%;
@@ -48,7 +36,6 @@ body {
 }
 
 /* The sidebar links */
-.sidebar a,
 .SlideShoppingBag a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
@@ -59,13 +46,11 @@ body {
 }
 
 /* When you mouse over the navigation links, change their color */
-.sidebar a:hover,
 .SlideShoppingBag a:hover {
     color: #f1f1f1;
 }
 
 /* Position and style the close button (top right corner) */
-.sidebar .closebtn,
 .SlideShoppingBag .closebtnbag {
     position: absolute;
     top: 0;
@@ -75,7 +60,6 @@ body {
 }
 
 /* The button used to open the sidebar */
-.openbtn,
 .openbtnbag {
     font-size: 20px;
     cursor: pointer;
@@ -85,36 +69,22 @@ body {
     border: none;
 }
 
-.openbtn:hover,
 .openbtnbag:hover {
     background-color: #444;
 }
 
 
-/* When the sidebar is open, push the main content to the right */
-.sidebar.open+.main-content {
-    margin-left: 250px;
-    /* Adjust this value to match the width of the sidebar */
-}
-
-/* When the sidebar is closed, the content stays in place */
-.sidebar.close+.main-content {
-    margin-left: 15px;
-    /* Keep the initial margin */
-}
-
-.SlideShoppingBag.open+.main-content {
+.SlideShoppingBag.open+#order {
     margin-right: 250px;
     /* Adjust this value to match the width of the sidebar */
 }
 
-.SlideShoppingBag.close+.main-content {
+.SlideShoppingBag.close+#order {
     margin-right: 15px;
     /* Keep the initial margin */
 }
 
 /* Style for the close button in the sidebar */
-.sidebar .closebtn,
 .SlideShoppingBag .closebtnbag {
     position: absolute;
     top: 0;
@@ -124,7 +94,7 @@ body {
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-#main-content {
+#order {
     transition: margin-left .5s;
     /* If you want a transition effect */
     padding: 20px;
@@ -140,19 +110,16 @@ body {
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-
-    .sidebar,
     .SlideShoppingBag {
         padding-top: 15px;
     }
 
-    .sidebar a,
     .SlideShoppingBag a {
         font-size: 18px;
     }
 }
 
-.main-content {
+#order {
     transition: margin-left .5s;
     /* If you want a transition effect */
     padding: 20px;
@@ -195,17 +162,6 @@ table td {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: left;
-}
-
-.content-section {
-    margin-top: 0px;
-    display: none;
-    /* Hidden by default */
-}
-
-.content-section:target {
-    display: block;
-    /* If navigated to directly */
 }
 
 
@@ -607,12 +563,16 @@ tr:nth-child(even) {
     /* Darker green on hover */
 }
 
-section#admin, section#invoices, section#items {
+section#admin,
+section#invoices,
+section#items {
     min-height: 100px;
     /* Or a specific height */
 }
 
-div#customer-management, div#report-invoices, div#item-management {
+div#customer-management,
+div#report-invoices,
+div#item-management {
     width: fit-content;
     display: block;
     /* Or another appropriate display value */
@@ -620,4 +580,23 @@ div#customer-management, div#report-invoices, div#item-management {
 
 button {
     width: auto;
+}
+
+.card-img-top {
+    width: 150px;
+    /* Set the desired cell width */
+    height: 150px;
+    /* Set the desired cell height */
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+table td img {
+    width: 50%;
+    /* Set the width to 50% of the cell */
+    max-height: 100%;
+    /* Ensure the image doesn't exceed the cell's height */
+    object-fit: contain;
+    /* Maintain aspect ratio and fit the image */
 }

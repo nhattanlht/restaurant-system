@@ -1,50 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Select elements for the menu links
-    const customerManagementLink = document.getElementById('customerManagementLink');
-    const reportInvoicesLink = document.getElementById('reportInvoicesLink');
-    const itemManagementLink = document.getElementById('itemManagementLink');
-
-    const customerManagementSection = document.getElementById('customer-management');
-    const reportInvoicesSection = document.getElementById('report-invoices');
-    const itemManagementSection = document.getElementById('item-management');
-
-    // Function to hide all sections and show the specified one
-    const showSection = (section) => {
-        customerManagementSection.style.display = 'none';
-        reportInvoicesSection.style.display = 'none';
-        itemManagementSection.style.display = 'none';
-        section.style.display = 'block';
-    };
-
-    // Add event listeners to the links
-    if (customerManagementLink) {
-        customerManagementLink.addEventListener('click', (e) => {
-            // e.redirect('/admin/employees');
-            e.preventDefault();
-            showSection(customerManagementSection);
-        });
-    }
-
-    if (reportInvoicesLink) {
-        reportInvoicesLink.addEventListener('click', (e) => {
-            // e.redirect('/admin/employees');
-            e.preventDefault();
-            showSection(reportInvoicesSection);
-        });
-    }
-
-    if (itemManagementLink) {
-        itemManagementLink.addEventListener('click', (e) => {
-            // e.redirect('/admin/employees');
-            e.preventDefault();
-            showSection(itemManagementSection);
-        });
-    }
-
-    // Optionally, set the default section to show
-    // showSection(reportInvoicesSection); // Default: Branch Revenue
-});
-
 // For Item Management Editing
 document.querySelectorAll('.items-edit-save-btn').forEach(button => {
     button.addEventListener('click', function () {
@@ -102,23 +55,8 @@ document.querySelectorAll('.items-edit-save-btn').forEach(button => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const popup = document.getElementById("popup");
-    const openPopupBtn = document.getElementById("openPopup");
-    const closePopupBtn = document.getElementById("closePopup");
-    const cancelPopupBtn = document.getElementById("cancelPopup");
-    const branchSelect = document.getElementById("branch");
-    const categorySelect = document.getElementById("category");
-    const closeBtn = document.getElementById("closeBtn");
     const closeBtnbag = document.getElementById("closeBtnbag");
 
-    // Add event listener for close button
-    if (closeBtn) {
-        closeBtn.addEventListener("click", () => {
-            closeNav();
-        });
-    } else {
-        console.log("closeBtn is not found!");
-    }
     if (closeBtnbag) {
         closeBtnbag.addEventListener("click", () => {
             closeBag();
@@ -126,66 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.log("closeBtnbag is not found!");
     }
-    // Hiển thị popup
-    function showPopup() {
-        popup.classList.add("active");
-        // Lấy danh sách thành phố khi trang web tải
-    }
-
-    // Đóng popup
-    function closePopup() {
-        popup.classList.remove("active");
-    }
-
-    // Load categories function (only runs once)
-    async function loadAllCategories() {
-        if (categoriesLoaded) return;  // Skip if already loaded
-
-        try {
-            const response = await fetch('/api/categories');  // Gọi API đúng với URL
-            const categories = await response.json();
-            categories.forEach(category => {
-                const option = document.createElement("option");
-                option.value = category.category_id;  // Giả sử category_id là ID khu vực
-                option.textContent = category.category_name;  // category_name là tên khu vực
-                categorySelect.appendChild(option);
-            });
-
-            // Mark as loaded
-            categoriesLoaded = true;
-        } catch (error) {
-            console.error("Error loading categories:", error);
-        }
-    }
-
-    // Lấy danh sách thành phố từ API
-    async function loadBranches() {
-        if (branchesLoaded) return;  // Skip if already loaded
-
-        try {
-            const response = await fetch('/api/branches');  // Gọi API đúng với URL
-            const branches = await response.json();
-            branches.forEach(branch => {
-                const option = document.createElement("option");
-                option.value = branch.branch_id;  // Giả sử branch_id là ID khu vực
-                option.textContent = branch.branch_name;  // branch_name là tên khu vực
-                branchSelect.appendChild(option);
-            });
-
-            // Mark as loaded
-            branchesLoaded = true;
-        } catch (error) {
-            console.error("Error loading branches:", error);
-        }
-    }
-    loadAllCategories();
-    loadBranches();
-
-    // Gán sự kiện
-    openPopupBtn.addEventListener("click", showPopup);
-    closePopupBtn.addEventListener("click", closePopup);
-    cancelPopupBtn.addEventListener("click", closePopup);
-
 
     // THIS FOR CARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 
@@ -202,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Log the item data for debugging
             console.log('Item Data:', itemData);
 
-            fetch('/cart/add', {
+            fetch('/admin/cart/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -280,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // Gửi yêu cầu cập nhật giỏ hàng lên server
-        fetch('/cart/update', {
+        fetch('/admin/cart/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -301,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to send request to remove item from cart
     function removeItemFromCart(itemId) {
-        fetch('/cart/remove', {
+        fetch('/admin/cart/remove', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -369,4 +247,87 @@ document.querySelectorAll('.customers-edit-save-btn').forEach(button => {
         // Toggle button text
         this.textContent = isEditing ? 'Save' : 'Edit';
     });
+});
+
+function openBag() {
+    const sidebar = document.getElementById("SlideShoppingBag");
+    const mainContent = document.getElementById("order");
+    sidebar.style.width = "250px";
+    mainContent.style.marginRight = "250px";
+    document.querySelector(".SlideShoppingBag").classList.replace("close", "open");
+}
+document.querySelectorAll('.openbtnbag').forEach(button => {
+    button.addEventListener('click', openBag);
+});
+
+
+// Function to close the sidebar and reset main content margin
+function closeBag() {
+    const sidebar = document.getElementById("SlideShoppingBag");
+    const mainContent = document.getElementById("order");
+    sidebar.style.width = "0";
+    mainContent.style.marginRight = "15px";
+    document.querySelector(".SlideShoppingBag").classList.replace("open", "close");
+}
+
+document.getElementById('submitCartBtn').addEventListener('click', function () {
+    const cartItems = []; // Collect the items in the cart
+    let hasError = false;  // Flag to track if any error occurs during cart item processing
+
+    // Loop through each item in the cart container
+    document.querySelectorAll('#cartItemsContainer .cart-item').forEach(itemElement => {
+        const itemId = itemElement.dataset.id;
+        const itemName = itemElement.querySelector('span').textContent.split(" x ")[0]; // Extract item name
+        const itemQuantity = itemElement.querySelector('input.quantity-input').value; // Get quantity from input field
+        const itemPrice = itemElement.querySelectorAll('span')[1].textContent.replace(/[^0-9]/g, ''); // Clean price (remove commas and "₫")
+
+
+
+        console.log('Item ID:', itemId);
+        console.log('Item Name:', itemName);
+        console.log('Item Quantity:', itemQuantity);
+        console.log('Item Quantity:', itemPrice);
+
+        // Check if all required data is available
+        if (itemName && itemQuantity && itemPrice) {
+            // Push the parsed data to the cartItems array
+            cartItems.push({
+                id: itemId,
+                name: itemName.trim(),
+                price: parseInt(itemPrice), // Convert price to an integer
+                quantity: parseInt(itemQuantity) // Convert quantity to an integer
+            });
+        } else {
+            console.error("Failed to parse item:", itemName, itemQuantity, itemPrice);
+            hasError = true; // Set error flag if parsing fails
+        }
+    });
+
+    if (hasError) {
+        console.error("Error: Some cart items could not be parsed correctly.");
+        alert("There was an issue with some of the items in your cart.");
+        return; // Stop the process if there's an error
+    }
+
+    // Now send the cart data to the server
+    fetch('/admin/cart/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ cart: cartItems })  // Send cart items as JSON
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Cart saved successfully!');
+            } else {
+                console.error("Error response from server:", data); // Log error response from server
+                alert('Error saving cart: ' + data.message); // Show detailed error message
+            }
+        })
+        .catch(error => {
+            console.error('Error during fetch:', error);
+            alert('An error occurred while saving the cart.');
+        });
 });

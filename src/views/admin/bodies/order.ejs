@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="../../public/user/css/employees.css">
+
 <% if (foods) { %>
     <div id="order-items" class="content-section">
         <h2>Order Items</h2>
@@ -33,8 +35,8 @@
         <table>
             <thead>
                 <tr>
+                    <th>Food Image</th>
                     <th>Food Name</th>
-                    <th>Branch</th>
                     <th>Category</th>
                     <th>Price</th>
                     <th>Actions</th>
@@ -44,12 +46,17 @@
                 <% if (foods.length > 0) { %>
                     <% foods.forEach(food => { %>
                         <tr>
-                            <td><%= food.item_name %></td>
-                            <td><%= food.branch_name || 'N/A' %></td>
+                            <td><img src="../../../public/admin/images/<%= food.item_name %>.jpg" class="card-img-top"
+                                alt="<%= food.item_name %>"></td>
+                            <td><%= food.item_name || 'N/A' %></td>
                             <td><%= food.category_name || 'N/A' %></td>
                             <td><%= food.price.toLocaleString() %>₫</td>
                             <td>
-                                <button class="btn btn-primary add-to-cart" data-id="<%= food.item_id %>" data-name="<%= food.item_name %>" data-price="<%= food.price %>" data-image="/images/<%= food.item_name %>.jpg">
+                                <button class="btn btn-primary add-to-cart" 
+                                data-id="<%= food.item_id %>" 
+                                data-name="<%= food.item_name %>" 
+                                data-price="<%= food.price %>" 
+                                data-image="../../../public/admin/images/<%= food.item_name %>.jpg">
                                     Add to Cart
                                 </button>
                             </td>
@@ -68,9 +75,11 @@
             <a href="javascript:void(0)" class="closebtnbag" id="closeBtnbag">&times;</a>
             <h4>Cart</h4>
             <div id="cartItemsContainer">
-                <p>No items in cart.</p>
+                <p>  No items in cart.</p>
             </div>
             <button id="submitCartBtn" class="btn btn-primary">Submit</button>
         </div>
+        <button id="addItemBtn" class="addBtn openbtnbag"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Giỏ
+            hàng</button>
     </div>
 <% } %>
