@@ -1,0 +1,57 @@
+<!-- Item Management Section -->
+<% if (items) { %>
+    <div id="item-management" class="content-section">
+        <h2>Item Management</h2>
+
+        <!-- Item Search Form -->
+        <form class="title" method="GET" action="/admin/employees/items/search">
+            <input type="text" name="itemName" placeholder="Search by Name" />
+
+            <select name="categoryId">
+                <option value="all">All Categories</option>
+                <% if (categories && categories.length > 0) { %>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category.category_id %>"><%= category.category_name %></option>
+                    <% }); %>
+                <% } %>
+            </select>
+
+            <input type="number" name="maxPrice" placeholder="Max Price" min="0" />
+
+            <button class="search-btn" type="submit">Search</button>
+        </form>
+
+        <!-- Items Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (items && items.length > 0) { %>
+                    <% items.forEach(item => { %>
+                        <tr>
+                            <td><%= item.item_name %></td>
+                            <td><%= item.category_name %></td>
+                            <td><%= item.price %></td>
+                            <td>
+                                <button class="edit-btn">Edit</button>
+                                <form method="POST" action="/employees/items/<%= item.item_id %>/delete">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="4">No items found</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+<% } %>

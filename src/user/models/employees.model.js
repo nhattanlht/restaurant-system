@@ -35,7 +35,7 @@ class EmployeeModel {
 
 
             const result = await request.query(query);
-            console.log(result.recordset);
+            console.log('result',result.recordset);
             return result.recordset;
         } catch (error) {
             console.error('Error while searching customers:', error);
@@ -64,7 +64,7 @@ class EmployeeModel {
             request.input('identity_card', sql.NVarChar, updates.identity_card);
             request.input('gender', sql.Char, updates.gender);
             request.input('card_type', sql.NVarChar, updates.card_type);
-            request.input('accumulated_spending', sql.Money, updates.accumulated_spending);
+            request.input('accumulated_spending', sql.Money, updates.accumulated_spending || null);
 
             await request.query(query);
         } catch (error) {

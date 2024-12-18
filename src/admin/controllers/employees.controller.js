@@ -7,18 +7,25 @@ class EmployeeController {
         try {
             const { criteria } = req.query;
             const customers = await EmployeeModel.searchCustomer(criteria);
-            const items = await ItemModel.getAllItems();    
-            const categories=await CategoryModel.getAllCategories();
+            console.log('customers', customers)
             // Pass a flag to indicate if customers were found
             const message = customers.length === 0 ? "Find a customer" : null;
-            res.render('admin/admin', { title: 'Admin Dashboard',
+            res.render('admin/admin', {
+                title: 'Admin Dashboard',
                 branches: null,
                 employees: null,
                 revenueData: null,
                 revenueItem: null,
                 areas: null,
                 managers: null,
-                departments: null,customers, message,invoices:[], items, categories });
+                departments: null,
+                customers,
+                message,
+                invoices: null,
+                items: null,
+                categories: null,
+                foods: null,
+            });
         } catch (error) {
             res.status(500).send('Server Error');
         }
@@ -67,18 +74,26 @@ class EmployeeController {
             const message = null;
             // Kiểm tra hoặc tạo khách hàng
             customers.customer_id = await EmployeeModel.insertCustomer(customers);
-            const items = await ItemModel.getAllItems();    
-            const categories=await CategoryModel.getAllCategories();
+            const items = await ItemModel.getAllItems();
+            const categories = await CategoryModel.getAllCategories();
 
             // Kết quả
-            res.render('admin/admin', { title: 'Admin Dashboard',
+            res.render('admin/admin', {
+                title: 'Admin Dashboard',
                 branches: null,
                 employees: null,
                 revenueData: null,
                 revenueItem: null,
                 areas: null,
+                foods: null,
                 managers: null,
-                departments: null,customers: [customers], message,invoices:[], items, categories });
+                departments: null,
+                customers: [customers],
+                message,
+                invoices: null,
+                items,
+                categories
+            });
         } catch (error) {
             res.status(500).json({ message: 'Failed to insert customer', error });
         }

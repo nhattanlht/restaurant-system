@@ -3,7 +3,7 @@ const sql = require('mssql');
 const config = require('../../configs/mssql.config');
 
 class FoodModel {
-    static async searchFoods(filters = {}) {
+    static async  searchFoods(filters = {}) {
         try {
             await sql.connect(config);
             const request = new sql.Request();

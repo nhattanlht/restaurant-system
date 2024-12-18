@@ -4,39 +4,167 @@ body {
     display: flex;
 }
 
-.function-bar{
+.function-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.sidebar {
-    background-color: #333;
-    color: #fff;
-    width: 250px;
-    padding: 20px;
-    height: 100vh;
+/* The sidebar menu */
+/* .sidebar  {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
+} */
+
+.SlideShoppingBag {
+    height: 100%;
+    /* 100% Full-height */
+    width: 0;
+    /* 0 width - change this with JavaScript */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Stay on top */
+    top: 0;
+    right: 0;
+    background-color: #111;
+    color: white;
+    overflow-y: auto;
+    /* Black*/
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    padding-top: 60px;
+    /* Place content 60px from the top */
+    transition: 0.5s;
+    /* 0.5 second transition effect to slide in the sidebar */
 }
 
-.sidebar h1 {
-    font-size: 30px;
-    margin-bottom: 20px;
-    color:orange;
-}
-
-.sidebar a {
-    display: block;
-    background-color: #ccc;
-    padding: 10px;
-    border-radius: 10px;
-    color: #333;
+/* The sidebar links */
+.sidebar a,
+.SlideShoppingBag a {
+    padding: 8px 8px 8px 32px;
     text-decoration: none;
-    margin-bottom: 10px;
-    font-size: 1.2em;
-    margin-bottom: 15px;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidebar a:hover,
+.SlideShoppingBag a:hover {
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidebar .closebtn,
+.SlideShoppingBag .closebtnbag {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* The button used to open the sidebar */
+.openbtn,
+.openbtnbag {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+}
+
+.openbtn:hover,
+.openbtnbag:hover {
+    background-color: #444;
+}
+
+
+/* When the sidebar is open, push the main content to the right */
+.sidebar.open+.main-content {
+    margin-left: 250px;
+    /* Adjust this value to match the width of the sidebar */
+}
+
+/* When the sidebar is closed, the content stays in place */
+.sidebar.close+.main-content {
+    margin-left: 15px;
+    /* Keep the initial margin */
+}
+
+.SlideShoppingBag.open+.main-content {
+    margin-right: 250px;
+    /* Adjust this value to match the width of the sidebar */
+}
+
+.SlideShoppingBag.close+.main-content {
+    margin-right: 15px;
+    /* Keep the initial margin */
+}
+
+/* Style for the close button in the sidebar */
+.sidebar .closebtn,
+.SlideShoppingBag .closebtnbag {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main-content {
+    transition: margin-left .5s;
+    /* If you want a transition effect */
+    padding: 20px;
+    margin: 15px;
+}
+
+#showcart {
+    transition: margin-right .5s;
+    /* If you want a transition effect */
+    padding: 20px;
+    margin: 15px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+
+    .sidebar,
+    .SlideShoppingBag {
+        padding-top: 15px;
+    }
+
+    .sidebar a,
+    .SlideShoppingBag a {
+        font-size: 18px;
+    }
 }
 
 .main-content {
+    transition: margin-left .5s;
+    /* If you want a transition effect */
+    padding: 20px;
+    flex: 1;
+    margin: 15px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
+}
+
+.showcart {
+    transition: margin-right .5s;
+    /* If you want a transition effect */
     padding: 20px;
     flex: 1;
     margin: 15px;
@@ -52,7 +180,8 @@ form label {
     margin-right: 10px;
 }
 
-form select, button .delete  {
+form select,
+button .delete {
     margin-right: 10px;
 }
 
@@ -61,93 +190,106 @@ table {
     border-collapse: collapse;
 }
 
-table th, table td {
+table th,
+table td {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: left;
 }
 
 .content-section {
-    display: none; /* Hidden by default */
+    margin-top: 0px;
+    display: none;
+    /* Hidden by default */
 }
 
 .content-section:target {
-    display: block; /* If navigated to directly */
+    display: block;
+    /* If navigated to directly */
 }
 
 
 /* pop up and items management  */
 /* Style cho Item Management section */
-#item-management {
+#item-management,
+#customer-management,
+#report-invoices,
+#order-items {
     position: relative;
-    padding: 20px;  
+    padding: 20px;
     background-color: #f4f4f4;
     border-radius: 5px;
-    margin-top: 20px;
 }
 
 /* Style cho tiêu đề */
-#item-management h2 {
+#item-management h2,
+#customer-management h2,
+#report-invoices h2,
+#order-items h2 {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
 }
 
 /* Form tìm kiếm */
-#item-management .title form {
+.title form {
     display: flex;
-    flex-direction: row;  /* Đặt phần tử trong form nằm ngang */
+    flex-direction: row;
+    /* Đặt phần tử trong form nằm ngang */
     align-items: center;
-    gap: 15px; /* Khoảng cách giữa các phần tử */
+    gap: 15px;
+    /* Khoảng cách giữa các phần tử */
     margin-bottom: 20px;
-    padding:10px;
+    padding: 10px;
 }
 
 /* Đảm bảo các input, select và button có chiều rộng hợp lý */
-#item-management form input,
-#item-management form select,
-#item-management form .search-btn{
+form input,
+form select,
+.search-btn {
     padding: 5px;
     font-size: 16px;
-    width:5 10px; /* Bạn có thể thay đổi chiều rộng của các phần tử */
+    width: 5 10px;
+    /* Bạn có thể thay đổi chiều rộng của các phần tử */
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
+/* Table styling for item list */
 
-/* Table styling for item list */   
-
-#item-management table {
+table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-#item-management th, #item-management td {
+th,
+td {
     padding: 10px;
     text-align: center;
     border: 1px solid #ddd;
 }
 
-#item-management th {
+th {
     background-color: #4CAF50;
     color: white;
 }
 
-#item-management td {
+td {
     background-color: #fff;
 }
 
-#item-management tr:nth-child(even) {
+tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
 /* Styling for Add Item Button */
-
-#addItemBtn {
+.addBtn {
     position: absolute;
-    top: 20px; /* Cách cạnh trên 10px */
-    right: 10px; /* Cách cạnh phải 10px */
+    top: 20px;
+    /* Cách cạnh trên 10px */
+    right: 10px;
+    /* Cách cạnh phải 10px */
     padding: 10px 20px;
     font-size: 14px;
     background-color: #28a745;
@@ -156,7 +298,8 @@ table th, table td {
     border-radius: 5px;
     cursor: pointer;
 }
-#addItemBtn:hover {
+
+.addBtn:hover {
     background-color: #45a049;
 }
 
@@ -174,7 +317,8 @@ table th, table td {
 }
 
 /* Popup content */
-.popup-content {
+.popup-content,
+.popup-content1 {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
@@ -185,7 +329,18 @@ table th, table td {
 .popup-content input,
 .popup-content select,
 .popup-content button {
+    padding: 8px;
     width: 100%;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+
+
+/* Styling for form inputs in popup */
+.popup-content1 input,
+.popup-content1 select,
+.popup-content1 button {
     padding: 8px;
     margin-bottom: 10px;
     font-size: 16px;
@@ -205,11 +360,13 @@ table th, table td {
     background-color: #cc0000;
 }
 
-.popup-content h3 {
+.popup-content h3,
+.popup-content1 h3 {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
 }
+
 /* Nền mờ khi popup hiển thị */
 .popup-overlay {
     position: fixed;
@@ -222,10 +379,11 @@ table th, table td {
     justify-content: center;
     align-items: center;
     z-index: 1002;
-  }
-  
-  /* Popup */
-  /* .popup-content {
+}
+
+/* Popup */
+.popup-content,
+.popup-content1 {
     background: #fff;
     padding: 20px;
     width: 500px;
@@ -233,10 +391,10 @@ table th, table td {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: left;
     position: relative;
-  } */
-  
-  /* Nút đóng */
-  /* .close-popup {
+}
+
+/* Nút đóng */
+.close-popup {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -244,62 +402,222 @@ table th, table td {
     border: none;
     font-size: 18px;
     cursor: pointer;
-  } */
-  
-  /* Form với 2 cột */
-  /* .popup-content form {
+}
+
+/* Form với 2 cột */
+.popup-content form,
+.popup-content1 form {
     gap: 15px;
     z-index: 1002;
-  }
-  .popup-content form table {
+}
+
+.popup-content form table,
+.popup-content1 form table {
     border: 1px solid white;
     border-collapse: collapse;
     margin-bottom: 15px;
-  } */
+}
 
-  
-  /* Cập nhật input cho đúng chiều rộng */
-  /* .popup-content form input{
+
+/* Cập nhật input cho đúng chiều rộng */
+.popup-content form input,
+.popup-content1 form input {
     padding: 8px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
-  }
+}
 
-  .popup-content form input[type="text"],
-  .popup-content form input[type="tel"],
-  .popup-content form input[type="email"] {
+.popup-content1 form input[type="text"],
+.popup-content1 form input[type="tel"],
+.popup-content1 form input[type="email"] {
     width: 95%;
-  }
-   */
-  /* Điều chỉnh nút radio để cùng cột với input */
-  .half-width {
-    display: flex;  /* Sử dụng flex để các nút radio nằm trên cùng một dòng */
+}
+
+/* Điều chỉnh nút radio để cùng cột với input */
+.half-width {
+    display: flex;
+    /* Sử dụng flex để các nút radio nằm trên cùng một dòng */
     flex-direction: row-reverse;
-    gap: 10px;  /* Khoảng cách giữa các nút radio */
-  }
-  
-  /* Nút */
- .half-width button {
+    gap: 10px;
+    /* Khoảng cách giữa các nút radio */
+}
+
+/* Nút */
+.half-width button {
     padding: 10px;
     font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
-  .submit-btn {
+}
+
+.submit-btn {
     background: #4CAF50;
     color: white;
-  }
-/*   
-  .cancel-btn {
+}
+
+.cancel-btn {
     background: #f44336;
     color: white;
-  } */
-  
-  /* Hiển thị popup */
-  .popup-overlay.active {
-    display: flex;
-  }
+}
 
+/* Hiển thị popup */
+.popup-overlay.active {
+    display: flex;
+}
+
+.customers-edit-save-btn,
+.items-edit-save-btn {
+    margin-bottom: 5px;
+}
+
+
+/* Cart heading */
+.SlideShoppingBag h4 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    /* Center the text horizontally */
+    width: 100%;
+}
+
+/* Cart items container */
+#cartItemsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-x: auto;
+    /* Hiển thị thanh trượt ngang khi cần */
+    margin-top: 20px;
+}
+
+/* Individual cart item styling */
+.cart-item {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Slight background for items */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    /* Subtle border */
+    position: relative;
+    /* Position relative to allow absolute positioning of the delete button */
+    justify-content: space-between;
+    /* Ensure that the items inside the cart are spaced */
+}
+
+/* Image styling within the cart item */
+.cart-item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+/* Button delete styling - positioned under the item content */
+.cart-item .remove-btn {
+    position: absolute;
+    /* Position the button absolutely */
+    bottom: -10px;
+    /* Position it just below the item */
+    left: 80%;
+    /* Center the button horizontally */
+    transform: translateX(-50%);
+    /* Adjust for exact centering */
+    background-color: #ff4d4d;
+    /* Red background for delete button */
+    color: rgb(233, 208, 208);
+    font-size: 12px;
+    /* Smaller font size */
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+
+.cart-item .delete-btn:hover {
+    background-color: #e60000;
+    /* Darker red on hover */
+}
+
+/* Form input styling (quantity) - smaller size */
+.cart-item input[type="number"] {
+    width: 50px;
+    margin-top: 10px;
+    height: 30px;
+    font-size: 13px;
+    /* Smaller font size */
+    margin-left: 5px;
+    padding: 5px;
+    align-items: center;
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+
+/* Item name and price */
+.cart-item .item-info {
+    flex: 1;
+}
+
+/* Cart total price or status message */
+#cartItemsContainer span {
+    color: white;
+    margin-left: 7px;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+/* Hovner effect on cart items */
+.cart-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+/* Responsiveness - Adjust for smaller screens */
+@media (max-width: 768px) {
+    .SlideShoppingBag {
+        width: 80%;
+    }
+}
+
+#submitCartBtn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    /* Green color */
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+    /* Give space above the button */
+}
+
+#submitCartBtn:hover {
+    background-color: #218838;
+    /* Darker green on hover */
+}
+
+section#admin, section#invoices, section#items {
+    min-height: 100px;
+    /* Or a specific height */
+}
+
+div#customer-management, div#report-invoices, div#item-management {
+    width: fit-content;
+    display: block;
+    /* Or another appropriate display value */
+}
+
+button {
+    width: auto;
+}

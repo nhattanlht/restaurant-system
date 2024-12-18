@@ -1,0 +1,76 @@
+<% if (foods) { %>
+    <div id="order-items" class="content-section">
+        <h2>Order Items</h2>
+
+        <!-- Food Search Form -->
+        <form class="title" method="GET" action="/admin/order">
+            <input type="text" name="foodName" placeholder="Search by Name" />
+
+            <select name="branch">
+                <option value="" disabled selected>-- Select Branch --</option>
+                <% if (branches && branches.length > 0) { %>
+                    <% branches.forEach(branch => { %>
+                        <option value="<%= branch.branch_id %>"><%= branch.branch_name %></option>
+                    <% }); %>
+                <% } %>
+            </select>
+
+            <select name="category">
+                <option value="" disabled selected>-- Select Category --</option>
+                <% if (categories && categories.length > 0) { %>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category.category_id %>"><%= category.category_name %></option>
+                    <% }); %>
+                <% } %>
+            </select>
+
+            <input type="number" name="maxPrice" placeholder="Max Price" min="0" />
+
+            <button class="search-btn" type="submit">Search</button>
+        </form>
+
+        <!-- Food Items Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Branch</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (foods.length > 0) { %>
+                    <% foods.forEach(food => { %>
+                        <tr>
+                            <td><%= food.item_name %></td>
+                            <td><%= food.branch_name || 'N/A' %></td>
+                            <td><%= food.category_name || 'N/A' %></td>
+                            <td><%= food.price.toLocaleString() %>₫</td>
+                            <td>
+                                <button class="btn btn-primary add-to-cart" data-id="<%= food.item_id %>" data-name="<%= food.item_name %>" data-price="<%= food.price %>" data-image="/images/<%= food.item_name %>.jpg">
+                                    Add to Cart
+                                </button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5">No items match your search criteria.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <!-- Cart Section -->
+        <div id="SlideShoppingBag" class="SlideShoppingBag">
+            <a href="javascript:void(0)" class="closebtnbag" id="closeBtnbag">&times;</a>
+            <h4>Cart</h4>
+            <div id="cartItemsContainer">
+                <p>No items in cart.</p>
+            </div>
+            <button id="submitCartBtn" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+<% } %>

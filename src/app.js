@@ -26,6 +26,23 @@ app.use(user)
 app.use('/admin', adminRoutes)
 
 // app.use('/', layoutAdminRoutes)
+
+const helmet = require('helmet');
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"], // Default to same-origin
+      scriptSrc: ["'self'", "https://unpkg.com", "'unsafe-inline'"], // Allow scripts from unpkg
+      styleSrc: ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"], // Allow stylesheets
+      fontSrc: ["'self'", "https://fonts.gstatic.com"], // Allow fonts
+      imgSrc: ["'self'", "data:"], // Allow images
+      connectSrc: ["'self'"], // Allow AJAX/WebSocket connections
+      scriptSrcElem: ["'self'", "https://unpkg.com"],
+      styleSrcElem: ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"],
+    },
+  })
+);
+
 // app.use('/', getAdminOrder)
 // app.use('/', registerAdminRoutes)
 

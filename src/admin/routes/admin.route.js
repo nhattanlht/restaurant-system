@@ -14,7 +14,7 @@ router.get('/', authenticate, (adminController.getDashboard));
 router.get('/branches', authenticate, (adminController.getBranch))
 router.get('/employees', authenticate, (adminController.getEmployee))
 router.get('/reports', authenticate, (adminController.getRevenueByBranch))
-router.use('/', employee);
+router.use('/', authenticate, employee);
 
 
 //Thêm, Chỉnh sửa, xoá chi nhánh

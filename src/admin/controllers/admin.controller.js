@@ -1,3 +1,4 @@
+const CustomerModel = require("../../user/models/checkout.model");
 const BranchModel = require("../models/Branch.model");
 const EmployeeModel = require("../models/employee.model");
 const ReportModel = require('../models/report.model');
@@ -66,6 +67,7 @@ class AdminController {
         message: null,
         customers: null,
         invoices: null,
+        foods: null,
         items: null,
       });
     } catch (err) {
@@ -97,6 +99,7 @@ class AdminController {
         departments: departments,
         message: null,
         customers: null,
+        foods: null,
         invoices: null,
         items: null,
       });
@@ -232,6 +235,7 @@ class AdminController {
         customers: null,
         invoices: null,
         items: null,
+        foods: null,
       });
     } catch (error) {
       console.error('Error loading admin dashboard:', error);
@@ -382,12 +386,42 @@ class AdminController {
         customers: null,
         invoices: null,
         items: null,
+        foods: null,
       });
     } catch (error) {
       console.error('Error in getRevenueByBranch:', error);
       res.status(500).send('Internal Server Error'); // Gửi phản hồi lỗi nếu có vấn đề xảy ra
     }
   }
+  //=============================Customers=================================
+  static searchCustomer = async (req, res) => {
+    try {
+      const { criteria } = req.query;
+      const customers = await CustomerModel.searchCustomer(criteria);
+      const items = await ItemModel.getAllItems();
+      const categories = await CategoryModel.getAllCategories();
+      // Pass a flag to indicate if customers were found
+      const message = customers.length === 0 ? "Find a customer" : null;
+      res.render('admin/admin', {
+        title: 'Admin Dashboard',
+        branches: null,
+        employees: null,
+        revenueData: null,
+        revenueItem: null,
+        areas: null,
+        managers: null,
+        departments: null,
+        customers,
+        message,
+        invoices: null,
+        items,
+        categories,
+        foods: null,
+      });
+    } catch (error) {
+      res.status(500).send('Server Error');
+    }
+  };
 }
 
 module.exports = {

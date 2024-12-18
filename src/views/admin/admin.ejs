@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Management</title>
-    <link rel="stylesheet" href="../../public/user/css/employees.css">
 </head>
 
 <body>
@@ -20,7 +19,10 @@
             <a href="/admin/branches" id="btnBranches">Branch Management</a>
             <a href="/admin/employees" id="btnEmployees">Employee Management</a>
             <a href="/admin/reports" id="btnReports">Reports & Analytics</a>
-
+            <a href="/admin/admin" id="btnCustomers">Customer Management</a>
+            <a href="/admin/report-invoices" id="btnreportInvoices">Report invoices</a>
+            <a href="/admin/items" id="btnitems"> Item Management</a>
+            <a href="/admin/order" id="btnOrder">Order Items</a>
         </nav>
     </aside>
 
@@ -43,6 +45,34 @@
         <% if (revenueData) { %>
             <section id="reports" class="hidden">
                 <%- include('bodies/reports', { revenueData, revenueItem }) %>
+            </section>
+        <% } %>
+
+        <!-- Customers Section -->
+        <% if (customers) { %>
+            <section id="admin">
+                <%- include('bodies/admin', { customers}) %>
+            </section>
+        <% } %>
+
+        <!-- Report-Invoices Section -->
+        <% if (invoices) { %>
+            <section id="invoices">
+                <%- include('bodies/report-invoices', {invoices}) %>
+            </section>
+        <% } %>
+
+        <!-- Items Section -->
+        <% if (items) { %>
+            <section id="items">
+                <%- include('bodies/items', { categories, items}) %>
+            </section>
+        <% } %>
+
+        <!-- Order Section -->
+        <% if (foods) { %>
+            <section id="order">
+                <%- include('bodies/order', { categories, foods,branches}) %>
             </section>
         <% } %>
     </main>
