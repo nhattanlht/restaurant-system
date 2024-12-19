@@ -18,7 +18,7 @@
         <ul class="navbar-list">
 
             <li class="navbar-item">
-                <a href="#home" class="navbar-link hover-underline active">
+                <a href="/" class="navbar-link hover-underline active">
                     <div class="separator"></div>
 
                     <span class="span">Home</span>
@@ -42,7 +42,7 @@
             </li>
 
             <li class="navbar-item">
-                <a href="#" class="navbar-link hover-underline">
+                <a href="#chefs" class="navbar-link hover-underline">
                     <div class="separator"></div>
 
                     <span class="span">Our Chefs</span>
@@ -50,7 +50,7 @@
             </li>
 
             <li class="navbar-item">
-                <a href="#" class="navbar-link hover-underline">
+                <a href="#contact" class="navbar-link hover-underline">
                     <div class="separator"></div>
 
                     <span class="span">Contact</span>
@@ -90,7 +90,7 @@
 
     <div class="topbar-container">
         <% if (user) { %>
-            <img src="jake.JPG" alt="User Avatar" class="user-avatar" tabindex="0" aria-label="User profile menu">
+            <img src="<%= user.avatar%>" alt="User Avatar" class="user-avatar" tabindex="0" aria-label="User profile menu">
             <div class="profile-container">
                 <div class="user-info" style="display: none;">
                     <a href="/profile">Profile</a>

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const CartController = require('../controllers/cart_controller');
+const CartController = require('../controllers/cart.controller');
 
 // Hiển thị giỏ hàng
 router.get('/cart', CartController.renderCart);
@@ -20,7 +20,6 @@ router.get('/cart/items', CartController.getCartItems);
 
 router.post('/cart/save', CartController.saveCartToDatabase);
 
-// POST chuyển đến trang checkout
-router.post('/checkout', CartController.renderCheckout);
+
 
 module.exports = router; 

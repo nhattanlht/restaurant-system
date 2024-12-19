@@ -90,7 +90,11 @@ const getSignUp = (req, res) => {
 }
 
 const getLogin = (req, res) =>{
+    if(req.session.user){
+        return res.redirect('/logout');
+    }
     const error = req.session.error;
+
   return res.render('user/login', {error: error})
 }
 

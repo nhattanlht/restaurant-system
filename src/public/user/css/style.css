@@ -250,6 +250,8 @@ body {
   line-height: var(--lineHeight-5);
   overflow: hidden;
   height: 300vh;
+  overflow-y: auto;
+
 }
 
 body.loaded { overflow: overlay; }

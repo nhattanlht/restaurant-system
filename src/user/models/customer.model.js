@@ -100,6 +100,7 @@ class CustomerModel {
         request.input('name', sql.NVarChar, customerData.name)
         request.input('phone', sql.NVarChar, customerData.phone_number)
         request.input('gender', sql.Char, customerData.gender)
+        request.input('avatar', sql.NVarChar, customerData.avatar)
 
         const result = await request.execute('SP_UpdateCustomer')
         if(result.returnValue === 0){
@@ -114,29 +115,29 @@ class CustomerModel {
     }
 
     // Lấy thông tin khách hàng theo số điện thoại
-    static async getCustomerByPhone(phoneNumber) {
-        try {
-            const pool = await sql.connect(require(connect));
-            const result = await pool.request()
-                .input('phone', sql.NVarChar, phoneNumber)
-                .query(`SELECT * FROM ${TABLE_NAME} WHERE phone_number = @phone`);
-            return result.recordset[0];
-        } catch (error) {
-            console.error('Error fetching customer by phone:', error);
-            throw error;
-        }
-    }
+    // static async getCustomerByPhone(phoneNumber) {
+    //     try {
+    //         const pool = await sql.connect(require(connect));
+    //         const result = await pool.request()
+    //             .input('phone', sql.NVarChar, phoneNumber)
+    //             const query = `SELECT * FROM ${TABLE_NAME} WHERE phone_number = @phone`;
+    //         const result = await request.query(query);
+    //         return result.recordset[0];
+    //     } catch (error) {
+    //         console.error('Error fetching customer by phone:', error);
+    //         throw error;
+    //     }
+    // }
 
     // Cập nhật chi tiêu của khách hàng
-    static async updateCustomerSpending(customerId, spending) {
+    static async updateCustomerSpending(customerId, spending, transaction) {
         try {
-            const pool = await sql.connect(require(connect));
-            const result = await pool.request()
-                .input('customer_id', sql.BigInt, customerId)
-                .input('spending', sql.Money, spending)
-                .query(`UPDATE [Customer]
-                        SET accumulated_spending = accumulated_spending + @spending
-                        WHERE customer_id = @customer_id`);
+            const request = transaction.request();
+
+                request.input('customer_id', sql.BigInt, customerId)
+                request.input('spending', sql.Money, spending)
+                const  query = `UPDATE [Customer] SET accumulated_spending = accumulated_spending + @spending WHERE customer_id = @customer_id`;
+                const result = await request.query(query);
             return result.rowsAffected > 0; // Trả về true nếu cập nhật thành công
         } catch (error) {
             console.error('Error updating customer spending:', error);

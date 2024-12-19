@@ -261,14 +261,16 @@ CREATE PROCEDURE SP_UpdateCustomer
     @user_id INT,
     @name NVARCHAR(250),
     @phone NVARCHAR(15),
-    @gender CHAR(1)
+    @gender CHAR(1),
+    @avatar VARCHAR(250)
 AS
 BEGIN
 UPDATE [Customer]
 SET
     name = @name,
     phone_number = @phone,
-    gender = @gender
+    gender = @gender,
+    avatar = @avatar
 WHERE user_id = @user_id;
 
 IF @@ROWCOUNT = 0

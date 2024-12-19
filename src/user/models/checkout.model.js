@@ -18,7 +18,18 @@ class CustomerModel {
             throw error;
         }
     }
-
+    static async getCustomerByUserId(user_id) {
+        try {
+            const pool = await sql.connect(require(connect));
+            const result = await pool.request()
+                .input('user_id', sql.NVarChar, user_id)
+                .query(`SELECT * FROM ${TABLE_NAME} WHERE user_id = @user_id`);
+            return result.recordset[0];
+        } catch (error) {
+            console.error('Error fetching customer by phone:', error);
+            throw error;
+        }
+    }
     // Cập nhật chi tiêu của khách hàng
     static async updateCustomerSpending(customerId, spending) {
         try {

@@ -22,8 +22,19 @@ const CustomerModel = require('../models/customer.model');
 const TokenService = require('../../shared/service/token.service');
 const { verifyJWT } = require('../../shared/middleware/auth.middleware');
 
+
 const db = new Database();
 class AccessService {
+   createNewCustomer(name, email, user_id, phone_number){
+    const customerData = generateCustomerData(1)[0];
+    customerData.name = name;
+    customerData.email = email;
+    customerData.user_id = user_id;
+    customerData.phone_number =  phone_number;
+
+    return customerData
+
+  }
   static async login({ user_name, password, refreshToken = null }) {
     try {
       let tokens;
@@ -104,10 +115,7 @@ class AccessService {
 
         if (userData.user_id) {
           // Generate customer data and insert it
-          const customerData = generateCustomerData(1)[0];
-          customerData.name = name;
-          customerData.email = email;
-          customerData.user_id = userData.user_id;
+            const customerData = createNewCustomer(name, email, userData.user_id, null);
 
           const newCustomer = await CustomerModel.insertCustomer(customerData, transaction);
           if (!newCustomer) {
@@ -239,4 +247,4 @@ class AccessService {
 }
 
 
-module.exports = AccessService;
+module.exports = AccessService

@@ -1,31 +1,30 @@
-const CustomerModel = require('../models/checkout.model');
+const CustomerModel = require('../models/customer.model');
 const OrderModel = require('../models/orderModel');
 const OrderDetailModel = require('../models/OrderDetailModel');
+const Database = require('../../dbs/init.mssql');
+const db = new Database
+const accessController = require('../services/access.service')
+
 class CheckoutController {
     static async processCheckout(req, res) {
         const { name, phone, email, totalAmount, items } = req.body;
-
-        console.log("Dữ liệu checkout nhận được từ frontend:", req.body);
+        const user_id = req.session.user.user_id
+        // console.log("Dữ liệu checkout nhận được từ frontend:", req.body);
 
         try {
             // Xử lý khách hàng
-            let customer = await CustomerModel.getCustomerByPhone(phone);
-            if (!customer) {
-                console.log("Khách hàng chưa tồn tại, thêm mới.");
-                await CustomerModel.addCustomer({
-                    name,
-                    phone_number: phone,
-                    email,
-                    card_type: "Membership",
-                    accumulated_spending: totalAmount,
-                    created_at: new Date(),
-                });
+            let customer
+            await db.runTransaction(async (transaction) => {
+                customer = await CustomerModel.findCustomerByUserId(user_id, transaction);
+                if (!customer) {
+                    customer = accessController.createNewCustomer(name, email, user_id, phone)
+                    await CustomerModel.insertCustomer(customer, transaction);
+                }
 
-                customer = await CustomerModel.getCustomerByPhone(phone); // Lấy lại thông tin khách hàng sau khi thêm
-            } else {
                 console.log("Cập nhật chi tiêu cho khách hàng:", customer.customer_id);
-                await CustomerModel.updateCustomerSpending(customer.customer_id, totalAmount);
-            }
+                await CustomerModel.updateCustomerSpending(customer.customer_id, totalAmount, transaction);
+            })
+
             const customer_id = customer.customer_id;
 
             // Xử lý đơn hàng
@@ -45,7 +44,7 @@ class CheckoutController {
                 employee_id: null,
             };
 
-            console.log("Đang tạo đơn hàng:", orderData);
+            // console.log("Đang tạo đơn hàng:", orderData);
             const orderCreated = await OrderModel.createOrder(orderData);
 
             if (!orderCreated) {
@@ -53,12 +52,12 @@ class CheckoutController {
             }
 
             let orderId = orderCreated.order_id;
-            console.log("OrderId: ", orderId);
+            // console.log("OrderId: ", orderId);
 
             // Duyệt qua từng item và thêm vào Order_Detail
             for (let item of items) {
                 const { id, quantity, price } = item;
-                console.log("Kiểm tra món ăn: ", id, quantity, price);
+                // console.log("Kiểm tra món ăn: ", id, quantity, price);
 
                 // Gọi model để thêm chi tiết đơn hàng vào bảng Order_Detail
                 const success = await OrderDetailModel.addOrderDetail(orderId, id, quantity, price);
@@ -67,6 +66,7 @@ class CheckoutController {
                 }
             }
 
+            console.log(totalAmount)
             // Sau khi tạo đơn hàng và chi tiết đơn hàng thành công, trả về JSON thay vì redirect
             return res.status(200).json({
                 order_id: orderId,
@@ -83,8 +83,11 @@ class CheckoutController {
     }
     // Phương thức render trang cảm ơn
     static async renderThankYou(req, res) {
-        const { order_id, name, phone, email, totalAmount } = req.query;
 
+        if (req.session.info) {
+            var { order_id, name, phone, email, totalAmount } = req.session.info;
+            req.session.info = null;
+        }
         try {
             // Render trang cảm ơn với thông tin nhận được từ query string
             res.render('user/thank-you', { order_id, name, phone, email, totalAmount });

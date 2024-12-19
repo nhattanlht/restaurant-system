@@ -5,6 +5,6 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/profile', authenticationV2 , profileController.getProfile);
-router.post('/profile/:id', authenticationV2 , profileController.updateProfile);
+router.post('/profile', authenticationV2 ,profileController.uploadAvatar, profileController.updateProfile);
 
 module.exports = router;

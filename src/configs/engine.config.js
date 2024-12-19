@@ -26,11 +26,6 @@ const configViewEngine = (app) => {
     app.use(bodyParser.urlencoded({ extended: true }));
 
 
-    app.use(cors({
-        origin: 'http://localhost:3005',  // Đặt đúng địa chỉ frontend của bạn
-        methods: 'GET,POST',
-        allowedHeaders: 'Content-Type,Authorization'
-    }));
     app.use(session({
         secret: process.env.SESSION_SECRET,  // Khóa bí mật lưu trong .env
         resave: false,

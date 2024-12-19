@@ -104,7 +104,9 @@
 
         </div>
         <div class="container py-5">
+
             <div class="row">
+
                 <% if (foods.length> 0) { %>
                     <% foods.forEach(food=> { %>
                         <!-- Mỗi món ăn là một cột -->
@@ -139,8 +141,10 @@
                                 <!-- Hiển thị khi không có món ăn nào -->
                                 <p class="text-center">Không có món ăn nào phù hợp với tiêu chí tìm kiếm.</p>
                                 <% } %>
+
             </div>
         </div>
+            </div>
         <!-- Đặt một phần tử toast để hiển thị thông báo -->
         <div id="toast" class="toast"></div>
 

@@ -23,7 +23,7 @@ class OrderDetailModel {
                     VALUES (@order_id, @item_id, @quantity, @price)
                 `);
 
-            console.log(`Đã thêm chi tiết đơn hàng với order_id ${orderId} và item_id ${itemId}`);
+            // console.log(`Đã thêm chi tiết đơn hàng với order_id ${orderId} và item_id ${itemId}`);
             return result.rowsAffected > 0;  // Trả về true nếu có bản ghi được thêm vào
         } catch (error) {
             console.error("Lỗi khi thêm chi tiết đơn hàng:", error);

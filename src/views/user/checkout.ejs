@@ -9,44 +9,47 @@
 </head>
 
 <body>
+<form method="POST" action="/checkout" enctype="multipart/form-data">
+
     <div class="cart-container">
         <h2>ShuShi System</h2>
         <div class="shipping-info">
             <!-- Thông tin giao hàng -->
-            <h3>Thông tin giao hàng</h3>
-            <label for="name">Họ và tên:</label>
-            <input type="text" id="name" name="name" required>
+                <h3>Thông tin giao hàng</h3>
+                <label for="name">Họ và tên:</label>
+                <input type="text" id="name" name="name" value="<%=user.name%>" required>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="<%=user.email%>">
 
-            <label for="phone">Số điện thoại:</label>
-            <input type="text" id="phone" name="phone" required>
+                <label for="phone">Số điện thoại:</label>
+                <input type="text" id="phone" name="phone" value="<%=user.phone_number%>"required>
 
-            <h4>Phương thức giao hàng</h4>
-            <input type="radio" id="delivery" name="method" value="delivery" checked>
-            <label for="delivery">Giao tận nơi</label>
+                <h4>Phương thức giao hàng</h4>
+                <input type="radio" id="delivery" name="method" value="delivery" checked>
+                <label for="delivery">Giao tận nơi</label>
 
-            <div id="delivery-details">
-                <label for="address">Địa chỉ:</label>
-                <input type="text" id="address" name="address" required>
+                <div id="delivery-details">
+                    <label for="address">Địa chỉ:</label>
+                    <input type="text" id="address" name="address" required>
 
-                <label for="province">Tỉnh / Thành:</label>
-                <select id="province" name="province" required>
-                    <option value="">Chọn tỉnh / thành</option>
-                    <option value="TPHCM">TP HCM</option>
-                    <option value="LongAn">Long An</option>
-                </select>
+                    <label for="province">Tỉnh / Thành:</label>
+                    <select id="province" name="province" required>
+                        <option value="">Chọn tỉnh / thành</option>
+                        <option value="TPHCM">TP HCM</option>
+                        <option value="LongAn">Long An</option>
+                    </select>
 
-                <label for="district">Quận / Huyện:</label>
-                <select id="district" name="district" required>
-                    <option value="">Chọn quận / huyện</option>
-                </select>
-            </div>
+                    <label for="district">Quận / Huyện:</label>
+                    <select id="district" name="district" required>
+                        <option value="">Chọn quận / huyện</option>
+                    </select>
+                </div>
 
-            <input type="radio" id="pickup" name="method" value="pickup">
-            <label for="pickup">Nhận tại cửa hàng</label>
-            <button class="checkout-button" id="checkout-button" type="submit">Tiếp tục</button>
+                <input type="radio" id="pickup" name="method" value="pickup">
+                <label for="pickup">Nhận tại cửa hàng</label>
+<!--                <button class="checkout-button" id="checkout-button" type="submit">Tiếp tục</button>-->
+
         </div>
 
 
@@ -98,24 +101,50 @@
             <div class="payment-method">
                 <h4>Phương thức thanh toán</h4>
                 <div>
-                    <input type="radio" id="cod" name="payment-method" value="cod" checked>
-                    <label for="cod">Thanh toán khi giao hàng (COD)</label>
-                </div>
-                <div>
-                    <input type="radio" id="bank" name="payment-method" value="bank">
-                    <label for="bank">Chuyển khoản qua ngân hàng</label>
-                </div>
-                <div>
-                    <input type="radio" id="momo" name="payment-method" value="momo">
-                    <label for="momo">Thanh toán qua MoMo</label>
+                    <label for="payment-method">Chọn phương thức thanh toán:</label>
+                    <select id="payment-method" name="payment-method">
+                        <option value="cod">Thanh toán khi giao hàng (COD)</option>
+                        <option value="zalo">Thanh toán qua Zalo Pay</option>
+                    </select>
                 </div>
             </div>
+
+
         </div>
     </div>
+    <button class="checkout-button" id="checkout-button" type="submit">Tiếp tục</button>
+</form>
 
+<!--<script>-->
+<!--        document.addEventListener("DOMContentLoaded", () => {-->
+<!--            const deliveryRadio = document.getElementById("delivery");-->
+<!--            const pickupRadio = document.getElementById("pickup");-->
+<!--            const deliveryDetails = document.getElementById("delivery-details");-->
 
+<!--            const toggleDeliveryDetails = () => {-->
+<!--                if (pickupRadio.checked) {-->
+<!--                    // Ẩn và bỏ required khi chọn "Nhận tại cửa hàng"-->
+<!--                    deliveryDetails.style.display = "none";-->
+<!--                    deliveryDetails.querySelectorAll("input, select").forEach(input => {-->
+<!--                        input.removeAttribute("required");-->
+<!--                    });-->
+<!--                } else {-->
+<!--                    // Hiển thị và thêm required khi chọn "Giao tận nơi"-->
+<!--                    deliveryDetails.style.display = "block";-->
+<!--                    deliveryDetails.querySelectorAll("input, select").forEach(input => {-->
+<!--                        input.setAttribute("required", "true");-->
+<!--                    });-->
+<!--                }-->
+<!--            };-->
 
+<!--            // Gắn sự kiện khi thay đổi giá trị radio-->
+<!--            deliveryRadio.addEventListener("change", toggleDeliveryDetails);-->
+<!--            pickupRadio.addEventListener("change", toggleDeliveryDetails);-->
 
+<!--            // Gọi hàm kiểm tra ban đầu-->
+<!--            toggleDeliveryDetails();-->
+<!--        });-->
+<!--    </script>-->
     <script src="../../public/user/js/address.js"></script>
     <script src="../../public/user/js/checkout.js"></script>
 </body>

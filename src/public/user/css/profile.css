@@ -1,5 +1,28 @@
+.form-group {
+    margin-bottom: 20px;
+}
 
+.form-group label {
+    display: block;
+    color: #a0a0a0;
+    margin-bottom: 8px;
+}
 
+.form-control {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: #f8f8f8;
+    font-size: 0.9em;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
 .profile-container {
     display: flex;
     flex-direction: column;
@@ -9,6 +32,7 @@
     background-color: var(--eerie-black-2);
     border-radius: var(--radius-24);
     box-shadow: var(--shadow-1);
+    padding-bottom: 80px; /* Khoảng trống tránh nút bị che */
 }
 
 .title {
@@ -46,11 +70,18 @@
 }
 
 .form-actions {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: var(--eerie-black-2); /* Màu nền phù hợp */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    z-index: 1000;
 }
+
 
 .submit-btn, .logout-btn {
     padding: 10px 20px;
@@ -82,4 +113,18 @@
 .logout-btn:hover {
     background-color: var(--gold-crayola);
     color: var(--smoky-black-1);
+}
+.back-to-home {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-to-home a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.back-to-home a:hover {
+    text-decoration: underline;
 }

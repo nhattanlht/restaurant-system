@@ -3,58 +3,107 @@ const sql = require('mssql');
 const config = require('../../configs/mssql.config');
 
 class FoodModel {
-    static async  searchFoods(filters = {}) {
+    static async searchFoods(filters, transaction) {
+        const { branch, category, price, search } = filters;
+
+        const request = transaction.request();
+
+        // Xây dựng truy vấn động với JOIN 3 bảng
+        let query = `
+        SELECT mi.item_id, mi.item_name, mi.price, c.category_name
+        FROM BranchMenu bm
+        JOIN Menu_Item mi ON bm.item_id = mi.item_id
+        JOIN Category c ON mi.category_id = c.category_id
+        WHERE 1 = 1
+    `;
+
+        // Nếu branch không phải 'all', thêm điều kiện
+        if (branch !== 'all') {
+            query += ` AND bm.branch_id = @branch_name`;
+            request.input('branch_name', sql.Int, branch);
+        }
+
+        // Nếu category không phải 'all', thêm điều kiện
+        if (category !== 'all') {
+            query += ` AND mi.category_id = @category`;
+            request.input('category', sql.Int, category);
+        }
+
+        // Nếu price có giá trị, thêm điều kiện
+        if (price !== null) {
+            query += ` AND mi.price <= @price`;
+            request.input('price', sql.Money, price);
+        }
+
+        // Nếu có tìm kiếm, thêm điều kiện tìm kiếm theo tên món ăn
+        if (search) {
+            query += ` AND mi.item_name LIKE @search`;
+            request.input('search', sql.NVarChar, `%${search}%`);
+        }
+        console.log(query)
+        // Thực thi truy vấn
         try {
-            await sql.connect(config);
-            const request = new sql.Request();
-
-            // Chuẩn bị các điều kiện lọc động
-            let whereConditions = [];
-            if (filters.branch && filters.branch !== 'all') {
-                request.input('branch', sql.NVarChar, filters.branch);
-                whereConditions.push('bm.branch_id = @branch');
-            }
-            if (filters.category && filters.category !== 'all') {
-                request.input('category', sql.NVarChar, filters.category);
-                whereConditions.push('c.category_id = @category');
-            }
-            if (filters.price) {
-                request.input('price', sql.Money, filters.price);
-                whereConditions.push('mi.price <= @price');
-            }
-            if (filters.search && filters.search.trim() !== '') {
-                request.input('search', sql.NVarChar, `%${filters.search}%`);
-                whereConditions.push('mi.item_name LIKE @search');
-            }
-
-            // Kết hợp điều kiện WHERE
-            const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
-
-            // Truy vấn kết hợp với các điều kiện
-            const query = `
-                SELECT 
-                    mi.item_id,
-                    mi.item_name,
-                    mi.price,
-                    mi.status,
-                    c.category_name,
-                    bm.branch_id
-                FROM BranchMenu bm
-                JOIN Menu_Item mi ON bm.item_id = mi.item_id
-                JOIN Category c ON mi.category_id = c.category_id
-                ${whereClause}
-            `;
-
-            // Thực hiện truy vấn
             const result = await request.query(query);
-            return result.recordset;
-        } catch (error) {
-            console.error('Error while searching foods:', error);
-            throw new Error(error.message);
-        } finally {
-            await sql.close();
+            return result.recordset; // Trả về kết quả
+        } catch (err) {
+            console.error('Error executing query', err);
+            throw err;
         }
     }
+
+
+    // static async  searchFoods(filters = {}) {
+    //     try {
+    //         await sql.connect(config);
+    //         const request = new sql.Request();
+    //
+    //         // Chuẩn bị các điều kiện lọc động
+    //         let whereConditions = [];
+    //         if (filters.branch && filters.branch !== 'all') {
+    //             request.input('branch', sql.NVarChar, filters.branch);
+    //             whereConditions.push('bm.branch_id = @branch');
+    //         }
+    //         if (filters.category && filters.category !== 'all') {
+    //             request.input('category', sql.NVarChar, filters.category);
+    //             whereConditions.push('c.category_id = @category');
+    //         }
+    //         if (filters.price) {
+    //             request.input('price', sql.Money, filters.price);
+    //             whereConditions.push('mi.price <= @price');
+    //         }
+    //         if (filters.search && filters.search.trim() !== '') {
+    //             request.input('search', sql.NVarChar, `%${filters.search}%`);
+    //             whereConditions.push('mi.item_name LIKE @search');
+    //         }
+    //
+    //         // Kết hợp điều kiện WHERE
+    //         const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+    //
+    //         // Truy vấn kết hợp với các điều kiện
+    //         const query = `
+    //             SELECT
+    //                 mi.item_id,
+    //                 mi.item_name,
+    //                 mi.price,
+    //                 mi.status,
+    //                 c.category_name,
+    //                 bm.branch_id
+    //             FROM BranchMenu bm
+    //             JOIN Menu_Item mi ON bm.item_id = mi.item_id
+    //             JOIN Category c ON mi.category_id = c.category_id
+    //             ${whereClause}
+    //         `;
+    //
+    //         // Thực hiện truy vấn
+    //         const result = await request.query(query);
+    //         return result.recordset;
+    //     } catch (error) {
+    //         console.error('Error while searching foods:', error);
+    //         throw new Error(error.message);
+    //     } finally {
+    //         await sql.close();
+    //     }
+    // }
     static async getAllFoods() {
         try {
             await sql.connect(config);

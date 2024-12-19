@@ -4,7 +4,7 @@ const EmployeeController = require('../controllers/employees.controller');
 const ItemController = require('../controllers/ItemController');
 const ReportInvoicesController = require('../controllers/reportInvoices.controller');
 const OrderItemsController = require('../controllers/orderitems.controller');
-const CartController = require('../../user/controllers/cart_controller');
+const CartController = require('../../user/controllers/cart.controller');
 
 
 router.get('/admin', EmployeeController.searchCustomer)
@@ -29,6 +29,7 @@ router.post('/add', EmployeeController.insertCustomer);
 
 //order and cart
 router.get('/order', OrderItemsController.getFoods);
+router.get('/order/results', OrderItemsController.getFoodsJson);
 
 router.post('/cart/remove', CartController.removeItemFromCart);
 router.post('/cart/update', CartController.updateItemQuantity);

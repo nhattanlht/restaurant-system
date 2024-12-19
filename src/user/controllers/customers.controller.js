@@ -23,6 +23,7 @@ class CustomersController {
 
     static async renderFoods(req, res) {
         try {
+            console.log(req.session.user)
             // Lấy tất cả món ăn từ model
             let foods = await FoodModel.getAllFoods(); // Gọi hàm getAllFoods trong model
 
