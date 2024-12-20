@@ -1,10 +1,12 @@
+
+
 <!-- Item Management Section -->
 <% if (items) { %>
     <div id="item-management" class="content-section">
         <h2>Item Management</h2>
 
         <!-- Item Search Form -->
-        <form class="title" method="GET" action="/admin/employees/items/search">
+        <form class="title" method="GET" action="/admin/items/search">
             <input type="text" name="itemName" placeholder="Search by Name" />
 
             <select name="categoryId">
