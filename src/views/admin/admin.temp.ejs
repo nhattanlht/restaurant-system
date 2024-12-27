@@ -53,7 +53,7 @@
         <div id="customer-management" class="content-section">
             <h2>Customer Management</h2>
             <div class="function-bar">
-                <form method="GET" action="/employees/customer/search">
+                <form method="GET" action="/admin/customer/search">
                     <input type="text" name="criteria" placeholder="Search by ID, email, or phone" required>
                     <button type="submit">Search</button>
                 </form>
@@ -65,7 +65,7 @@
                     <div class="popup-content">
                         <span class="close-popup" id="closePopup">&times;</span>
                         <h2>Đăng ký thông tin</h2>
-                        <form id="infoForm" method="POST" action="/employees/add">
+                        <form id="infoForm" method="POST" action="/admin/add">
                             <table>
                                 <tr>
                                     <th><label for="name">Họ và tên:</label></th>
@@ -140,8 +140,8 @@
                             <td><span><%= customer.created_at %></span></td>
                             <td><span><%= customer.support_employee_id %></span></td>
                             <td>
-                                <button class="edit-save-btn">Edit</button> <br>
-                                <form method="POST" action="/employees/<%= customer.customer_id %>/delete">
+                                <button class="customers-edit-save-btn">Edit</button> <br>
+                                <form method="POST" action="/admin/<%= customer.customer_id %>/delete">
                                     <button type="submit">Delete</button>
                                 </form>
                             </td>
@@ -159,7 +159,7 @@
         <div id="report-invoices" class="content-section">
             <h2>Report Invoices</h2>
             <!-- Filter Form -->
-            <form method="GET" action="/admin/employees/report-invoices">
+            <form method="GET" action="/admin/report-invoices">
                 <label for="name">Customer Name:</label>
                 <input type="text" name="name" placeholder="Enter customer name" />
 
@@ -228,7 +228,7 @@
         <div id="item-management" class="content-section">
             <h2>Item Management</h2>
             <!-- Item Search Form -->
-            <form class="title" method="GET" action="/admin/employees/items/search">
+            <form class="title" method="GET" action="/admin/items/search">
                 <input type="text" name="itemName" placeholder="Search by Name" />
 
                 <select name="categoryId">
@@ -258,13 +258,13 @@
                 <tbody>
                 <% if (items && items.length > 0) { %>
                     <% items.forEach(item => { %>
-                        <tr>
+                        <tr data-item-id="<%= item.item_id %>">
                             <td><%= item.item_name %></td>
                             <td><%= item.category_name %></td>
                             <td><%= item.price %></td>
                             <td>
-                                <button class="edit-btn">Edit</button>
-                                <form method="POST" action="/employees/items/<%= item.item_id %>/delete">
+                                <button class="items-edit-save-btn">Edit</button>
+                                <form method="POST" action="/admin/items/<%= item.item_id %>/delete">
                                     <button type="submit">Delete</button>
                                 </form>
                             </td>

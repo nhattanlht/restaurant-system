@@ -4,7 +4,7 @@
         <h2>Item Management</h2>
 
         <!-- Item Search Form -->
-        <form class="title" method="GET" action="/admin/employees/items/search">
+        <form class="title" method="GET" action="/admin/items/search">
             <input type="text" name="itemName" placeholder="Search by Name" />
 
             <select name="categoryId">
@@ -28,19 +28,29 @@
                     <th>Item Name</th>
                     <th>Category</th>
                     <th>Price</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <% if (items && items.length > 0) { %>
                     <% items.forEach(item => { %>
-                        <tr>
-                            <td><%= item.item_name %></td>
-                            <td><%= item.category_name %></td>
-                            <td><%= item.price %></td>
+                        <tr data-item-id="<%= item.item_id %>">
+                            <td contenteditable="false">
+                                <%= item.item_name %>
+                            </td>
+                            <td contenteditable="false">
+                                <%= item.category_name %>
+                            </td>
+                            <td contenteditable="false">
+                                <%= parseFloat(item.price).toLocaleString() %>
+                            </td> <!-- Add thousands separator -->
+                            <td contenteditable="false">
+                                <%= item.status %>
+                            </td>
                             <td>
-                                <button class="edit-btn">Edit</button>
-                                <form method="POST" action="/employees/items/<%= item.item_id %>/delete">
+                                <button class="items-edit-save-btn">Edit</button>
+                                <form method="POST" action="/admin/items/<%= item.item_id %>/delete">
                                     <button type="submit">Delete</button>
                                 </form>
                             </td>
@@ -53,5 +63,33 @@
                 <% } %>
             </tbody>
         </table>
+        <button id="addItemBtn" class="addBtn">Thêm Món Ăn</button>
+        <!-- Popup nhập thông tin món ăn -->
+        <div id="addItemPopup" style="display: none;">
+            <div class="popup-content">
+                <h3>Thêm Món Ăn Mới</h3>
+                <form id="addItemForm">
+                    <label for="itemName">Tên Món Ăn:</label>
+                    <input type="text" id="itemName" name="itemName" required />
+
+                    <label for="itemCategory">Danh Mục:</label>
+                    <select id="itemCategory" name="itemCategory" required>
+                        <option value="">Chọn Danh Mục</option>
+                        <% categories.forEach(category=> { %>
+                            <option value="<%= category.category_id %>">
+                                <%= category.category_name %>
+                            </option>
+                            <% }); %>
+                    </select>
+
+                    <label for="itemPrice">Giá:</label>
+                    <input type="number" id="itemPrice" name="itemPrice" required min="0" />
+
+
+                    <button type="submit">Thêm Món Ăn</button>
+                    <button type="button" id="closePopup">Hủy</button>
+                </form>
+            </div>
+        </div>
     </div>
 <% } %>
