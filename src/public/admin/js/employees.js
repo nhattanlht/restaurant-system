@@ -55,7 +55,28 @@ document.querySelectorAll('.items-edit-save-btn').forEach(button => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    //Pop up
+    const popup = document.getElementById("popup");
+    const openPopupBtn = document.getElementById("openPopup");
+    const closePopupBtn = document.getElementById("closePopup");
+    const cancelPopupBtn = document.getElementById("cancelPopup");
     const closeBtnbag = document.getElementById("closeBtnbag");
+
+    // Hiển thị popup
+    function showPopup() {
+        popup.classList.add("active");
+        // Lấy danh sách thành phố khi trang web tải
+    }
+
+    // Đóng popup
+    function closePopup() {
+        popup.classList.remove("active");
+    }
+
+    // Gán sự kiện
+    openPopupBtn.addEventListener("click", showPopup);
+    closePopupBtn.addEventListener("click", closePopup);
+    cancelPopupBtn.addEventListener("click", closePopup);
 
     if (closeBtnbag) {
         closeBtnbag.addEventListener("click", () => {
