@@ -85,9 +85,15 @@ class AdminController {
       const manager = await BranchModel.getAllManagers();
       const departments = await EmployeeModel.getAllDepartment();
       branches.forEach(branch => {
+        const matchingManager = manager.find(manager => manager.employee_id === branch.manager);
+        if (matchingManager) {
+          // Thêm manager_name vào branch
+          branch.manager_name = matchingManager.name;
+        }
         branch.opening_time = formatTime(branch.opening_time);
         branch.closing_time = formatTime(branch.closing_time);
       });
+      console.log(manager)
       res.render('admin/admin', {
         title: 'Branch List',
         branches: branches,
