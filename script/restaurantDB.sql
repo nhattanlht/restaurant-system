@@ -74,7 +74,7 @@ CREATE TABLE [Branch] (
     has_motorbike_parking BIT,
     has_car_parking BIT,
     area_id INT FOREIGN KEY REFERENCES [Area](area_id),
-    manager INT
+    manager INT NOT NULL
 );
 ALTER TABLE [Branch]
 ADD CONSTRAINT FK_Branch_Employee FOREIGN KEY (employee_id)
