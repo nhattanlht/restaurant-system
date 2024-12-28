@@ -57,16 +57,93 @@ document.querySelectorAll(".items-edit-save-btn").forEach((button) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const closeBtnbag = document.getElementById("closeBtnbag");
+    //Pop up
+    const popup = document.getElementById("popup");
+    const openPopupBtn = document.getElementById("openPopup");
+    const closePopupBtn = document.getElementById("closePopup");
+    const cancelPopupBtn = document.getElementById("cancelPopup");
+    const closeBtnbag = document.getElementById("closeBtnbag");
 
-  if (closeBtnbag) {
-    closeBtnbag.addEventListener("click", () => {
-      closeBag();
+    // Hiển thị popup
+    function showPopup() {
+        popup.classList.add("active");
+        // Lấy danh sách thành phố khi trang web tải
+    }
+
+    // Đóng popup
+    function closePopup() {
+        popup.classList.remove("active");
+    }
+
+    // Gán sự kiện
+    openPopupBtn.addEventListener("click", showPopup);
+    closePopupBtn.addEventListener("click", closePopup);
+    cancelPopupBtn.addEventListener("click", closePopup);
+
+    if (closeBtnbag) {
+        closeBtnbag.addEventListener("click", () => {
+            closeBag();
+        });
+    } else {
+        console.log("closeBtnbag is not found!");
+    }
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    const popup = document.getElementById("popup1");
+    const openPopup1 = document.getElementById("openPopup1");
+    const closePopup1 = document.getElementById("closePopup1");
+    const cancelPopup1 = document.getElementById("cancelPopup1");
+
+    if (!popup || !openPopup1 || !closePopup1 || !cancelPopup1) {
+        console.error("One or more elements not found");
+        return;
+    }
+
+    function showPopup() {
+        popup.classList.add("active");
+    }
+
+    function closePopup() {
+        popup.classList.remove("active");
+    }
+
+    openPopup1.addEventListener("click", showPopup);
+    closePopup1.addEventListener("click", closePopup);
+    cancelPopup1.addEventListener("click", closePopup);
+});
+    // THIS FOR CARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+    document.body.addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('add-to-cart')) {
+
+            const itemData = {
+                id: event.target.dataset.id,
+                name: event.target.dataset.name,
+                price: event.target.dataset.price,
+                image: event.target.dataset.image
+            };
+
+            // Log the item data for debugging
+            console.log('Item Data:', itemData);
+
+            fetch('/admin/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Cart items:', data.cartItems); // Check if cart items are updated
+                        updateCartDisplay(data.cartItems);
+                        document.getElementById('SlideShoppingBag').style.display = 'block';
+                    }
+                })
+                .catch(err => console.error('Error:', err));
+        }
     });
-  } else {
-    console.log("closeBtnbag is not found!");
-  }
-
   // THIS FOR CARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 
   document.body.addEventListener("click", function (event) {
@@ -99,6 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch((err) => console.error("Error:", err));
     }
   });
+
 
   function updateCartDisplay(cartItems) {
     const cartItemsContainer = document.getElementById("cartItemsContainer");
@@ -205,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error removing item:", err);
       });
   }
-});
+
 
 document.querySelectorAll(".customers-edit-save-btn").forEach((button) => {
   button.addEventListener("click", function () {
@@ -358,62 +436,61 @@ document.getElementById("submitCartBtn").addEventListener("click", function () {
     });
 });
 
-//Pop Up
-document.addEventListener("DOMContentLoaded", () => {
-  // Select elements
-  const addItemBtn = document.getElementById("addItemBtn");
-  const addItemPopup = document.getElementById("addItemPopup");
-  const closePopupBtn = document.getElementById("closePopup");
-  const addItemForm = document.getElementById("addItemForm");
+// document.addEventListener("DOMContentLoaded", () => {
+//   // Select elements
+//   const addItemBtn = document.getElementById("addItemBtn");
+//   const addItemPopup = document.getElementById("addItemPopup");
+//   const closePopupBtn = document.getElementById("closePopup1");
+//   const addItemForm = document.getElementById("addItemForm");
 
-  // Show the popup when the button is clicked
-  addItemBtn.addEventListener("click", () => {
-    addItemPopup.style.display = "flex";
-  });
+//   // Show the popup when the button is clicked
+//   addItemBtn.addEventListener("click", () => {
+//     addItemPopup.classList.add("active");
+//   });
 
-  // Close the popup when the close button is clicked
-  closePopupBtn.addEventListener("click", () => {
-    addItemPopup.style.display = "none";
-  });
+//   // Close the popup when the close button is clicked
+//   closePopupBtn.addEventListener("click", () => {
+//     addItemPopup.classList.remove("active");
+//   });
 
-  // Handle form submission to add new item
-  addItemForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+//   // Handle form submission to add new item
+//   addItemForm.addEventListener("submit", async (e) => {
+//     e.preventDefault();
 
-    // Get form data
-    const itemName = document.getElementById("itemName").value;
-    const itemCategory = document.getElementById("itemCategory").value;
-    const itemPrice = document.getElementById("itemPrice").value;
-    
-    // Create item object
-    const newItem = {
-      item_name: itemName,
-      category_id: itemCategory,
-      price: itemPrice,
-    };
-    console.log("Kiểm tra pop-up client: ", newItem);
+//     // Get form data
+//     const itemName = document.getElementById("itemName").value;
+//     const itemCategory = document.getElementById("itemCategory").value;
+//     const itemPrice = document.getElementById("itemPrice").value;
 
-    try {
-      // Send the item data to the server to save
-      const response = await fetch("/employees/items/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newItem),
-      });
+//     // Create item object
+//     const newItem = {
+//       item_name: itemName,
+//       category_id: itemCategory,
+//       price: itemPrice,
+//     };
+//     console.log("Kiểm tra pop-up client: ", newItem);
 
-      if (response.ok) {
-        // If successful, close the popup and reload the page to show the new item
-        addItemPopup.style.display = "none";
-        location.reload();
-      } else {
-        console.error("Error adding item");
-        alert("Failed to add item");
-      }
-    } catch (error) {
-      console.error("Error adding item:", error);
-      alert("Error adding item");
-    }
-  });
-});
+//     try {
+//       // Send the item data to the server to save
+//       const response = await fetch("/admin/items/add", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(newItem),
+//       });
+
+//       if (response.ok) {
+//         // If successful, close the popup and reload the page to show the new item
+//         addItemPopup.classList.remove("active");
+//         location.reload();
+//       } else {
+//         console.error("Error adding item");
+//         alert("Failed to add item");
+//       }
+//     } catch (error) {
+//       console.error("Error adding item:", error);
+//       alert("Error adding item");
+//     }
+//   });
+// });

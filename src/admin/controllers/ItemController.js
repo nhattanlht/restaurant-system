@@ -45,6 +45,7 @@ class ItemController {
     // Thêm món ăn mới
     static async addItem(req, res) {
         const { item_name, category_id, price } = req.body;
+        console.log("Món ăn muốn thêm: ",req.body);
         try {
             const newItem = await ItemModel.addItem(item_name, category_id, price);
             if (newItem) {
