@@ -72,7 +72,7 @@ class AdminController {
       });
     } catch (err) {
       console.error('Error loading dashboard:', err);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send(err.message);
     }
   };
 
@@ -105,7 +105,7 @@ class AdminController {
       });
     } catch (error) {
       console.error('Error loading admin dashboard:', error);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send(error.message);
     }
   };
 
@@ -139,7 +139,7 @@ class AdminController {
       res.redirect('/admin/branches');
     } catch (err) {
       console.error("Error in addBranch:", err);
-      res.status(500).send("Internal Server Error");
+      res.status(500).send(err.message);
     }
   };
 
@@ -154,8 +154,7 @@ class AdminController {
       res.render('admin/edit-branch', { title: 'Edit Branch', branch });
     } catch (err) {
       console.error('Error fetching branch:', err);
-      res.status(500).send('Internal Server Error');
-    }
+      res.status(500).send(err.message);    }
   };
 
   // Cập nhật thông tin chi nhánh
@@ -190,8 +189,7 @@ class AdminController {
       res.redirect('/admin/branches');
     } catch (err) {
       console.error("Error in editBranch:", err);
-      res.status(500).send("Internal Server Error");
-    }
+      res.status(500).send(err.message);    }
   };
 
   const
@@ -206,8 +204,7 @@ class AdminController {
       }
     } catch (err) {
       console.error("Error in deleteBranch:", err);
-      res.status(500).send('Internal Server Error');
-    }
+      res.status(500).send(err.message);    }
   };
 
 
@@ -239,8 +236,7 @@ class AdminController {
       });
     } catch (error) {
       console.error('Error loading admin dashboard:', error);
-      res.status(500).send('Internal Server Error');
-    }
+      res.status(500).send(error.message);    }
   }
 
   // Thêm nhân viên
@@ -251,7 +247,7 @@ class AdminController {
       res.redirect('/admin/employees');
     } catch (err) {
       console.error('Error adding employee:', err);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send(err.message);
     }
   };
 
@@ -265,7 +261,7 @@ class AdminController {
       res.render('admin/edit-employee', { title: 'Edit Employee', employee });
     } catch (err) {
       console.error('Error fetching employee:', err);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send(err.message);
     }
   };
 
@@ -278,7 +274,7 @@ class AdminController {
       res.redirect('/admin/employees');
     } catch (err) {
       console.error('Error updating employee:', err);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send(err.message);
     }
   };
 
@@ -291,7 +287,7 @@ class AdminController {
       res.redirect('/admin/employees');
     } catch (err) {
       console.error('Error deleting employee:', err);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send(err.message);
     }
   };
 
@@ -390,7 +386,7 @@ class AdminController {
       });
     } catch (error) {
       console.error('Error in getRevenueByBranch:', error);
-      res.status(500).send('Internal Server Error'); // Gửi phản hồi lỗi nếu có vấn đề xảy ra
+      res.status(500).send(error.message);
     }
   }
   //=============================Customers=================================
@@ -419,7 +415,7 @@ class AdminController {
         foods: null,
       });
     } catch (error) {
-      res.status(500).send('Server Error');
+      res.status(500).send(error.message);
     }
   };
 }
