@@ -1,5 +1,5 @@
 
-
+<link rel="stylesheet" href="../../public/user/css/additem.css">
 <!-- Item Management Section -->
 <% if (items) { %>
     <div id="item-management" class="content-section">
@@ -22,6 +22,44 @@
 
             <button class="search-btn" type="submit">Search</button>
         </form>
+        <button id="openPopup1">Thêm món ăn</button>
+
+        <!-- Popup nhập thông tin món ăn -->
+        <div class="popup-overlay-1" id="popup1">
+            <div class="popup-content">
+                <span class="close-popup" id="closePopup1">&times;</span>
+                <h2>Thêm Món Ăn Mới</h2>
+                <form id="addItemForm" method="POST" action="/admin/items/add">
+                    <table>
+                        <tr>
+                            <th><label for="itemName">Tên Món Ăn:</label></th>
+                            <td><input type="text" id="itemName" name="item_name" placeholder="Nhập tên món ăn" required></td>
+                        </tr>
+                        <tr>
+                            <th><label for="itemCategory">Danh Mục:</label></th>
+                            <td>
+                                <select id="itemCategory" name="category_id" required>
+                                    <option value="">Chọn Danh Mục</option>
+                                    <% categories.forEach(category => { %>
+                                    <option value="<%= category.category_id %>">
+                                        <%= category.category_name %>
+                                    </option>
+                                    <% }); %>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="itemPrice">Giá:</label></th>
+                            <td><input type="number" id="itemPrice" name="price" placeholder="Nhập giá món ăn" required min="0"></td>
+                        </tr>
+                    </table>
+                    <div class="half-width">
+                        <button type="submit" class="submit-btn">Thêm</button>
+                        <button type="button" class="cancel-btn" id="cancelPopup1">Hủy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Items Table -->
         <table>
@@ -30,19 +68,29 @@
                     <th>Item Name</th>
                     <th>Category</th>
                     <th>Price</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <% if (items && items.length > 0) { %>
                     <% items.forEach(item => { %>
-                        <tr>
-                            <td><%= item.item_name %></td>
-                            <td><%= item.category_name %></td>
-                            <td><%= item.price %></td>
+                        <tr data-item-id="<%= item.item_id %>">
+                            <td contenteditable="false">
+                                <%= item.item_name %>
+                            </td>
+                            <td contenteditable="false">
+                                <%= item.category_name %>
+                            </td>
+                            <td contenteditable="false">
+                                <%= parseFloat(item.price).toLocaleString() %>
+                            </td> <!-- Add thousands separator -->
+                            <td contenteditable="false">
+                                <%= item.status %>
+                            </td>
                             <td>
-                                <button class="edit-btn">Edit</button>
-                                <form method="POST" action="/employees/items/<%= item.item_id %>/delete">
+                                <button class="items-edit-save-btn">Edit</button>
+                                <form method="POST" action="/admin/items/<%= item.item_id %>/delete">
                                     <button type="submit">Delete</button>
                                 </form>
                             </td>
