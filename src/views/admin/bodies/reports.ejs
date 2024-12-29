@@ -138,6 +138,58 @@
                             <% } %>
         </tbody>
     </table>
+    <h2>Đánh giá theo chi nhánh</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Chi Nhánh</th>
+                <th>Tên Chi Nhánh</th>
+                <th>Điểm Dịch Vụ (Trung Bình)</th>
+                <th>Điểm Vị Trí (Trung Bình)</th>
+                <th>Chất Lượng Thực Phẩm (Trung Bình)</th>
+                <th>Điểm Giá Cả (Trung Bình)</th>
+                <th>Điểm Không Gian (Trung Bình)</th>
+                <th>Tổng Số Đánh Giá</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (statistics && statistics.length) { %>
+                <% statistics.forEach(function(branch) { %>
+                    <tr>
+                        <td>
+                            <%= branch.branch_id %>
+                        </td>
+                        <td>
+                            <%= branch.branch_name %>
+                        </td>
+                        <td>
+                            <%= branch.avg_service_rating ? branch.avg_service_rating.toFixed(2) : 'N/A' %>
+                        </td>
+                        <td>
+                            <%= branch.avg_location_rating ? branch.avg_location_rating.toFixed(2) : 'N/A' %>
+                        </td>
+                        <td>
+                            <%= branch.avg_food_quality_rating ? branch.avg_food_quality_rating.toFixed(2) : 'N/A' %>
+                        </td>
+                        <td>
+                            <%= branch.avg_price_rating ? branch.avg_price_rating.toFixed(2) : 'N/A' %>
+                        </td>
+                        <td>
+                            <%= branch.avg_ambiance_rating ? branch.avg_ambiance_rating.toFixed(2) : 'N/A' %>
+                        </td>
+                        <td>
+                            <%= branch.total_reviews %>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="8">Không có dữ liệu.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
     <script>
         // Hàm để thêm các năm gần đây vào dropdown
         function populateYears() {

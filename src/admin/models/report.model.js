@@ -78,7 +78,39 @@ class ReportModel {
             throw error;  // Ném lỗi để Controller có thể xử lý
         }
     }
-
+    static async getServiceReviewsByBranch() {
+        try {
+            await sql.connect(dev_config);
+            const request = new sql.Request();
+            const result = await request.query(`
+                SELECT 
+                    b.branch_id,
+                    b.branch_name,
+                    AVG(sr.service_rating) AS avg_service_rating,
+                    AVG(sr.location_rating) AS avg_location_rating,
+                    AVG(sr.food_quality_rating) AS avg_food_quality_rating,
+                    AVG(sr.price_rating) AS avg_price_rating,
+                    AVG(sr.ambiance_rating) AS avg_ambiance_rating,
+                    COUNT(sr.review_id) AS total_reviews
+                FROM 
+                    Service_Review sr
+                JOIN 
+                    [Order] o ON sr.order_id = o.order_id
+                JOIN 
+                    Employee e ON o.employee_id = e.employee_id
+                JOIN 
+                    Branch b ON e.branch_id = b.branch_id
+                GROUP BY 
+                    b.branch_id, b.branch_name
+            `);
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching service reviews by branch:', error);
+            throw error;
+        } finally {
+            await sql.close();
+        }
+    }
 }
 
 

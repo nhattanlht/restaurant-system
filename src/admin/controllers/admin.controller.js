@@ -55,12 +55,14 @@ class AdminController {
   async getDashboard(req, res, netx) {
     try {
       // Render giao diện dashboard
+      res.redirect('/admin/reports')
       res.render('admin/admin', {
         title: 'Admin Dashboard',
         branches: null,
         employees: null,
         revenueData: null,
         revenueItem: null,
+        statistics: null, // Dữ liệu doanh thu được lấy từ model
         areas: null,
         managers: null,
         departments: null,
@@ -100,6 +102,7 @@ class AdminController {
         employees: null,
         revenueData: null,
         revenueItem: null,
+        statistics: null, // Dữ liệu doanh thu được lấy từ model
         areas: areas,
         managers: manager,
         departments: departments,
@@ -231,6 +234,7 @@ class AdminController {
         employees: employees,
         revenueData: null,
         revenueItem: null,
+        statistics: null, // Dữ liệu doanh thu được lấy từ model
         areas: null,
         managers: null,
         departments: departments,
@@ -372,6 +376,8 @@ class AdminController {
         parseInt(day) || null
       );
 
+      const statistics = await ReportModel.getServiceReviewsByBranch();
+
       console.log(revenueItem)
 
       // Render view với dữ liệu doanh thu
@@ -381,6 +387,7 @@ class AdminController {
         employees: null,
         revenueData: revenueData, // Dữ liệu doanh thu được lấy từ model
         revenueItem: revenueItem, // Dữ liệu doanh thu được lấy từ model
+        statistics: statistics, // Dữ liệu doanh thu được lấy từ model
         areas: null,
         managers: null,
         departmets: null,
@@ -395,6 +402,7 @@ class AdminController {
       res.status(500).send(error.message);
     }
   }
+
   //=============================Customers=================================
   static searchCustomer = async (req, res) => {
     try {
@@ -410,6 +418,7 @@ class AdminController {
         employees: null,
         revenueData: null,
         revenueItem: null,
+        statistics: null, // Dữ liệu doanh thu được lấy từ model
         areas: null,
         managers: null,
         departments: null,
