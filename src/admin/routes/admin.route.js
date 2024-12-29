@@ -10,6 +10,7 @@ const employee = require("./employees.route");
 const adminController = new AdminController();
 
 //lấy danh sách
+//241202002
 router.get('/', authenticate, (adminController.getDashboard));
 router.get('/branches', authenticate, (adminController.getBranch))
 router.get('/employees', authenticate, (adminController.getEmployee))

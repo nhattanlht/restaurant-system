@@ -1,12 +1,20 @@
-# restaurant-system
-#-------------------------------#
+# Restaurant System
 
-step1: must install nodejs on website
+This is a restaurant management system that allows users to manage orders, customers, and employees. The application is built using Node.js, Express, and a SQL Server database.
 
-step2: npm i 
+## Prerequisites
 
-#-----------------------------------#
+Before you begin, ensure you have met the following requirements:
 
-file '.env' don't public 
+- You have **Node.js** installed on your machine. You can download it from [Node.js official website](https://nodejs.org/).
+- You have **npm** (Node Package Manager) installed. It comes with Node.js.
 
-241202002
+## Installation
+
+1. **Install dependencies**: Run the following command to install the required packages:
+   ```bash
+   npm install
+
+1. **Run the application in development mode**:  After installing the dependencies, you can start the application with automatic restarts using:
+   ```bash
+   npm run start
