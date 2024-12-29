@@ -55,12 +55,13 @@ class EmployeeController {
     static async insertCustomer(req, res) {
         try {
             const { name, phone, email, identity, gender } = req.body;
+
             // Tạo thông tin khách hàng từ request
             const customers = {
                 customer_id: null, // Default to null, or populate dynamically if available
                 name: name || null,
-                phone_number: phone || null,
-                email: email || null,
+                phone: phone,
+                email: email,
                 identity_card: identity || null,
                 gender: gender || null,
                 member_card_number: null, // Add missing fields with null as default
@@ -69,11 +70,18 @@ class EmployeeController {
                 created_at: null,
                 support_employee_id: null,
             };
-            const message = null;
-            // Kiểm tra hoặc tạo khách hàng
+
+            console.log('controller',phone);
+
+            let message = null; // Biến để lưu thông báo thành công hoặc lỗi
+
+            // Thực hiện thêm khách hàng
             customers.customer_id = await EmployeeModel.insertCustomer(customers);
 
-            // Kết quả
+            // Nếu thêm thành công, đặt thông báo thành công
+            message = 'Khách hàng đã được thêm thành công!';
+
+            // Render trang admin với thông tin cập nhật
             res.render('admin/admin', {
                 title: 'Admin Dashboard',
                 branches: null,
@@ -85,13 +93,44 @@ class EmployeeController {
                 managers: null,
                 departments: null,
                 customers: [customers],
-                message,
+                message, // Gửi thông báo thành công
                 invoices: null,
                 items: null,
                 categories: null,
             });
         } catch (error) {
-            res.status(500).json({ message: 'Failed to insert customer', error });
+            // Xử lý lỗi cụ thể nếu gặp vấn đề (như trùng email, số điện thoại, hoặc lỗi khác)
+            let message = 'Đã xảy ra lỗi trong quá trình thêm khách hàng. Vui lòng thử lại.';
+            if (error.originalError) {
+                const errorMessage = error.originalError.message;
+
+                if (errorMessage.includes('Email already exists')) {
+                    message = 'Lỗi: Email đã tồn tại trong hệ thống.';
+                } else if (errorMessage.includes('Phone number already exists')) {
+                    message = 'Lỗi: Số điện thoại đã tồn tại trong hệ thống.';
+                }
+            } else if (error.message.includes('The transaction ended in the trigger. The batch has been aborted.')) {
+                message = 'Lỗi: Đã xảy ra sự cố trong quá trình thực thi trigger.';
+            }
+            // Render lại trang admin với thông báo lỗi
+            res.render('admin/admin', {
+                title: 'Admin Dashboard',
+                branches: null,
+                employees: null,
+                revenueData: null,
+                revenueItem: null,
+                areas: null,
+                foods: null,
+                managers: null,
+                departments: null,
+                customers: [],
+                message, // Gửi thông báo lỗi
+                invoices: null,
+                items: null,
+                categories: null,
+            });
+
+            console.error('Error in insertCustomer:', error);
         }
     }
 }

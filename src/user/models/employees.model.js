@@ -102,6 +102,8 @@ class EmployeeModel {
     
             // Connect to the database
             await sql.connect(config);
+
+            console.log('models',phone);
     
             // Generate a new customer ID
             const maxIdQuery = `SELECT ISNULL(MAX(customer_id), 0) + 1 AS new_customer_id FROM Customer`;
@@ -117,7 +119,7 @@ class EmployeeModel {
             const insertRequest = new sql.Request();
             insertRequest.input('CustomerId', sql.BigInt, newCustomerId);
             insertRequest.input('Name', sql.NVarChar, name || null);
-            insertRequest.input('Phone', sql.NVarChar, phone || null);
+            insertRequest.input('Phone', sql.NVarChar, phone);
             insertRequest.input('Email', sql.NVarChar, email);
             insertRequest.input('Identity', sql.NVarChar, identity || null);
             insertRequest.input('Gender', sql.Char, gender || null);
@@ -127,20 +129,13 @@ class EmployeeModel {
             console.log('Customer inserted successfully');
             return newCustomerId;
         } catch (error) {
-            // Check if the error is due to a duplicate email or phone number
-            if (error.message.includes('Email already exists')) {
-                console.error('Error: Duplicate email detected.');
-            } else if (error.message.includes('Phone number already exists')) {
-                console.error('Error: Duplicate phone number detected.');
-            } else {
-                console.error('Error in insertCustomer:', error);
-            }
+            console.error('Error in insertCustomer:', error);
             throw error;
         } finally {
             // Close the database connection
             await sql.close();
         }
-    }
+    }    
 }
 
 module.exports = EmployeeModel;
