@@ -139,7 +139,7 @@
             <select id="departmentName" name="departmentName" required onchange="displayCurrentSalary()">
                 <option value="">Select Department</option>
                 <% departments.forEach(department=> { %>
-                    <option value="<%= department.department_id %>" data-salary="<%= department.salary %>">
+                    <option value="<%= department.department_name %>" data-salary="<%= department.salary %>">
                         <%= department.department_name %>
                     </option>
                     <% }); %>
